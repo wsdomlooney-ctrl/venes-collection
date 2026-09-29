@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Venes Collection — modern fashion for every statement.">
+  <title>Venes Collection | Official Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="announcement">FREE DELIVERY IN ACCRA ON SELECT ORDERS • SHOP VENES COLLECTION</div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Venes Collection home">
+      <img src="images/venes-logo.jpg" alt="Venes Collection logo">
+    </a>
+    <button class="menu-toggle" aria-label="Open menu">☰</button>
+    <nav class="nav">
+      <a href="#new">New Arrivals</a>
+      <a href="#shop">Shop</a>
+      <a href="#story">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="cart-button" id="cartBtn" aria-label="Open shopping bag">Bag <span id="cartCount">0</span></button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">VENES COLLECTION / 2026</p>
+        <h1>Wear the<br><em>statement.</em></h1>
+        <p class="hero-text">Curated pieces for people who want their style to speak before they do.</p>
+        <a class="button button-dark" href="#shop">Shop the collection</a>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1400&q=85" alt="Fashion model wearing a contemporary outfit">
+      </div>
+    </section>
+
+    <section class="marquee" aria-label="Venes Collection">
+      <span>VENES COLLECTION</span><span>VENES COLLECTION</span><span>VENES COLLECTION</span>
+    </section>
+
+    <section class="section" id="new">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">JUST DROPPED</p>
+          <h2>New arrivals</h2>
+        </div>
+        <a href="#shop" class="text-link">View all →</a>
+      </div>
+      <div class="product-grid" id="newGrid"></div>
+    </section>
+
+    <section class="category-band">
+      <div class="category-card">
+        <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=1000&q=85" alt="Men's fashion">
+        <div><p>01</p><h3>Men</h3><a href="#shop">Shop now →</a></div>
+      </div>
+      <div class="category-card">
+        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1000&q=85" alt="Women's fashion">
+        <div><p>02</p><h3>Women</h3><a href="#shop">Shop now →</a></div>
+      </div>
+    </section>
+
+    <section class="section" id="shop">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">THE COLLECTION</p>
+          <h2>Shop Venes</h2>
+        </div>
+        <div class="filters">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="men">Men</button>
+          <button class="filter" data-filter="women">Women</button>
+          <button class="filter" data-filter="accessories">Accessories</button>
+        </div>
+      </div>
+      <div class="product-grid" id="shopGrid"></div>
+    </section>
+
+    <section class="story" id="story">
+      <div class="story-image">
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=85" alt="Fashion shopping scene">
+      </div>
+      <div class="story-copy">
+        <p class="eyebrow">OUR STORY</p>
+        <h2>Style without<br><em>permission.</em></h2>
+        <p>Venes Collection is built around confident dressing, clean silhouettes and pieces that fit the way modern life moves.</p>
+        <p>From everyday essentials to standout looks, we curate fashion that feels personal, effortless and unmistakably yours.</p>
+        <a href="#contact" class="text-link">Connect with Venes →</a>
+      </div>
+    </section>
+
+    <section class="newsletter">
+      <p class="eyebrow">STAY IN THE LOOP</p>
+      <h2>New drops. Fresh fits.</h2>
+      <p>Join the Venes list for new arrivals and exclusive updates.</p>
+      <form id="newsletterForm">
+        <input type="email" placeholder="Your email address" required>
+        <button class="button button-dark" type="submit">Join</button>
+      </form>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-brand">
+      <img src="images/venes-logo.jpg" alt="Venes Collection">
+      <p>Modern fashion. Personal expression.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="#new">New Arrivals</a>
+      <a href="#shop">Shop</a>
+      <a href="#story">About</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="https://wa.me/233000000000" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="mailto:hello@venescollection.com">Email</a>
+      <a href="#">Instagram</a>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> Venes Collection. All rights reserved.</div>
+  </footer>
+
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true">
+    <div class="cart-head"><h3>Your bag</h3><button id="closeCart">×</button></div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-total"><span>Total</span><strong id="cartTotal">GH₵0</strong></div>
+    <button class="button button-dark full" id="checkoutBtn">Order via WhatsApp</button>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
