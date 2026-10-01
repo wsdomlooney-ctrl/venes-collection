@@ -1,5 +1,5 @@
 const products=[
-{name:"Essential Oversized Tee",price:180,cat:"men",img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=85"},
+{name:"Essential Oversized Tee",price:180,cat:"men",img:img:"IMG_0075.jpeg"},
 {name:"Structured Linen Shirt",price:320,cat:"men",img:"https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=85"},
 {name:"Everyday Tailored Set",price:420,cat:"women",img:"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=85"},
 {name:"Classic Mini Bag",price:260,cat:"accessories",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=85"},
