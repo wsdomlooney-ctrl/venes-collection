@@ -1,27 +1,171 @@
-const products=[
-{name:"jeans 1032",price:180,cat:"men",img:img:"IMG_0075.jpeg"},
-{name:"heel 4545",price:320,cat:"men",img:"IMG_0077.jpeg"},
-{name:"Everyday Tailored Set",price:420,cat:"women",img:"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=85"},
-{name:"Classic Mini Bag",price:260,cat:"accessories",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=85"},
-{name:"Relaxed Street Shirt",price:280,cat:"men",img:"https://images.unsplash.com/photo-1603252110481-7ba873bf42ab?auto=format&fit=crop&w=800&q=85"},
-{name:"Minimal Black Dress",price:390,cat:"women",img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=85"},
-{name:"Venes Signature Cap",price:140,cat:"accessories",img:"https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=800&q=85"},
-{name:"Premium Knit Polo",price:350,cat:"men",img:"https://images.unsplash.com/photo-1625910513413-5fc45a7b3c0a?auto=format&fit=crop&w=800&q=85"}
-];
-let cart=[];
-const money=n=>`GH₵${n.toLocaleString()}`;
-function card(p){return `<article class="product-card"><div class="product-image"><img src="${p.img}" alt="${p.name}"><button class="quick-add" onclick="addToCart('${p.name.replace(/'/g,"\\'")}')">Add to bag</button></div><div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta"><span>${p.cat}</span><strong>${money(p.price)}</strong></div></div></article>`}
-function renderProducts(list,el){el.innerHTML=list.map(card).join("")}
-renderProducts(products.slice(0,4),document.getElementById("newGrid"));
-renderProducts(products,document.getElementById("shopGrid"));
-document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");const f=btn.dataset.filter;renderProducts(f==="all"?products:products.filter(p=>p.cat===f),document.getElementById("shopGrid"));}));
-function addToCart(name){const p=products.find(x=>x.name===name);cart.push(p);updateCart();openCart()}
-function updateCart(){document.getElementById("cartCount").textContent=cart.length;document.getElementById("cartItems").innerHTML=cart.length?cart.map((p,i)=>`<div class="cart-item"><img src="${p.img}" alt=""><div><h4>${p.name}</h4><p>${money(p.price)}</p><button class="remove" onclick="removeItem(${i})">Remove</button></div></div>`).join(""):"<p>Your bag is empty.</p>";document.getElementById("cartTotal").textContent=money(cart.reduce((s,p)=>s+p.price,0))}
-function removeItem(i){cart.splice(i,1);updateCart()}
-const panel=document.getElementById("cartPanel"),overlay=document.getElementById("overlay");
-function openCart(){panel.classList.add("open");overlay.classList.add("show");panel.setAttribute("aria-hidden","false")}
-function closeCart(){panel.classList.remove("open");overlay.classList.remove("show");panel.setAttribute("aria-hidden","true")}
-document.getElementById("cartBtn").onclick=openCart;document.getElementById("closeCart").onclick=closeCart;overlay.onclick=closeCart;
-document.getElementById("checkoutBtn").onclick=()=>{if(!cart.length)return alert("Your bag is empty.");const msg=encodeURIComponent("Hello Venes Collection, I would like to order:\n"+cart.map(p=>`• ${p.name} — ${money(p.price)}`).join("\n")+`\nTotal: ${money(cart.reduce((s,p)=>s+p.price,0))}`);window.open(`https://wa.me/233000000000?text=${msg}`,"_blank")};
-document.getElementById("newsletterForm").addEventListener("submit",e=>{e.preventDefault();alert("Thanks for joining Venes Collection.");e.target.reset()});
-document.getElementById("year").textContent=new Date().getFullYear();
+document.addEventListener("DOMContentLoaded", function () {
+
+    let cart = [];
+
+    const bagButtons = document.querySelectorAll(".bag-button");
+    const headerBag = document.querySelector('.header-icons button[aria-label="Shopping Bag"]');
+
+    // Create shopping bag panel
+    const overlay = document.createElement("div");
+    overlay.className = "cart-overlay";
+
+    const cartPanel = document.createElement("div");
+    cartPanel.className = "cart-panel";
+
+    cartPanel.innerHTML = `
+        <div class="cart-header">
+            <h2>Your Shopping Bag</h2>
+            <button class="cart-close">×</button>
+        </div>
+
+        <div class="cart-items">
+            <p class="empty-cart">Your bag is empty.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <strong>GH₵ 0</strong>
+            </div>
+
+            <button class="checkout-button">
+                CHECKOUT
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(cartPanel);
+
+    const cartItems = cartPanel.querySelector(".cart-items");
+    const cartTotal = cartPanel.querySelector(".cart-total strong");
+    const closeButton = cartPanel.querySelector(".cart-close");
+    const checkoutButton = cartPanel.querySelector(".checkout-button");
+
+    // Open cart
+    function openCart() {
+        cartPanel.classList.add("open");
+        overlay.classList.add("show");
+    }
+
+    // Close cart
+    function closeCart() {
+        cartPanel.classList.remove("open");
+        overlay.classList.remove("show");
+    }
+
+    closeButton.addEventListener("click", closeCart);
+    overlay.addEventListener("click", closeCart);
+
+    // Get product information
+    function getProduct(card) {
+
+        const name = card.querySelector("h3").textContent.trim();
+        const priceText = card.querySelector(".price").textContent
+            .replace("GH₵", "")
+            .replace(",", "")
+            .trim();
+
+        const price = Number(priceText);
+
+        const image = card.querySelector("img").getAttribute("src");
+
+        return {
+            name: name,
+            price: price,
+            image: image
+        };
+    }
+
+    // Add product to cart
+    bagButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            const card = button.closest(".product-card");
+            const product = getProduct(card);
+
+            cart.push(product);
+
+            updateCart();
+            openCart();
+        });
+
+    });
+
+    // Header bag button
+    if (headerBag) {
+        headerBag.addEventListener("click", openCart);
+    }
+
+    // Update cart
+    function updateCart() {
+
+        if (cart.length === 0) {
+
+            cartItems.innerHTML = `
+                <p class="empty-cart">
+                    Your bag is empty.
+                </p>
+            `;
+
+        } else {
+
+            cartItems.innerHTML = cart.map(function (product, index) {
+
+                return `
+                    <div class="cart-item">
+
+                        <img src="${product.image}" alt="${product.name}">
+
+                        <div class="cart-item-info">
+                            <h3>${product.name}</h3>
+                            <p>GH₵ ${product.price.toLocaleString()}</p>
+
+                            <button class="remove-item" data-index="${index}">
+                                Remove
+                            </button>
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+        }
+
+        const total = cart.reduce(function (sum, product) {
+            return sum + product.price;
+        }, 0);
+
+        cartTotal.textContent = `GH₵ ${total.toLocaleString()}`;
+
+        // Remove buttons
+        document.querySelectorAll(".remove-item").forEach(function (button) {
+
+            button.addEventListener("click", function () {
+
+                const index = Number(button.dataset.index);
+
+                cart.splice(index, 1);
+
+                updateCart();
+            });
+
+        });
+
+    }
+
+    // Checkout
+    checkoutButton.addEventListener("click", function () {
+
+        if (cart.length === 0) {
+            alert("Your shopping bag is empty.");
+            return;
+        }
+
+        alert("Your order is ready for checkout. We will connect this to WhatsApp next.");
+
+    });
+
+});
