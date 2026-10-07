@@ -89,7 +89,9 @@ font-size: 12px;
 font-weight: 600;
 letter-spacing: 0.3px;
 }
-
+.menu-toggle {
+  display: none;
+}
 .navigation a {
 transition: opacity 0.2s ease;
 }
@@ -676,9 +678,50 @@ padding: 0 18px;
 width: 105px;
 }
 
+.menu-toggle {
+display: flex;
+
+border: 0;
+background: transparent;
+
+font-size: 24px;
+cursor: pointer;
+
+width: 35px;
+height: 35px;
+
+align-items: center;
+justify-content: center;
+}
+
 .navigation {
 display: none;
+
+position: absolute;
+
+top: 70px;
+left: 0;
+
+width: 100%;
+
+background: var(--bg);
+
+border-bottom: 1px solid var(--line);
+
+padding: 25px 20px;
+
+flex-direction: column;
+align-items: center;
+
+gap: 22px;
+
+z-index: 99;
 }
+
+.navigation.mobile-open {
+display: flex;
+}
+
 
 .header-icons {
 gap: 10px;
