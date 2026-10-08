@@ -1,25 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  /* =========================================================
-     MOBILE MENU
-  ========================================================= */
+/* =========================================================
+MOBILE MENU
+========================================================= */
 
-  const menuToggle = document.querySelector(".menu-toggle");
-  const navigation = document.querySelector(".navigation");
+const menuToggle = document.querySelector(".menu-toggle");
+const navigation = document.querySelector(".navigation");
 
-  if (menuToggle && navigation) {
+if (menuToggle && navigation) {
 
-    menuToggle.addEventListener("click", function () {
-      navigation.classList.toggle("mobile-open");
+  menuToggle.addEventListener("click", function () {
+
+    navigation.classList.toggle("mobile-open");
+
+  });
+
+
+  const navigationLinks = navigation.querySelectorAll("a");
+
+  navigationLinks.forEach(function (link) {
+
+    link.addEventListener("click", function () {
+
+      navigation.classList.remove("mobile-open");
+
     });
 
-    navigation.querySelectorAll("a").forEach(function (link) {
-
-      link.addEventListener("click", function () {
-        navigation.classList.remove("mobile-open");
-      });
-
-    });
+  });
 
   }
 
