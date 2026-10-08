@@ -363,6 +363,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const previewBagButton =
     previewOverlay.querySelector(".preview-bag-button");
+  const productSize =
+  previewOverlay.querySelector("#product-size");
+
 
 
   /* =========================================================
