@@ -316,9 +316,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
         <p class="product-preview-price"></p>
 
-        <button class="preview-bag-button">
-          ADD TO BAG
-        </button>
+        <div class="product-size-selector">
+
+  <label for="product-size">SIZE</label>
+
+  <select id="product-size">
+
+    <option value="">SELECT SIZE</option>
+
+    <option value="XS">XS</option>
+    <option value="S">S</option>
+    <option value="M">M</option>
+    <option value="L">L</option>
+    <option value="XL">XL</option>
+    <option value="XXL">XXL</option>
+
+  </select>
+
+</div>
+
+<button class="preview-bag-button">
+  ADD TO BAG
+</button>
 
       </div>
 
