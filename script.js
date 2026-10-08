@@ -26,43 +26,46 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* =========================================================
-     CATEGORY FILTER
-  ========================================================= */
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
 
-  const categoryButtons = document.querySelectorAll(".category");
-  const productCards = document.querySelectorAll(".product-card");
+const categoryButtons = document.querySelectorAll(".category");
+const productCards = document.querySelectorAll(".product-card");
 
-  categoryButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
+categoryButtons.forEach(function (button) {
 
-      categoryButtons.forEach(function (btn) {
-        btn.classList.remove("active");
-      });
+  button.addEventListener("click", function () {
 
-      button.classList.add("active");
+    categoryButtons.forEach(function (btn) {
+      btn.classList.remove("active");
+    });
 
-      const selectedCategory =
-        button.getAttribute("data-category");
+    button.classList.add("active");
 
-      productCards.forEach(function (card) {
+    const selectedCategory =
+      button.getAttribute("data-category");
 
-        const cardCategory =
-          card.getAttribute("data-category");
+    productCards.forEach(function (card) {
 
-        if (
-          selectedCategory === "all" ||
-          selectedCategory === cardCategory
-        ) {
-          card.style.display = "";
-        } else {
-          card.style.display = "none";
-        }
+      const cardCategory =
+        card.getAttribute("data-category");
 
-      });
+      if (
+        selectedCategory === "all" ||
+        selectedCategory === cardCategory
+      ) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
 
     });
+
   });
+
+});
+
 
 
   /* =========================================================
