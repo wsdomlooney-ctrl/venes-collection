@@ -213,7 +213,7 @@ CATEGORIES
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 48px;
+  gap: 34px;
   padding: 0 20px 48px;
   flex-wrap: wrap;
 }
@@ -222,20 +222,32 @@ CATEGORIES
   border: 0;
   background: transparent;
   color: #55514e;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  padding: 5px 0;
-  transition: all 0.2s ease;
+  padding: 7px 0;
+  transition: all 0.25s ease;
   pointer-events: auto;
 }
 
-.category:hover,
-.category.active {
+.category:hover {
   color: #111;
 }
 
-
+.category.active {
+  color: #111;
+  border-bottom: 1px solid #111;
+}
+@media (max-with: 650px) {
+  .categories {
+    gap: 20px;
+    padding: 0 15px 38px;
+  }
+  .category {
+    font-size: 10px;
+    letter-spacing: 0.08px;
+  }
+}
 /* =========================================================
 PRODUCT GRID
 ========================================================= */
