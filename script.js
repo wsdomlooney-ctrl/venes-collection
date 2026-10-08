@@ -438,7 +438,7 @@ if (!selectedSize) {
   }
 
   const product = getProduct(card);
-
+   product.size = selectedSize;
   cart.push(product);
 
   updateCart();
