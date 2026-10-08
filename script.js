@@ -1152,10 +1152,136 @@ document.addEventListener(
 
               card.style.display = "";
 
+
             }
           );
 
       }
+/* =========================================================
+ACCOUNT PANEL
+========================================================= */
+
+const accountButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Account"]'
+  );
+
+
+if (accountButton) {
+
+  accountButton.addEventListener(
+    "click",
+    function () {
+
+      let accountPanel =
+        document.querySelector(
+          ".venes-account-panel"
+        );
+
+
+      if (accountPanel) {
+
+        accountPanel.classList.add("active");
+
+        return;
+
+      }
+
+
+      document.body.insertAdjacentHTML(
+        "beforeend",
+
+        `
+
+        <div class="venes-account-panel">
+
+          <div class="account-box">
+
+            <button
+              class="account-close"
+              aria-label="Close account"
+            >
+              ×
+            </button>
+
+
+            <h2>
+              MY ACCOUNT
+            </h2>
+
+
+            <p>
+              Welcome to Venes Collection.
+            </p>
+
+
+            <button class="account-option">
+              MY ORDERS
+            </button>
+
+
+            <button class="account-option">
+              SHOPPING BAG
+            </button>
+
+
+            <button class="account-option">
+              CONTACT SUPPORT
+            </button>
+
+          </div>
+
+        </div>
+
+        `
+      );
+
+
+      accountPanel =
+        document.querySelector(
+          ".venes-account-panel"
+        );
+
+
+      const closeButton =
+        document.querySelector(
+          ".account-close"
+        );
+
+
+      closeButton.addEventListener(
+        "click",
+        function () {
+
+          accountPanel.classList.remove(
+            "active"
+          );
+
+        }
+      );
+
+
+      accountPanel.addEventListener(
+        "click",
+        function (event) {
+
+          if (
+            event.target === accountPanel
+          ) {
+
+            accountPanel.classList.remove(
+              "active"
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+}
 
     }
 
