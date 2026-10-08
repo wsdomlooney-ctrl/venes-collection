@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   function addProductToCart(product) {
-
+    product.quantity = 1;
     cart.push(product);
 
     updateCart();
@@ -220,13 +220,35 @@ document.addEventListener("DOMContentLoaded", function () {
   GH₵ ${product.price.toLocaleString()}
 </p>
 
+<div class="cart-quantity">
 
-              <button
-                class="remove-item"
-                data-index="${index}"
-              >
-                Remove
-              </button>
+  <button
+    class="quantity-minus"
+    data-index="${index}"
+  >
+    −
+  </button>
+
+  <span>
+    ${product.quantity || 1}
+  </span>
+
+  <button
+    class="quantity-plus"
+    data-index="${index}"
+  >
+    +
+  </button>
+
+</div>
+
+<button
+  class="remove-item"
+  data-index="${index}"
+>
+  Remove
+</button>
+
 
             </div>
 
@@ -249,6 +271,35 @@ document.addEventListener("DOMContentLoaded", function () {
     cartTotal.textContent =
       `GH₵ ${total.toLocaleString()}`;
 
+document.querySelectorAll(".quantity-minus").forEach(function (button) {
+
+  button.addEventListener("click", function () {
+
+    const index = Number(button.dataset.index);
+
+    if (cart[index].quantity > 1) {
+      cart[index].quantity--;
+      updateCart();
+    }
+
+  });
+
+});
+
+
+document.querySelectorAll(".quantity-plus").forEach(function (button) {
+
+  button.addEventListener("click", function () {
+
+    const index = Number(button.dataset.index);
+
+    cart[index].quantity++;
+
+    updateCart();
+
+  });
+
+});
 
     document.querySelectorAll(".remove-item").forEach(function (button) {
 
@@ -502,3 +553,32 @@ if (!selectedSize) {
 
 
 });
+.cart-quantity {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid #dddddd;
+  margin: 8px 0 12px;
+}
+
+.cart-quantity button {
+  width: 32px;
+  height: 30px;
+  border: none;
+  background: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-quantity button:hover {
+  background: #f3f3f3;
+}
+
+.cart-quantity span {
+  min-width: 32px;
+  text-align: center;
+  font-size: 13px;
+}
