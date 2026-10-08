@@ -889,3 +889,75 @@ if (headerBagButton) {
   });
 
 }
+/* =========================================================
+SHOP CATEGORY FILTER
+========================================================= */
+
+const categoryButtons = document.querySelectorAll(".category");
+const productCards = document.querySelectorAll(".product-card");
+
+if (categoryButtons.length && productCards.length) {
+
+  categoryButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      /* Remove active from all buttons */
+      categoryButtons.forEach(function (btn) {
+        btn.classList.remove("active");
+      });
+
+      /* Make clicked button active */
+      button.classList.add("active");
+
+      const category = button.textContent.trim().toLowerCase();
+
+      productCards.forEach(function (card) {
+
+        const productName =
+          card.querySelector("h3")?.textContent.toLowerCase() || "";
+
+        let showProduct = false;
+
+        if (category === "all") {
+          showProduct = true;
+        }
+
+        else if (category === "clothing") {
+          showProduct =
+            productName.includes("jacket") ||
+            productName.includes("shirt") ||
+            productName.includes("jeans") ||
+            productName.includes("pants");
+        }
+
+        else if (category === "shoes") {
+          showProduct =
+            productName.includes("shoe") ||
+            productName.includes("sandal") ||
+            productName.includes("slipper");
+        }
+
+        else if (category === "bags") {
+          showProduct =
+            productName.includes("bag");
+        }
+
+        else if (category === "accessories") {
+          showProduct =
+            productName.includes("watch") ||
+            productName.includes("accessory") ||
+            productName.includes("belt") ||
+            productName.includes("cap") ||
+            productName.includes("hat");
+        }
+
+        card.style.display = showProduct ? "" : "none";
+
+      });
+
+    });
+
+  });
+
+}
