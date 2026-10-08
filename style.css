@@ -1548,15 +1548,15 @@ SMALL PHONES
 
 .hero-logo {
   display: block;
-  width: 150px;
+  width: 90px;
   height: auto;
-  margin: 0 auto 25px auto;
+  margin: 0 auto 20px auto;
   object-fit: contain;
 }
 
 @media (max-width: 650px) {
   .hero-logo {
-    width: 120px;
-    margin-bottom: 20px;
+    width: 75px;
+    margin-bottom: 16px;
   }
 }
