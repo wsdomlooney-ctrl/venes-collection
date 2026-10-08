@@ -8,9 +8,11 @@ const menuToggle = document.querySelector(".menu-toggle");
 const navigation = document.querySelector(".navigation");
 
 if (menuToggle && navigation) {
+
   menuToggle.addEventListener("click", function () {
     navigation.classList.toggle("mobile-open");
   });
+
 }
 
 
@@ -18,8 +20,12 @@ if (menuToggle && navigation) {
 CATEGORY FILTER
 ========================================================= */
 
-const categoryButtons = document.querySelectorAll(".category");
-const productCards = document.querySelectorAll(".product-card");
+const categoryButtons =
+  document.querySelectorAll(".category");
+
+const productCards =
+  document.querySelectorAll(".product-card");
+
 
 categoryButtons.forEach(function (button) {
 
@@ -43,9 +49,13 @@ categoryButtons.forEach(function (button) {
         selectedCategory === "all" ||
         selectedCategory === cardCategory
       ) {
+
         card.style.display = "";
+
       } else {
+
         card.style.display = "none";
+
       }
 
     });
@@ -91,6 +101,10 @@ SHOPPING BAG
 let cart = [];
 
 
+/* =========================================================
+ADD PRODUCT TO CART
+========================================================= */
+
 function addProductToCart(product, size = "") {
 
   const existing =
@@ -111,19 +125,26 @@ function addProductToCart(product, size = "") {
   } else {
 
     cart.push({
+
       name: product.name,
       price: product.price,
       image: product.image,
       size: size,
       quantity: 1
+
     });
 
   }
+
 
   updateCart();
 
 }
 
+
+/* =========================================================
+UPDATE CART
+========================================================= */
 
 function updateCart() {
 
@@ -132,6 +153,7 @@ function updateCart() {
 
   const cartTotal =
     document.querySelector(".cart-total strong");
+
 
   if (!cartItems) return;
 
@@ -146,6 +168,7 @@ function updateCart() {
     }
 
     return;
+
   }
 
 
@@ -162,6 +185,7 @@ function updateCart() {
 
 
       return `
+
         <div class="cart-item">
 
           <img
@@ -171,7 +195,9 @@ function updateCart() {
 
           <div class="cart-item-info">
 
-            <h3>${item.name}</h3>
+            <h3>
+              ${item.name}
+            </h3>
 
             ${
               item.size
@@ -193,7 +219,9 @@ function updateCart() {
                 −
               </button>
 
-              <span>${item.quantity}</span>
+              <span>
+                ${item.quantity}
+              </span>
 
               <button
                 class="quantity-plus"
@@ -216,14 +244,17 @@ function updateCart() {
           </div>
 
         </div>
+
       `;
 
     }).join("");
 
 
   if (cartTotal) {
+
     cartTotal.textContent =
       "GH₵ " + total;
+
   }
 
 
@@ -260,11 +291,16 @@ function updateCart() {
 
         if (!cart[index]) return;
 
+
         cart[index].quantity -= 1;
 
+
         if (cart[index].quantity <= 0) {
+
           cart.splice(index, 1);
+
         }
+
 
         updateCart();
 
@@ -285,6 +321,7 @@ function updateCart() {
           );
 
         if (!cart[index]) return;
+
 
         cart[index].quantity += 1;
 
@@ -312,55 +349,64 @@ function createCart() {
     "beforeend",
 
     `
-      <div class="cart-overlay"></div>
 
-      <div class="cart-panel">
-
-        <div class="cart-header">
-
-          <h2>SHOPPING BAG</h2>
-
-          <button
-            class="cart-close"
-            type="button"
-            aria-label="Close shopping bag"
-          >
-            ×
-          </button>
-
-        </div>
+    <div class="cart-overlay"></div>
 
 
-        <div class="cart-items">
+    <div class="cart-panel">
 
-          <p class="empty-cart">
-            Your shopping bag is empty.
-          </p>
+      <div class="cart-header">
 
-        </div>
+        <h2>
+          SHOPPING BAG
+        </h2>
 
-
-        <div class="cart-footer">
-
-          <div class="cart-total">
-
-            <span>TOTAL</span>
-
-            <strong>GH₵ 0</strong>
-
-          </div>
-
-
-          <button
-            class="checkout-button"
-            type="button"
-          >
-            CHECKOUT
-          </button>
-
-        </div>
+        <button
+          class="cart-close"
+          type="button"
+          aria-label="Close shopping bag"
+        >
+          ×
+        </button>
 
       </div>
+
+
+      <div class="cart-items">
+
+        <p class="empty-cart">
+          Your shopping bag is empty.
+        </p>
+
+      </div>
+
+
+      <div class="cart-footer">
+
+        <div class="cart-total">
+
+          <span>
+            TOTAL
+          </span>
+
+          <strong>
+            GH₵ 0
+          </strong>
+
+        </div>
+
+
+        <button
+          class="checkout-button"
+          type="button"
+        >
+          CHECKOUT
+        </button>
+
+      </div>
+
+    </div>
+
     `
   );
 
@@ -378,6 +424,7 @@ function createCart() {
   function closeCart() {
 
     panel.classList.remove("open");
+
     overlay.classList.remove("show");
 
   }
@@ -395,36 +442,29 @@ function createCart() {
   );
 
 
-  /* =====================================================
-  CHECKOUT BUTTON
-  ===================================================== */
-
   const checkoutButton =
     document.querySelector(".checkout-button");
 
 
-  if (checkoutButton) {
+  checkoutButton.addEventListener(
+    "click",
+    function () {
 
-    checkoutButton.addEventListener(
-      "click",
-      function () {
+      if (cart.length === 0) {
 
-        if (cart.length === 0) {
+        alert(
+          "Your shopping bag is empty."
+        );
 
-          alert(
-            "Your shopping bag is empty."
-          );
-
-          return;
-        }
-
-
-        openCheckout();
+        return;
 
       }
-    );
 
-  }
+
+      openCheckout();
+
+    }
+  );
 
 }
 
@@ -433,39 +473,84 @@ createCart();
 
 
 /* =========================================================
-ADD TO BAG BUTTONS
+YOUR ACTUAL SHOP BUTTONS
 ========================================================= */
 
 document
-  .querySelectorAll(".add-to-bag")
+  .querySelectorAll(".bag-button")
   .forEach(function (button) {
 
-    button.addEventListener("click", function (event) {
+    button.addEventListener(
+      "click",
+      function (event) {
 
-      event.preventDefault();
+        event.preventDefault();
 
-      const card =
-        button.closest(".product-card");
+        event.stopPropagation();
 
-      if (!card) return;
 
-      const product =
-        getProduct(card);
+        const card =
+          button.closest(".product-card");
 
-      addProductToCart(product);
 
-      const panel =
-        document.querySelector(".cart-panel");
+        if (!card) return;
 
-      const overlay =
-        document.querySelector(".cart-overlay");
 
-      if (panel && overlay) {
-        panel.classList.add("open");
-        overlay.classList.add("show");
+        const product =
+          getProduct(card);
+
+
+        addProductToCart(product);
+
+
+        const panel =
+          document.querySelector(".cart-panel");
+
+        const overlay =
+          document.querySelector(".cart-overlay");
+
+
+        if (panel && overlay) {
+
+          panel.classList.add("open");
+
+          overlay.classList.add("show");
+
+        }
+
       }
+    );
 
-    });
+  });
+
+
+/* =========================================================
+PRODUCT IMAGE PREVIEW
+========================================================= */
+
+document
+  .querySelectorAll(".product-image")
+  .forEach(function (imageBox) {
+
+    imageBox.addEventListener(
+      "click",
+      function () {
+
+        const card =
+          imageBox.closest(".product-card");
+
+
+        if (!card) return;
+
+
+        const product =
+          getProduct(card);
+
+
+        openProductPreview(product);
+
+      }
+    );
 
   });
 
@@ -474,31 +559,13 @@ document
 PRODUCT PREVIEW
 ========================================================= */
 
-document
-  .querySelectorAll(".product-image")
-  .forEach(function (imageBox) {
-
-    imageBox.addEventListener("click", function () {
-
-      const card =
-        imageBox.closest(".product-card");
-
-      if (!card) return;
-
-      const product =
-        getProduct(card);
-
-      openProductPreview(product);
-
-    });
-
-  });
-
-
 function openProductPreview(product) {
 
   const existing =
-    document.querySelector(".product-preview-overlay");
+    document.querySelector(
+      ".product-preview-overlay"
+    );
+
 
   if (existing) {
     existing.remove();
@@ -509,72 +576,97 @@ function openProductPreview(product) {
     "beforeend",
 
     `
-      <div class="product-preview-overlay active">
 
-        <div class="product-preview">
+    <div class="product-preview-overlay active">
+
+      <div class="product-preview">
+
+        <button
+          class="product-preview-close"
+          type="button"
+        >
+          ×
+        </button>
+
+
+        <div>
+
+          <img
+            class="product-preview-image"
+            src="${product.image}"
+            alt="${product.name}"
+          >
+
+        </div>
+
+
+        <div class="product-preview-details">
+
+          <h2 class="product-preview-name">
+            ${product.name}
+          </h2>
+
+
+          <p class="product-preview-price">
+            GH₵ ${product.price}
+          </p>
+
+
+          <div class="product-size-selector">
+
+            <label for="preview-size">
+              SIZE
+            </label>
+
+
+            <select id="preview-size">
+
+              <option value="">
+                Select size
+              </option>
+
+              <option value="XS">
+                XS
+              </option>
+
+              <option value="S">
+                S
+              </option>
+
+              <option value="M">
+                M
+              </option>
+
+              <option value="L">
+                L
+              </option>
+
+              <option value="XL">
+                XL
+              </option>
+
+              <option value="XXL">
+                XXL
+              </option>
+
+            </select>
+
+          </div>
+
 
           <button
-            class="product-preview-close"
+            class="preview-bag-button"
             type="button"
           >
-            ×
+            ADD TO BAG
           </button>
-
-          <div>
-
-            <img
-              class="product-preview-image"
-              src="${product.image}"
-              alt="${product.name}"
-            >
-
-          </div>
-
-          <div class="product-preview-details">
-
-            <h2 class="product-preview-name">
-              ${product.name}
-            </h2>
-
-            <p class="product-preview-price">
-              GH₵ ${product.price}
-            </p>
-
-            <div class="product-size-selector">
-
-              <label for="preview-size">
-                SIZE
-              </label>
-
-              <select id="preview-size">
-
-                <option value="">
-                  Select size
-                </option>
-
-                <option value="XS">XS</option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-
-              </select>
-
-            </div>
-
-            <button
-              class="preview-bag-button"
-              type="button"
-            >
-              ADD TO BAG
-            </button>
-
-          </div>
 
         </div>
 
       </div>
+
+    </div>
+
     `
   );
 
@@ -606,7 +698,9 @@ function openProductPreview(product) {
   close.addEventListener(
     "click",
     function () {
+
       preview.remove();
+
     }
   );
 
@@ -616,7 +710,9 @@ function openProductPreview(product) {
     function (event) {
 
       if (event.target === preview) {
+
         preview.remove();
+
       }
 
     }
@@ -629,6 +725,7 @@ function openProductPreview(product) {
 
       const selectedSize =
         sizeSelect.value;
+
 
       addProductToCart(
         product,
@@ -649,6 +746,44 @@ function openProductPreview(product) {
       if (panel && overlay) {
 
         panel.classList.add("open");
+
+        overlay.classList.add("show");
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+HEADER SHOPPING BAG
+========================================================= */
+
+const bagButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Shopping Bag"]'
+  );
+
+
+if (bagButton) {
+
+  bagButton.addEventListener(
+    "click",
+    function () {
+
+      const panel =
+        document.querySelector(".cart-panel");
+
+      const overlay =
+        document.querySelector(".cart-overlay");
+
+
+      if (panel && overlay) {
+
+        panel.classList.add("open");
+
         overlay.classList.add("show");
 
       }
@@ -680,6 +815,7 @@ if (searchButton) {
           ".venes-search-box"
         );
 
+
       if (existing) return;
 
 
@@ -687,27 +823,29 @@ if (searchButton) {
         "beforeend",
 
         `
-          <div class="venes-search-box">
 
-            <div class="search-inner">
+        <div class="venes-search-box">
 
-              <input
-                id="venes-search-input"
-                type="text"
-                placeholder="Search products..."
-                autocomplete="off"
-              >
+          <div class="search-inner">
 
-              <button
-                id="venes-search-close"
-                type="button"
-              >
-                ×
-              </button>
+            <input
+              id="venes-search-input"
+              type="text"
+              placeholder="Search products..."
+            >
 
-            </div>
+
+            <button
+              id="venes-search-close"
+              type="button"
+            >
+              ×
+            </button>
 
           </div>
+
+        </div>
+
         `
       );
 
@@ -776,7 +914,9 @@ if (searchButton) {
       close.addEventListener(
         "click",
         function () {
+
           searchBox.remove();
+
         }
       );
 
@@ -786,7 +926,9 @@ if (searchButton) {
         function (event) {
 
           if (event.target === searchBox) {
+
             searchBox.remove();
+
           }
 
         }
@@ -819,9 +961,13 @@ if (accountButton) {
           ".venes-account-panel"
         );
 
+
       if (existing) {
+
         existing.remove();
+
         return;
+
       }
 
 
@@ -829,44 +975,50 @@ if (accountButton) {
         "beforeend",
 
         `
-          <div class="venes-account-panel active">
 
-            <div class="account-box">
+        <div class="venes-account-panel active">
 
-              <button
-                class="account-close"
-                type="button"
-              >
-                ×
-              </button>
+          <div class="account-box">
 
-              <h2>
-                MY ACCOUNT
-              </h2>
+            <button
+              class="account-close"
+              type="button"
+            >
+              ×
+            </button>
 
-              <p>
-                Manage your Venes Collection orders.
-              </p>
 
-              <button
-                class="account-option"
-                type="button"
-                id="view-orders-button"
-              >
-                MY ORDERS
-              </button>
+            <h2>
+              MY ACCOUNT
+            </h2>
 
-              <button
-                class="account-option"
-                type="button"
-                id="account-shop-button"
-              >
-                CONTINUE SHOPPING
-              </button>
 
-            </div>
+            <p>
+              Manage your Venes Collection orders.
+            </p>
+
+
+            <button
+              class="account-option"
+              type="button"
+              id="view-orders-button"
+            >
+              MY ORDERS
+            </button>
+
+
+            <button
+              class="account-option"
+              type="button"
+              id="account-shop-button"
+            >
+              CONTINUE SHOPPING
+            </button>
 
           </div>
+
+        </div>
+
         `
       );
 
@@ -877,18 +1029,16 @@ if (accountButton) {
         );
 
 
-      const close =
-        panel.querySelector(
-          ".account-close"
+      panel
+        .querySelector(".account-close")
+        .addEventListener(
+          "click",
+          function () {
+
+            panel.remove();
+
+          }
         );
-
-
-      close.addEventListener(
-        "click",
-        function () {
-          panel.remove();
-        }
-      );
 
 
       panel.addEventListener(
@@ -896,43 +1046,39 @@ if (accountButton) {
         function (event) {
 
           if (event.target === panel) {
+
             panel.remove();
+
           }
 
         }
       );
 
 
-      const shopButton =
-        panel.querySelector(
-          "#account-shop-button"
+      panel
+        .querySelector("#account-shop-button")
+        .addEventListener(
+          "click",
+          function () {
+
+            panel.remove();
+
+          }
         );
 
 
-      shopButton.addEventListener(
-        "click",
-        function () {
-          panel.remove();
-        }
-      );
+      panel
+        .querySelector("#view-orders-button")
+        .addEventListener(
+          "click",
+          function () {
 
+            panel.remove();
 
-      const ordersButton =
-        panel.querySelector(
-          "#view-orders-button"
+            openOrders();
+
+          }
         );
-
-
-      ordersButton.addEventListener(
-        "click",
-        function () {
-
-          panel.remove();
-
-          openOrders();
-
-        }
-      );
 
     }
   );
@@ -946,49 +1092,44 @@ MY ORDERS
 
 function openOrders() {
 
-  const existing =
-    document.querySelector(
-      ".venes-orders-panel"
-    );
-
-  if (existing) {
-    existing.remove();
-  }
-
-
   document.body.insertAdjacentHTML(
     "beforeend",
 
     `
-      <div class="venes-orders-panel active">
 
-        <div class="orders-box">
+    <div class="venes-orders-panel active">
 
-          <button
-            class="orders-close"
-            type="button"
-          >
-            ×
-          </button>
+      <div class="orders-box">
 
-          <h2>
-            MY ORDERS
-          </h2>
+        <button
+          class="orders-close"
+          type="button"
+        >
+          ×
+        </button>
 
-          <p class="orders-empty">
-            Your recent orders will appear here.
-          </p>
 
-          <button
-            class="orders-shop-button"
-            type="button"
-          >
-            SHOP NOW
-          </button>
+        <h2>
+          MY ORDERS
+        </h2>
 
-        </div>
+
+        <p class="orders-empty">
+          Your recent orders will appear here.
+        </p>
+
+
+        <button
+          class="orders-shop-button"
+          type="button"
+        >
+          SHOP NOW
+        </button>
 
       </div>
+
+    </div>
+
     `
   );
 
@@ -1004,7 +1145,9 @@ function openOrders() {
     .addEventListener(
       "click",
       function () {
+
         panel.remove();
+
       }
     );
 
@@ -1014,7 +1157,9 @@ function openOrders() {
     .addEventListener(
       "click",
       function () {
+
         panel.remove();
+
       }
     );
 
@@ -1024,46 +1169,8 @@ function openOrders() {
     function (event) {
 
       if (event.target === panel) {
+
         panel.remove();
-      }
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-HEADER SHOPPING BAG ICON
-========================================================= */
-
-const bagButton =
-  document.querySelector(
-    '.header-icons button[aria-label="Shopping Bag"]'
-  );
-
-
-if (bagButton) {
-
-  bagButton.addEventListener(
-    "click",
-    function () {
-
-      const panel =
-        document.querySelector(
-          ".cart-panel"
-        );
-
-      const overlay =
-        document.querySelector(
-          ".cart-overlay"
-        );
-
-
-      if (panel && overlay) {
-
-        panel.classList.add("open");
-        overlay.classList.add("show");
 
       }
 
@@ -1083,6 +1190,7 @@ function openCheckout() {
     document.querySelector(
       ".venes-checkout-overlay"
     );
+
 
   if (existing) {
     existing.remove();
@@ -1127,6 +1235,7 @@ function openCheckout() {
 
         </div>
 
+
         <strong>
           GH₵ ${item.price * item.quantity}
         </strong>
@@ -1143,162 +1252,162 @@ function openCheckout() {
 
     `
 
-      <div class="venes-checkout-overlay">
+    <div class="venes-checkout-overlay">
 
-        <div class="venes-checkout">
+      <div class="venes-checkout">
 
-          <button
-            class="checkout-close"
-            type="button"
-            aria-label="Close checkout"
+        <button
+          class="checkout-close"
+          type="button"
+        >
+          ×
+        </button>
+
+
+        <h2>
+          CHECKOUT
+        </h2>
+
+
+        <p class="checkout-intro">
+          Complete your details to place your order.
+        </p>
+
+
+        <div class="checkout-section">
+
+          <h3>
+            CUSTOMER INFORMATION
+          </h3>
+
+
+          <label>
+            FULL NAME
+          </label>
+
+          <input
+            id="checkout-name"
+            type="text"
+            placeholder="Enter your full name"
           >
-            ×
-          </button>
 
 
-          <h2>
-            CHECKOUT
-          </h2>
+          <label>
+            PHONE NUMBER
+          </label>
 
-
-          <p class="checkout-intro">
-            Complete your details to place your order.
-          </p>
-
-
-          <div class="checkout-section">
-
-            <h3>
-              CUSTOMER INFORMATION
-            </h3>
-
-
-            <label for="checkout-name">
-              FULL NAME
-            </label>
-
-            <input
-              id="checkout-name"
-              type="text"
-              placeholder="Enter your full name"
-            >
-
-
-            <label for="checkout-phone">
-              PHONE NUMBER
-            </label>
-
-            <input
-              id="checkout-phone"
-              type="tel"
-              placeholder="Enter your phone number"
-            >
-
-
-            <label for="checkout-location">
-              DELIVERY LOCATION
-            </label>
-
-            <input
-              id="checkout-location"
-              type="text"
-              placeholder="Enter your delivery location"
-            >
-
-
-            <label for="checkout-notes">
-              DELIVERY NOTES
-            </label>
-
-            <textarea
-              id="checkout-notes"
-              placeholder="Optional delivery instructions"
-            ></textarea>
-
-          </div>
-
-
-          <div class="checkout-section">
-
-            <h3>
-              YOUR ORDER
-            </h3>
-
-
-            <div class="checkout-products">
-
-              ${orderItems}
-
-            </div>
-
-
-            <div class="checkout-final-total">
-
-              <span>
-                TOTAL
-              </span>
-
-              <strong>
-                GH₵ ${total}
-              </strong>
-
-            </div>
-
-          </div>
-
-
-          <div class="checkout-section">
-
-            <h3>
-              PAYMENT METHOD
-            </h3>
-
-
-            <div class="momo-payment">
-
-              <strong>
-                MOBILE MONEY — MTN
-              </strong>
-
-
-              <p>
-                You can send payment from any mobile money network.
-                Please send payment to our MTN Mobile Money number.
-              </p>
-
-
-              <div class="momo-number">
-
-                <span>
-                  SEND PAYMENT TO
-                </span>
-
-                <strong>
-                  0559584979
-                </strong>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <button
-            class="place-order-button"
-            type="button"
+          <input
+            id="checkout-phone"
+            type="tel"
+            placeholder="Enter your phone number"
           >
-            PLACE ORDER
-          </button>
 
 
-          <p class="checkout-note">
-            Your order will be sent to Venes Collection via WhatsApp.
-          </p>
+          <label>
+            DELIVERY LOCATION
+          </label>
+
+          <input
+            id="checkout-location"
+            type="text"
+            placeholder="Enter your delivery location"
+          >
+
+
+          <label>
+            DELIVERY NOTES
+          </label>
+
+          <textarea
+            id="checkout-notes"
+            placeholder="Optional delivery instructions"
+          ></textarea>
 
         </div>
 
+
+        <div class="checkout-section">
+
+          <h3>
+            YOUR ORDER
+          </h3>
+
+
+          <div class="checkout-products">
+
+            ${orderItems}
+
+          </div>
+
+
+          <div class="checkout-final-total">
+
+            <span>
+              TOTAL
+            </span>
+
+            <strong>
+              GH₵ ${total}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="checkout-section">
+
+          <h3>
+            PAYMENT METHOD
+          </h3>
+
+
+          <div class="momo-payment">
+
+            <strong>
+              MOBILE MONEY — MTN
+            </strong>
+
+
+            <p>
+              You can send payment from any mobile money network.
+              Please send payment to our MTN Mobile Money number.
+            </p>
+
+
+            <div class="momo-number">
+
+              <span>
+                SEND PAYMENT TO
+              </span>
+
+
+              <strong>
+                0559584979
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="place-order-button"
+          type="button"
+        >
+          PLACE ORDER
+        </button>
+
+
+        <p class="checkout-note">
+          Your order will be sent to Venes Collection via WhatsApp.
+        </p>
+
       </div>
+
+    </div>
 
     `
   );
@@ -1310,29 +1419,23 @@ function openCheckout() {
     );
 
 
-  const closeButton =
-    checkout.querySelector(
-      ".checkout-close"
+  checkout
+    .querySelector(".checkout-close")
+    .addEventListener(
+      "click",
+      function () {
+
+        checkout.remove();
+
+      }
     );
-
-
-  closeButton.addEventListener(
-    "click",
-    function () {
-
-      checkout.remove();
-
-    }
-  );
 
 
   checkout.addEventListener(
     "click",
     function (event) {
 
-      if (
-        event.target === checkout
-      ) {
+      if (event.target === checkout) {
 
         checkout.remove();
 
@@ -1342,211 +1445,194 @@ function openCheckout() {
   );
 
 
-  /* =====================================================
-  PLACE ORDER
-  ===================================================== */
+  checkout
+    .querySelector(".place-order-button")
+    .addEventListener(
+      "click",
+      function () {
 
-  const placeOrderButton =
-    checkout.querySelector(
-      ".place-order-button"
-    );
-
-
-  placeOrderButton.addEventListener(
-    "click",
-    function () {
-
-      const name =
-        checkout
-          .querySelector("#checkout-name")
-          .value
-          .trim();
+        const name =
+          checkout
+            .querySelector("#checkout-name")
+            .value
+            .trim();
 
 
-      const phone =
-        checkout
-          .querySelector("#checkout-phone")
-          .value
-          .trim();
+        const phone =
+          checkout
+            .querySelector("#checkout-phone")
+            .value
+            .trim();
 
 
-      const location =
-        checkout
-          .querySelector("#checkout-location")
-          .value
-          .trim();
+        const location =
+          checkout
+            .querySelector("#checkout-location")
+            .value
+            .trim();
 
 
-      const notes =
-        checkout
-          .querySelector("#checkout-notes")
-          .value
-          .trim();
+        const notes =
+          checkout
+            .querySelector("#checkout-notes")
+            .value
+            .trim();
 
 
-      if (!name) {
+        if (!name) {
 
-        alert(
-          "Please enter your full name."
-        );
+          alert(
+            "Please enter your full name."
+          );
 
-        return;
+          return;
 
-      }
-
-
-      if (!phone) {
-
-        alert(
-          "Please enter your phone number."
-        );
-
-        return;
-
-      }
+        }
 
 
-      if (!location) {
+        if (!phone) {
 
-        alert(
-          "Please enter your delivery location."
-        );
+          alert(
+            "Please enter your phone number."
+          );
 
-        return;
+          return;
 
-      }
-
-
-      let message =
-        "VENES COLLECTION ORDER\n\n";
+        }
 
 
-      message +=
-        "CUSTOMER DETAILS\n";
+        if (!location) {
 
-      message +=
-        "Name: " +
-        name +
-        "\n";
+          alert(
+            "Please enter your delivery location."
+          );
 
-      message +=
-        "Phone: " +
-        phone +
-        "\n";
+          return;
 
-      message +=
-        "Delivery Location: " +
-        location +
-        "\n";
+        }
 
 
-      if (notes) {
+        let message =
+          "VENES COLLECTION ORDER\n\n";
+
 
         message +=
-          "Delivery Notes: " +
-          notes +
-          "\n";
+          "CUSTOMER DETAILS\n";
 
-      }
-
-
-      message +=
-        "\nORDER DETAILS\n";
-
-
-      cart.forEach(function (item) {
 
         message +=
-          item.name +
+          "Name: " +
+          name +
           "\n";
 
 
-        if (item.size) {
+        message +=
+          "Phone: " +
+          phone +
+          "\n";
+
+
+        message +=
+          "Delivery Location: " +
+          location +
+          "\n";
+
+
+        if (notes) {
 
           message +=
-            "Size: " +
-            item.size +
+            "Delivery Notes: " +
+            notes +
             "\n";
 
         }
 
 
         message +=
-          "Quantity: " +
-          item.quantity +
-          "\n";
+          "\nORDER DETAILS\n";
+
+
+        cart.forEach(function (item) {
+
+          message +=
+            item.name +
+            "\n";
+
+
+          if (item.size) {
+
+            message +=
+              "Size: " +
+              item.size +
+              "\n";
+
+          }
+
+
+          message +=
+            "Quantity: " +
+            item.quantity +
+            "\n";
+
+
+          message +=
+            "Price: GH₵ " +
+            (item.price * item.quantity) +
+            "\n\n";
+
+        });
 
 
         message +=
-          "Price: GH₵ " +
-          (item.price * item.quantity) +
+          "TOTAL: GH₵ " +
+          total +
           "\n\n";
 
-      });
+
+        message +=
+          "PAYMENT METHOD: MOBILE MONEY — MTN\n";
 
 
-      message +=
-        "TOTAL: GH₵ " +
-        total +
-        "\n\n";
+        message +=
+          "MTN PAYMENT NUMBER: 0559584979\n\n";
 
 
-      message +=
-        "PAYMENT METHOD: MOBILE MONEY — MTN\n";
+        message +=
+          "Please confirm payment after sending.";
 
 
-      message +=
-        "MTN PAYMENT NUMBER: 0559584979\n\n";
+        const whatsappNumber =
+          "233559584979";
 
 
-      message +=
-        "Please confirm payment after sending the order.";
+        const whatsappURL =
+          "https://wa.me/" +
+          whatsappNumber +
+          "?text=" +
+          encodeURIComponent(message);
 
 
-      /* =====================================================
-      WHATSAPP
-      ===================================================== */
-
-      const whatsappNumber =
-        "233559584979";
+        window.open(
+          whatsappURL,
+          "_blank"
+        );
 
 
-      const whatsappURL =
-        "https://wa.me/" +
-        whatsappNumber +
-        "?text=" +
-        encodeURIComponent(message);
+        alert(
+          "Your order has been prepared. WhatsApp will open so you can send your order to Venes Collection."
+        );
 
 
-      /* =====================================================
-      OPEN WHATSAPP
-      ===================================================== */
-
-      window.open(
-        whatsappURL,
-        "_blank"
-      );
+        checkout.remove();
 
 
-      /* =====================================================
-      SUCCESS MESSAGE
-      ===================================================== */
-
-      alert(
-        "Your order has been prepared. WhatsApp will open so you can send your order to Venes Collection."
-      );
+        cart = [];
 
 
-      checkout.remove();
+        updateCart();
 
-
-      cart = [];
-
-
-      updateCart();
-
-    }
-  );
+      }
+    );
 
 }
 
