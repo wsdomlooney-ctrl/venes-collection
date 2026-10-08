@@ -1,48 +1,514 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop | Venes Collection</title>
-  <link rel="stylesheet" href="style.css">
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Shop | Venes Collection</title>
+
+  <meta
+    name="description"
+    content="Shop Venes Collection — fashion, bags, shoes and accessories."
+  >
+
+  <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
-  <header class="header">
-    <a href="index.html" class="brand">
-      <img src="venes-logo.jpg" alt="Venes Collection">
-    </a>
 
-    <nav class="navigation">
-      <a href="index.html">HOME</a>
-      <a href="shop.html">SHOP</a>
-      <a href="collection.html">COLLECTION</a>
-      <a href="about.html">ABOUT</a>
-      <a href="contact.html">CONTACT</a>
-    </nav>
-  </header>
+  <!-- =====================================================
+  HEADER
+  ====================================================== -->
 
-  <main>
-    <section class="shop-intro">
-      <h1>SHOP VENES COLLECTION</h1>
-      <p>Discover our latest fashion, bags, shoes and accessories.</p>
-    </section>
+  <header class="header">
 
-    <section class="products">
-      <div class="product">
-        <img src="IMG_0075.jpeg" alt="Venes Collection">
-        <h2>New Arrival</h2>
-        <p>Venes Collection</p>
-      </div>
+    <button
+      class="menu-toggle"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
 
-      <div class="product">
-        <img src="IMG_0077.jpeg" alt="Venes Collection">
-        <h2>Featured Style</h2>
-        <p>Venes Collection</p>
-      </div>
-    </section>
-  </main>
+
+    <a href="index.html" class="brand">
+
+      <img
+        src="venes-logo.jpg"
+        alt="Venes Collection"
+      >
+
+    </a>
+
+
+    <nav
+      class="navigation"
+      id="mobile-navigation"
+    >
+
+      <a href="index.html">HOME</a>
+
+      <a href="shop.html">SHOP</a>
+
+      <a href="collection.html">COLLECTION</a>
+
+      <a href="about.html">ABOUT</a>
+
+      <a href="contact.html">CONTACT</a>
+
+    </nav>
+
+
+    <div class="header-icons">
+
+      <button aria-label="Search">
+        ⌕
+      </button>
+
+      <button aria-label="Account">
+        ♙
+      </button>
+
+      <button aria-label="Shopping Bag">
+        ♧
+      </button>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =====================================================
+  SHOP
+  ====================================================== -->
+
+  <main>
+
+
+    <section class="shop-intro">
+
+      <h1>
+        SHOP VENES COLLECTION
+      </h1>
+
+      <p>
+        Discover our latest fashion, bags, shoes and accessories.
+      </p>
+
+    </section>
+
+
+
+    <!-- Categories -->
+
+    <div class="categories">
+
+      <button class="category active">
+        ALL
+      </button>
+
+      <button class="category">
+        CLOTHING
+      </button>
+
+      <button class="category">
+        SHOES
+      </button>
+
+      <button class="category">
+        BAGS
+      </button>
+
+      <button class="category">
+        ACCESSORIES
+      </button>
+
+    </div>
+
+
+
+    <!-- Products -->
+
+    <section class="products">
+
+
+      <!-- PRODUCT 1 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="IMG_0075.jpeg"
+            alt="Venes Blue Sandals"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Blue Sandals
+          </h3>
+
+          <p class="price">
+            GH₵ 120
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PRODUCT 2 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="IMG_0077.jpeg"
+            alt="Venes Jeans Trouser"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Jeans Trouser
+          </h3>
+
+          <p class="price">
+            GH₵ 200
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PRODUCT 3 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="images/products/puffer-jacket.jpg"
+            alt="Venes Puffer Jacket"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Puffer Jacket
+          </h3>
+
+          <p class="price">
+            GH₵ 350
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PRODUCT 4 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="images/products/corduroy-jacket.jpg"
+            alt="Venes Corduroy Jacket"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Corduroy Jacket
+          </h3>
+
+          <p class="price">
+            GH₵ 300
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PRODUCT 5 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="images/products/flannel-shirt.jpg"
+            alt="Venes Flannel Shirt"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Flannel Shirt
+          </h3>
+
+          <p class="price">
+            GH₵ 180
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PRODUCT 6 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="images/products/cargo-pants.jpg"
+            alt="Venes Cargo Pants"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Cargo Pants
+          </h3>
+
+          <p class="price">
+            GH₵ 220
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PRODUCT 7 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="images/products/wide-leg-pants.jpg"
+            alt="Venes Wide Leg Pants"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Wide Leg Pants
+          </h3>
+
+          <p class="price">
+            GH₵ 240
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PRODUCT 8 -->
+
+      <article class="product-card">
+
+        <div class="product-image">
+
+          <img
+            src="images/products/varsity-jacket.jpg"
+            alt="Venes Varsity Jacket"
+          >
+
+        </div>
+
+
+        <div class="product-details">
+
+          <h3>
+            Venes Varsity Jacket
+          </h3>
+
+          <p class="price">
+            GH₵ 320
+          </p>
+
+
+          <div class="product-bottom">
+
+            <div class="rating">
+              ★★★★★
+              <span>(New)</span>
+            </div>
+
+
+            <button class="bag-button">
+              ♧
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+    </section>
+
+  </main>
+
+
+  <!-- JavaScript -->
+
+  <script src="script.js"></script>
 
 </body>
+
 </html>
