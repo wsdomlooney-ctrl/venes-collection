@@ -1236,3 +1236,32 @@ SMALL PHONES
   }
 
 }
+/* =========================================================
+   DESKTOP SHOPPING BAG IMAGE SIZE
+========================================================= */
+
+@media (min-width: 651px) {
+
+  .cart-panel {
+    width: 420px !important;
+    max-width: 420px !important;
+  }
+
+  .cart-panel .cart-item {
+    display: flex !important;
+    width: 100% !important;
+    align-items: flex-start !important;
+  }
+
+  .cart-panel .cart-item img {
+    width: 80px !important;
+    height: 100px !important;
+    max-width: 80px !important;
+    max-height: 100px !important;
+    min-width: 80px !important;
+    min-height: 100px !important;
+    object-fit: cover !important;
+    flex: 0 0 80px !important;
+  }
+
+}
