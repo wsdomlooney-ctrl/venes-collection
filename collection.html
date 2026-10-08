@@ -9,199 +9,378 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0">
 
-  <title>Collection | Venes Collection</title>
+  <title>Venes Collection | Catalog</title>
 
   <meta
     name="description"
-    content="Explore the latest fashion collections from Venes Collection.">
+    content="Shop the Venes Collection catalog — contemporary fashion, shoes, bags and accessories.">
 
   <link rel="stylesheet" href="style.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-  <!-- HEADER -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
-  <header class="header">
+<header class="header">
 
-    <a href="index.html" class="brand">
-      <img
-        src="venes-logo.jpg"
-        alt="Venes Collection">
+  <a href="index.html" class="brand">
+
+    <img
+      src="venes-logo.jpg"
+      alt="Venes Collection">
+
+  </a>
+
+
+  <nav class="navigation">
+
+    <a href="index.html">
+      HOME
     </a>
 
-    <nav class="navigation">
+    <a href="shop.html">
+      SHOP
+    </a>
 
-      <a href="index.html">HOME</a>
+    <a
+      href="collection.html"
+      class="active">
+      COLLECTION
+    </a>
 
-      <a href="shop.html">SHOP</a>
+    <a href="about.html">
+      ABOUT
+    </a>
 
-      <a href="collection.html" class="active">
-        COLLECTION
+    <a href="contact.html">
+      CONTACT
+    </a>
+
+  </nav>
+
+
+  <div class="header-icons">
+
+    <a
+      href="https://www.tiktok.com/@veronica.doeveve"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="TikTok"
+      class="social-icon">
+
+      <i class="fa-brands fa-tiktok"></i>
+
+    </a>
+
+
+    <a
+      href="https://wa.me/233559584979"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="WhatsApp"
+      class="social-icon">
+
+      <i class="fa-brands fa-whatsapp"></i>
+
+    </a>
+
+
+    <button
+      aria-label="Search">
+      ⌕
+    </button>
+
+
+    <button
+      aria-label="Account">
+      ♙
+    </button>
+
+
+    <button
+      aria-label="Shopping Bag">
+      ♧
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- =========================================================
+     CATALOG HEADER
+========================================================= -->
+
+<main>
+
+<section class="catalog-header">
+
+  <p class="catalog-eyebrow">
+    VENES COLLECTION
+  </p>
+
+  <h1>
+    SHOP THE CATALOG
+  </h1>
+
+  <p>
+    Discover our latest pieces, selected for your everyday style.
+  </p>
+
+</section>
+
+
+<!-- =========================================================
+     CATALOG FILTERS
+========================================================= -->
+
+<div class="catalog-filters">
+
+  <button
+    class="catalog-filter active"
+    data-filter="all">
+    ALL
+  </button>
+
+  <button
+    class="catalog-filter"
+    data-filter="new">
+    NEW
+  </button>
+
+  <button
+    class="catalog-filter"
+    data-filter="shoes">
+    SHOES
+  </button>
+
+  <button
+    class="catalog-filter"
+    data-filter="clothing">
+    CLOTHING
+  </button>
+
+  <button
+    class="catalog-filter"
+    data-filter="bags">
+    BAGS
+  </button>
+
+  <button
+    class="catalog-filter"
+    data-filter="accessories">
+    ACCESSORIES
+  </button>
+
+</div>
+
+
+<!-- =========================================================
+     CATALOG
+========================================================= -->
+
+<section class="catalog-grid">
+
+
+  <!-- PRODUCT 1 -->
+
+  <article
+    class="catalog-card"
+    data-category="shoes">
+
+    <div class="catalog-image">
+
+      <img
+        src="IMG_0075.jpeg"
+        alt="Venes Blue Sandals">
+
+      <button
+        class="catalog-bag"
+        aria-label="Add Venes Blue Sandals to bag">
+
+        <i class="fa-solid fa-bag-shopping"></i>
+
+      </button>
+
+    </div>
+
+
+    <div class="catalog-info">
+
+      <h2>
+        Venes Blue Sandals
+      </h2>
+
+      <p class="catalog-price">
+        GH₵120
+      </p>
+
+    </div>
+
+  </article>
+
+
+  <!-- PRODUCT 2 -->
+
+  <article
+    class="catalog-card"
+    data-category="clothing">
+
+    <div class="catalog-image">
+
+      <img
+        src="IMG_0077.jpeg"
+        alt="Venes Jeans Trouser">
+
+      <button
+        class="catalog-bag"
+        aria-label="Add Venes Jeans Trouser to bag">
+
+        <i class="fa-solid fa-bag-shopping"></i>
+
+      </button>
+
+    </div>
+
+
+    <div class="catalog-info">
+
+      <h2>
+        Venes Jeans Trouser
+      </h2>
+
+      <p class="catalog-price">
+        GH₵200
+      </p>
+
+    </div>
+
+  </article>
+
+
+  <!-- MORE PRODUCTS CAN BE ADDED HERE -->
+
+</section>
+
+
+<!-- =========================================================
+     CATALOG MESSAGE
+========================================================= -->
+
+<section class="catalog-message">
+
+  <p>
+    More Venes pieces are coming soon.
+  </p>
+
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+  <div class="footer-content">
+
+
+    <div class="footer-brand">
+
+      <h2>
+        VENES
+      </h2>
+
+      <p>
+        Quality you can feel. Style you can afford.
+      </p>
+
+
+      <div class="socials">
+
+        <a
+          href="https://www.tiktok.com/@veronica.doeveve"
+          target="_blank"
+          rel="noopener noreferrer">
+
+          TIKTOK
+
+        </a>
+
+
+        <a
+          href="https://wa.me/233559584979"
+          target="_blank"
+          rel="noopener noreferrer">
+
+          WHATSAPP
+
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer-column">
+
+      <h3>
+        SHOP
+      </h3>
+
+      <a href="shop.html">
+        Shop All
       </a>
 
-      <a href="about.html">ABOUT</a>
-
-      <a href="contact.html">CONTACT</a>
-
-    </nav>
-
-  </header>
-
-
-  <!-- COLLECTION -->
-
-  <main>
-
-    <section class="shop-intro">
-
-      <p class="eyebrow">
-        VENES COLLECTION
-      </p>
-
-      <h1>
-        OUR COLLECTION
-      </h1>
-
-      <p>
-        Explore the latest styles from Venes Collection.
-      </p>
-
-    </section>
-
-
-    <section class="products">
-
-
-      <!-- COLLECTION ITEM 1 -->
-
-      <article class="product-card">
-
-        <div class="product-image">
-
-          <img
-            src="IMG_0075.jpeg"
-            alt="Venes Blue Sandals">
-
-        </div>
-
-        <div class="product-details">
-
-          <h3>
-            Latest Collection
-          </h3>
-
-          <p class="price">
-            Venes Collection
-          </p>
-
-        </div>
-
-      </article>
-
-
-      <!-- COLLECTION ITEM 2 -->
-
-      <article class="product-card">
-
-        <div class="product-image">
-
-          <img
-            src="IMG_0077.jpeg"
-            alt="Venes Jeans Trouser">
-
-        </div>
-
-        <div class="product-details">
-
-          <h3>
-            Featured Pieces
-          </h3>
-
-          <p class="price">
-            Venes Collection
-          </p>
-
-        </div>
-
-      </article>
-
-
-    </section>
-
-  </main>
-
-
-  <!-- FOOTER -->
-
-  <footer class="footer">
-
-    <div class="footer-content">
-
-      <div class="footer-brand">
-
-        <h2>VENES</h2>
-
-        <p>
-          Quality you can feel. Style you can afford.
-        </p>
-
-        <div class="socials">
-
-          <a
-            href="https://www.tiktok.com/@veronica.doeveve"
-            target="_blank"
-            rel="noopener noreferrer">
-            TIKTOK
-          </a>
-
-          <a
-            href="https://wa.me/233559584979"
-            target="_blank"
-            rel="noopener noreferrer">
-            WHATSAPP
-          </a>
-
-        </div>
-
-      </div>
-
-
-      <div class="footer-column">
-
-        <h3>SHOP</h3>
-
-        <a href="shop.html">Shop All</a>
-
-        <a href="collection.html">Collection</a>
-
-      </div>
-
-
-      <div class="footer-column">
-
-        <h3>VENES</h3>
-
-        <a href="about.html">About Us</a>
-
-        <a href="contact.html">Contact</a>
-
-      </div>
-
+      <a href="collection.html">
+        Catalog
+      </a>
 
     </div>
 
 
-    <div class="footer-bottom">
+    <div class="footer-column">
 
-      <p>
-        © 2026 Venes Collection. All rights reserved.
-      </p>
+      <h3>
+        VENES
+      </h3>
+
+      <a href="about.html">
+        About Us
+      </a>
+
+      <a href="contact.html">
+        Contact
+      </a>
 
     </div>
 
-  </footer>
+
+  </div>
+
+
+  <div class="footer-bottom">
+
+    <p>
+      © 2026 Venes Collection. All rights reserved.
+    </p>
+
+  </div>
+
+</footer>
+
+
+<script src="script.js"></script>
 
 </body>
 
