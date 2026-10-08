@@ -397,29 +397,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   previewBagButton.addEventListener("click", function () {
 
-    const index =
-      Number(previewBagButton.dataset.productIndex);
+  const productIndex =
+    Number(previewBagButton.dataset.productIndex);
 
-    const card =
-      productCards[index];
+  const card =
+    productCards[productIndex];
 
-    if (!card) return;
+  if (!card) {
+    alert("Product could not be added.");
+    return;
+  }
 
+  const product = getProduct(card);
 
-    const product =
-      getProduct(card);
+  cart.push(product);
 
+  updateCart();
 
-    addProductToCart(product);
+  previewOverlay.classList.remove("active");
 
+  document.body.classList.remove("preview-open");
 
-    /* Close product preview */
+  openCart();
 
-    previewOverlay.classList.remove("active");
+});
 
-    document.body.classList.remove("preview-open");
-
-  });
 
 
   /* =========================================================
