@@ -14,9 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     navigation.querySelectorAll("a").forEach(function (link) {
+
       link.addEventListener("click", function () {
         navigation.classList.remove("mobile-open");
       });
+
     });
 
   }
@@ -28,29 +30,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let cart = [];
 
-  const bagButtons = document.querySelectorAll(".bag-button");
 
-  const headerBag = document.querySelector(
-    '.header-icons button[aria-label="Shopping Bag"]'
-  );
+  const bagButtons =
+    document.querySelectorAll(".bag-button");
 
 
-  const cartOverlay = document.createElement("div");
-  cartOverlay.className = "cart-overlay";
+  const headerBag =
+    document.querySelector(
+      '.header-icons button[aria-label="Shopping Bag"]'
+    );
 
 
-  const cartPanel = document.createElement("div");
-  cartPanel.className = "cart-panel";
+  /* =========================================================
+     CART PANEL
+  ========================================================= */
+
+  const cartOverlay =
+    document.createElement("div");
+
+  cartOverlay.className =
+    "cart-overlay";
+
+
+  const cartPanel =
+    document.createElement("div");
+
+  cartPanel.className =
+    "cart-panel";
+
 
   cartPanel.innerHTML = `
 
     <div class="cart-header">
 
-      <h2>Your Shopping Bag</h2>
+      <h2>
+        Your Shopping Bag
+      </h2>
 
-      <button class="cart-close">×</button>
+      <button class="cart-close">
+        ×
+      </button>
 
     </div>
+
 
     <div class="cart-items">
 
@@ -60,15 +82,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     </div>
 
+
     <div class="cart-footer">
 
       <div class="cart-total">
 
-        <span>Total</span>
+        <span>
+          Total
+        </span>
 
-        <strong>GH₵ 0</strong>
+        <strong>
+          GH₵ 0
+        </strong>
 
       </div>
+
 
       <button class="checkout-button">
         CHECKOUT
@@ -83,18 +111,32 @@ document.addEventListener("DOMContentLoaded", function () {
   document.body.appendChild(cartPanel);
 
 
-  const cartItems = cartPanel.querySelector(".cart-items");
+  const cartItems =
+    cartPanel.querySelector(".cart-items");
 
-  const cartTotal = cartPanel.querySelector(".cart-total strong");
 
-  const cartClose = cartPanel.querySelector(".cart-close");
+  const cartTotal =
+    cartPanel.querySelector(
+      ".cart-total strong"
+    );
 
-  const checkoutButton = cartPanel.querySelector(".checkout-button");
 
+  const cartClose =
+    cartPanel.querySelector(".cart-close");
+
+
+  const checkoutButton =
+    cartPanel.querySelector(".checkout-button");
+
+
+  /* =========================================================
+     OPEN / CLOSE CART
+  ========================================================= */
 
   function openCart() {
 
     cartPanel.classList.add("open");
+
     cartOverlay.classList.add("show");
 
   }
@@ -103,41 +145,74 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeCart() {
 
     cartPanel.classList.remove("open");
+
     cartOverlay.classList.remove("show");
 
   }
 
 
-  cartClose.addEventListener("click", closeCart);
+  cartClose.addEventListener(
+    "click",
+    closeCart
+  );
 
-  cartOverlay.addEventListener("click", closeCart);
 
+  cartOverlay.addEventListener(
+    "click",
+    closeCart
+  );
+
+
+  /* =========================================================
+     GET PRODUCT INFORMATION
+  ========================================================= */
 
   function getProduct(card) {
 
-    const name = card.querySelector("h3").textContent.trim();
+    const name =
+      card.querySelector("h3")
+        .textContent
+        .trim();
 
-    const priceText = card.querySelector(".price")
-      .textContent
-      .replace("GH₵", "")
-      .replace(",", "")
-      .trim();
 
-    const price = Number(priceText);
+    const priceText =
+      card.querySelector(".price")
+        .textContent
+        .replace("GH₵", "")
+        .replace(",", "")
+        .trim();
 
-    const image = card.querySelector("img").getAttribute("src");
+
+    const price =
+      Number(priceText);
+
+
+    const image =
+      card.querySelector("img")
+        .getAttribute("src");
+
 
     return {
+
       name: name,
+
       price: price,
+
       image: image
+
     };
 
   }
 
 
+  /* =========================================================
+     ADD PRODUCT TO CART
+  ========================================================= */
+
   function addProductToCart(product) {
+
     product.quantity = 1;
+
     cart.push(product);
 
     updateCart();
@@ -153,17 +228,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   bagButtons.forEach(function (button) {
 
-    button.addEventListener("click", function () {
+    button.addEventListener(
+      "click",
+      function () {
 
-      const card = button.closest(".product-card");
+        const card =
+          button.closest(".product-card");
 
-      if (!card) return;
 
-      const product = getProduct(card);
+        if (!card) return;
 
-      addProductToCart(product);
 
-    });
+        const product =
+          getProduct(card);
+
+
+        addProductToCart(product);
+
+      }
+    );
 
   });
 
@@ -174,7 +257,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (headerBag) {
 
-    headerBag.addEventListener("click", openCart);
+    headerBag.addEventListener(
+      "click",
+      openCart
+    );
 
   }
 
@@ -197,123 +283,193 @@ document.addEventListener("DOMContentLoaded", function () {
 
     } else {
 
-      cartItems.innerHTML = cart.map(function (product, index) {
+      cartItems.innerHTML =
+        cart.map(function (product, index) {
 
-        return `
+          return `
 
-          <div class="cart-item">
+            <div class="cart-item">
 
-            <img
-              src="${product.image}"
-              alt="${product.name}"
-            >
+              <img
+                src="${product.image}"
+                alt="${product.name}"
+              >
 
-            <div class="cart-item-info">
 
-              <h3>${product.name}</h3>
+              <div class="cart-item-info">
 
-<p>
-  Size: ${product.size}
-</p>
+                <h3>
+                  ${product.name}
+                </h3>
 
-<p>
-  GH₵ ${product.price.toLocaleString()}
-</p>
 
-<div class="cart-quantity">
+                ${
+                  product.size
+                    ? `
+                      <p>
+                        Size: ${product.size}
+                      </p>
+                    `
+                    : ""
+                }
 
-  <button
-    class="quantity-minus"
-    data-index="${index}"
-  >
-    −
-  </button>
 
-  <span>
-    ${product.quantity || 1}
-  </span>
+                <p>
+                  GH₵ ${product.price.toLocaleString()}
+                </p>
 
-  <button
-    class="quantity-plus"
-    data-index="${index}"
-  >
-    +
-  </button>
 
-</div>
+                <div class="cart-quantity">
 
-<button
-  class="remove-item"
-  data-index="${index}"
->
-  Remove
-</button>
+                  <button
+                    class="quantity-minus"
+                    data-index="${index}"
+                  >
+                    −
+                  </button>
 
+
+                  <span>
+                    ${product.quantity || 1}
+                  </span>
+
+
+                  <button
+                    class="quantity-plus"
+                    data-index="${index}"
+                  >
+                    +
+                  </button>
+
+                </div>
+
+
+                <button
+                  class="remove-item"
+                  data-index="${index}"
+                >
+                  Remove
+                </button>
+
+              </div>
 
             </div>
 
-          </div>
+          `;
 
-        `;
-
-      }).join("");
+        }).join("");
 
     }
 
 
-    const total = cart.reduce(function (sum, product) {
+    /* =========================================================
+       CALCULATE TOTAL
+    ========================================================= */
 
-      return sum + product.price;
+    const total =
+      cart.reduce(
+        function (sum, product) {
 
-    }, 0);
+          return sum +
+            (product.price *
+             (product.quantity || 1));
+
+        },
+        0
+      );
 
 
     cartTotal.textContent =
       `GH₵ ${total.toLocaleString()}`;
 
-document.querySelectorAll(".quantity-minus").forEach(function (button) {
 
-  button.addEventListener("click", function () {
+    /* =========================================================
+       MINUS BUTTON
+    ========================================================= */
 
-    const index = Number(button.dataset.index);
+    document
+      .querySelectorAll(".quantity-minus")
+      .forEach(function (button) {
 
-    if (cart[index].quantity > 1) {
-      cart[index].quantity--;
-      updateCart();
-    }
+        button.addEventListener(
+          "click",
+          function () {
 
-  });
-
-});
+            const index =
+              Number(button.dataset.index);
 
 
-document.querySelectorAll(".quantity-plus").forEach(function (button) {
+            if (
+              cart[index] &&
+              cart[index].quantity > 1
+            ) {
 
-  button.addEventListener("click", function () {
+              cart[index].quantity--;
 
-    const index = Number(button.dataset.index);
+              updateCart();
 
-    cart[index].quantity++;
+            }
 
-    updateCart();
-
-  });
-
-});
-
-    document.querySelectorAll(".remove-item").forEach(function (button) {
-
-      button.addEventListener("click", function () {
-
-        const index = Number(button.dataset.index);
-
-        cart.splice(index, 1);
-
-        updateCart();
+          }
+        );
 
       });
 
-    });
+
+    /* =========================================================
+       PLUS BUTTON
+    ========================================================= */
+
+    document
+      .querySelectorAll(".quantity-plus")
+      .forEach(function (button) {
+
+        button.addEventListener(
+          "click",
+          function () {
+
+            const index =
+              Number(button.dataset.index);
+
+
+            if (cart[index]) {
+
+              cart[index].quantity++;
+
+              updateCart();
+
+            }
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       REMOVE BUTTON
+    ========================================================= */
+
+    document
+      .querySelectorAll(".remove-item")
+      .forEach(function (button) {
+
+        button.addEventListener(
+          "click",
+          function () {
+
+            const index =
+              Number(button.dataset.index);
+
+
+            cart.splice(index, 1);
+
+            updateCart();
+
+          }
+        );
+
+      });
 
   }
 
@@ -322,19 +478,27 @@ document.querySelectorAll(".quantity-plus").forEach(function (button) {
      CHECKOUT
   ========================================================= */
 
-  checkoutButton.addEventListener("click", function () {
+  checkoutButton.addEventListener(
+    "click",
+    function () {
 
-    if (cart.length === 0) {
+      if (cart.length === 0) {
 
-      alert("Your shopping bag is empty.");
+        alert(
+          "Your shopping bag is empty."
+        );
 
-      return;
+        return;
+
+      }
+
+
+      alert(
+        "Your order is ready for checkout."
+      );
 
     }
-
-    alert("Your order is ready for checkout.");
-
-  });
+  );
 
 
   /* =========================================================
@@ -360,40 +524,73 @@ document.querySelectorAll(".quantity-plus").forEach(function (button) {
         ×
       </button>
 
+
       <img
         class="product-preview-image"
         src=""
         alt=""
       >
 
+
       <div class="product-preview-details">
 
-        <h2 class="product-preview-name"></h2>
+        <h2
+          class="product-preview-name"
+        ></h2>
 
-        <p class="product-preview-price"></p>
+
+        <p
+          class="product-preview-price"
+        ></p>
+
 
         <div class="product-size-selector">
 
-  <label for="product-size">SIZE</label>
+          <label for="product-size">
+            SIZE
+          </label>
 
-  <select id="product-size">
 
-    <option value="">SELECT SIZE</option>
+          <select id="product-size">
 
-    <option value="XS">XS</option>
-    <option value="S">S</option>
-    <option value="M">M</option>
-    <option value="L">L</option>
-    <option value="XL">XL</option>
-    <option value="XXL">XXL</option>
+            <option value="">
+              SELECT SIZE
+            </option>
 
-  </select>
+            <option value="XS">
+              XS
+            </option>
 
-</div>
+            <option value="S">
+              S
+            </option>
 
-<button class="preview-bag-button">
-  ADD TO BAG
-</button>
+            <option value="M">
+              M
+            </option>
+
+            <option value="L">
+              L
+            </option>
+
+            <option value="XL">
+              XL
+            </option>
+
+            <option value="XXL">
+              XXL
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          class="preview-bag-button"
+        >
+          ADD TO BAG
+        </button>
 
       </div>
 
@@ -402,26 +599,45 @@ document.querySelectorAll(".quantity-plus").forEach(function (button) {
   `;
 
 
-  document.body.appendChild(previewOverlay);
+  document.body.appendChild(
+    previewOverlay
+  );
 
 
   const previewImage =
-    previewOverlay.querySelector(".product-preview-image");
+    previewOverlay.querySelector(
+      ".product-preview-image"
+    );
+
 
   const previewName =
-    previewOverlay.querySelector(".product-preview-name");
+    previewOverlay.querySelector(
+      ".product-preview-name"
+    );
+
 
   const previewPrice =
-    previewOverlay.querySelector(".product-preview-price");
+    previewOverlay.querySelector(
+      ".product-preview-price"
+    );
+
 
   const previewClose =
-    previewOverlay.querySelector(".product-preview-close");
+    previewOverlay.querySelector(
+      ".product-preview-close"
+    );
+
 
   const previewBagButton =
-    previewOverlay.querySelector(".preview-bag-button");
-  const productSize =
-  previewOverlay.querySelector("#product-size");
+    previewOverlay.querySelector(
+      ".preview-bag-button"
+    );
 
+
+  const productSize =
+    previewOverlay.querySelector(
+      "#product-size"
+    );
 
 
   /* =========================================================
@@ -431,40 +647,70 @@ document.querySelectorAll(".quantity-plus").forEach(function (button) {
   productCards.forEach(function (card) {
 
     const image =
-      card.querySelector(".product-image img");
+      card.querySelector(
+        ".product-image img"
+      );
+
 
     if (!image) return;
 
 
-    image.addEventListener("click", function () {
+    image.addEventListener(
+      "click",
+      function () {
 
-      const name =
-        card.querySelector("h3").textContent.trim();
-
-      const price =
-        card.querySelector(".price").textContent.trim();
-
-
-      previewImage.src = image.src;
-
-      previewImage.alt = name;
-
-      previewName.textContent = name;
-
-      previewPrice.textContent = price;
+        const name =
+          card.querySelector("h3")
+            .textContent
+            .trim();
 
 
-      /* Save the product currently being previewed */
+        const price =
+          card.querySelector(".price")
+            .textContent
+            .trim();
 
-      previewBagButton.dataset.productIndex =
-        Array.from(productCards).indexOf(card);
+
+        previewImage.src =
+          image.src;
 
 
-      previewOverlay.classList.add("active");
+        previewImage.alt =
+          name;
 
-      document.body.classList.add("preview-open");
 
-    });
+        previewName.textContent =
+          name;
+
+
+        previewPrice.textContent =
+          price;
+
+
+        /* Reset size */
+
+        productSize.value =
+          "";
+
+
+        /* Remember product */
+
+        previewBagButton.dataset.productIndex =
+          Array.from(productCards)
+            .indexOf(card);
+
+
+        previewOverlay.classList.add(
+          "active"
+        );
+
+
+        document.body.classList.add(
+          "preview-open"
+        );
+
+      }
+    );
 
   });
 
@@ -473,40 +719,84 @@ document.querySelectorAll(".quantity-plus").forEach(function (button) {
      ADD TO BAG FROM PRODUCT PREVIEW
   ========================================================= */
 
-  previewBagButton.addEventListener("click", function () {
+  previewBagButton.addEventListener(
+    "click",
+    function () {
 
-  const productIndex =
-    Number(previewBagButton.dataset.productIndex);
-    const selectedSize = productSize.value;
-
-if (!selectedSize) {
-  alert("Please select a size.");
-  return;
-}
+      const productIndex =
+        Number(
+          previewBagButton.dataset.productIndex
+        );
 
 
-  const card =
-    productCards[productIndex];
+      const selectedSize =
+        productSize.value;
 
-  if (!card) {
-    alert("Product could not be added.");
-    return;
-  }
 
-  const product = getProduct(card);
-   product.size = selectedSize;
-  cart.push(product);
+      /* Size is required */
 
-  updateCart();
+      if (!selectedSize) {
 
-  previewOverlay.classList.remove("active");
+        alert(
+          "Please select a size."
+        );
 
-  document.body.classList.remove("preview-open");
+        return;
 
-  openCart();
+      }
 
-});
 
+      const card =
+        productCards[productIndex];
+
+
+      if (!card) {
+
+        alert(
+          "Product could not be added."
+        );
+
+        return;
+
+      }
+
+
+      const product =
+        getProduct(card);
+
+
+      product.size =
+        selectedSize;
+
+
+      product.quantity =
+        1;
+
+
+      cart.push(product);
+
+
+      updateCart();
+
+
+      /* Close preview */
+
+      previewOverlay.classList.remove(
+        "active"
+      );
+
+
+      document.body.classList.remove(
+        "preview-open"
+      );
+
+
+      /* Open shopping bag */
+
+      openCart();
+
+    }
+  );
 
 
   /* =========================================================
@@ -515,9 +805,13 @@ if (!selectedSize) {
 
   function closePreview() {
 
-    previewOverlay.classList.remove("active");
+    previewOverlay.classList.remove(
+      "active"
+    );
 
-    document.body.classList.remove("preview-open");
+    document.body.classList.remove(
+      "preview-open"
+    );
 
   }
 
@@ -532,8 +826,13 @@ if (!selectedSize) {
     "click",
     function (event) {
 
-      if (event.target === previewOverlay) {
+      if (
+        event.target ===
+        previewOverlay
+      ) {
+
         closePreview();
+
       }
 
     }
@@ -545,41 +844,13 @@ if (!selectedSize) {
     function (event) {
 
       if (event.key === "Escape") {
+
         closePreview();
+
       }
 
     }
   );
 
 
-});
-.cart-quantity {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  border: 1px solid #dddddd;
-  margin: 8px 0 12px;
-}
-
-.cart-quantity button {
-  width: 32px;
-  height: 30px;
-  border: none;
-  background: #ffffff;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cart-quantity button:hover {
-  background: #f3f3f3;
-}
-
-.cart-quantity span {
-  min-width: 32px;
-  text-align: center;
-  font-size: 13px;
-}
 });
