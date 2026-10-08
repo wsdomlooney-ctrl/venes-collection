@@ -2055,4 +2055,62 @@ SMALL PHONES
   }
 
 }
+/* =========================================================
+   CATALOG DESKTOP CLEANUP
+========================================================= */
+
+@media (min-width: 901px) {
+
+  .catalog-grid {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 30px 80px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 55px 20px;
+    box-sizing: border-box;
+  }
+
+  .catalog-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    background: #eeeae7;
+  }
+
+  .catalog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .catalog-info {
+    padding: 13px 2px 0;
+  }
+
+  .catalog-info h2 {
+    font-size: 13px;
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+
+  .catalog-price {
+    font-size: 12px;
+  }
+
+  .catalog-bag {
+    width: 38px;
+    height: 38px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+}
 
