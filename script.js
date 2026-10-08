@@ -940,3 +940,152 @@ document.addEventListener(
 
   }
 );
+/* =========================================================
+PRODUCT SEARCH
+========================================================= */
+
+const searchButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Search"]'
+  );
+
+if (searchButton) {
+
+  searchButton.addEventListener(
+    "click",
+    function () {
+
+      let searchBox =
+        document.querySelector(
+          ".venes-search-box"
+        );
+
+      if (!searchBox) {
+
+        document.body.insertAdjacentHTML(
+          "beforeend",
+
+          `
+          <div class="venes-search-box">
+
+            <div class="search-inner">
+
+              <input
+                type="text"
+                id="venes-search-input"
+                placeholder="Search products..."
+                autocomplete="off"
+              >
+
+              <button
+                id="venes-search-close"
+                aria-label="Close search"
+              >
+                ×
+              </button>
+
+            </div>
+
+          </div>
+          `
+        );
+
+
+        searchBox =
+          document.querySelector(
+            ".venes-search-box"
+          );
+
+
+        const input =
+          document.querySelector(
+            "#venes-search-input"
+          );
+
+
+        const closeButton =
+          document.querySelector(
+            "#venes-search-close"
+          );
+
+
+        input.focus();
+
+
+        input.addEventListener(
+          "input",
+          function () {
+
+            const searchTerm =
+              input.value
+                .toLowerCase()
+                .trim();
+
+
+            const products =
+              document.querySelectorAll(
+                ".product-card"
+              );
+
+
+            products.forEach(
+              function (product) {
+
+                const name =
+                  product
+                    .querySelector("h3")
+                    ?.textContent
+                    .toLowerCase() || "";
+
+
+                if (
+                  searchTerm === "" ||
+                  name.includes(searchTerm)
+                ) {
+
+                  product.style.display =
+                    "";
+
+                } else {
+
+                  product.style.display =
+                    "none";
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+
+        closeButton.addEventListener(
+          "click",
+          function () {
+
+            searchBox.remove();
+
+
+            document
+              .querySelectorAll(
+                ".product-card"
+              )
+              .forEach(
+                function (product) {
+
+                  product.style.display =
+                    "";
+
+                }
+              );
+
+          }
+        );
+
+      }
+
+    }
+  );
+
+}
