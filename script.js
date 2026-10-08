@@ -421,6 +421,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const productIndex =
     Number(previewBagButton.dataset.productIndex);
+    const selectedSize = productSize.value;
+
+if (!selectedSize) {
+  alert("Please select a size.");
+  return;
+}
+
 
   const card =
     productCards[productIndex];
