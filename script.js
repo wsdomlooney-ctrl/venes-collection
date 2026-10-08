@@ -234,21 +234,18 @@ function updateCart() {
     .querySelectorAll(".remove-item")
     .forEach(function (button) {
 
-      button.addEventListener(
-        "click",
-        function () {
+      button.addEventListener("click", function () {
 
-          const index =
-            parseInt(
-              button.getAttribute("data-index")
-            );
+        const index =
+          parseInt(
+            button.getAttribute("data-index")
+          );
 
-          cart.splice(index, 1);
+        cart.splice(index, 1);
 
-          updateCart();
+        updateCart();
 
-        }
-      );
+      });
 
     });
 
@@ -257,29 +254,26 @@ function updateCart() {
     .querySelectorAll(".quantity-minus")
     .forEach(function (button) {
 
-      button.addEventListener(
-        "click",
-        function () {
+      button.addEventListener("click", function () {
 
-          const index =
-            parseInt(
-              button.getAttribute("data-index")
-            );
+        const index =
+          parseInt(
+            button.getAttribute("data-index")
+          );
 
-          if (cart[index]) {
+        if (cart[index]) {
 
-            cart[index].quantity -= 1;
+          cart[index].quantity -= 1;
 
-            if (cart[index].quantity <= 0) {
-              cart.splice(index, 1);
-            }
-
-            updateCart();
-
+          if (cart[index].quantity <= 0) {
+            cart.splice(index, 1);
           }
 
+          updateCart();
+
         }
-      );
+
+      });
 
     });
 
@@ -288,25 +282,22 @@ function updateCart() {
     .querySelectorAll(".quantity-plus")
     .forEach(function (button) {
 
-      button.addEventListener(
-        "click",
-        function () {
+      button.addEventListener("click", function () {
 
-          const index =
-            parseInt(
-              button.getAttribute("data-index")
-            );
+        const index =
+          parseInt(
+            button.getAttribute("data-index")
+          );
 
-          if (cart[index]) {
+        if (cart[index]) {
 
-            cart[index].quantity += 1;
+          cart[index].quantity += 1;
 
-            updateCart();
-
-          }
+          updateCart();
 
         }
-      );
+
+      });
 
     });
 
@@ -414,6 +405,7 @@ function createCart() {
   const checkoutButton =
     document.querySelector(".checkout-button");
 
+
   checkoutButton.addEventListener(
     "click",
     function () {
@@ -453,11 +445,13 @@ document
 
         addProductToCart(product);
 
+
         const panel =
           document.querySelector(".cart-panel");
 
         const overlay =
           document.querySelector(".cart-overlay");
+
 
         if (panel && overlay) {
 
@@ -541,29 +535,12 @@ document
                       Choose a size
                     </option>
 
-                    <option value="XS">
-                      XS
-                    </option>
-
-                    <option value="S">
-                      S
-                    </option>
-
-                    <option value="M">
-                      M
-                    </option>
-
-                    <option value="L">
-                      L
-                    </option>
-
-                    <option value="XL">
-                      XL
-                    </option>
-
-                    <option value="XXL">
-                      XXL
-                    </option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
 
                   </select>
 
@@ -589,15 +566,18 @@ document
             ".product-preview-overlay"
           );
 
+
         const closeButton =
           preview.querySelector(
             ".product-preview-close"
           );
 
+
         const addButton =
           preview.querySelector(
             ".preview-bag-button"
           );
+
 
         const sizeSelect =
           preview.querySelector(
@@ -638,6 +618,7 @@ document
             const size =
               sizeSelect.value;
 
+
             if (!size) {
 
               alert(
@@ -663,6 +644,7 @@ document
                 ".cart-panel"
               );
 
+
             const overlay =
               document.querySelector(
                 ".cart-overlay"
@@ -687,7 +669,7 @@ document
 
 
 /* =========================================================
-HEADER SHOPPING BAG BUTTON
+HEADER SHOPPING BAG
 ========================================================= */
 
 const cartButton =
@@ -916,59 +898,67 @@ if (accountButton) {
 
       if (!accountPanel) {
 
-        document.body.insertAdjacentHTML(
-          "beforeend",
+        accountPanel =
+          document.createElement("div");
 
-          `
-
-          <div class="venes-account-panel">
-
-            <div class="account-box">
-
-              <button
-                class="account-close"
-                aria-label="Close account"
-              >
-                ×
-              </button>
+        accountPanel.className =
+          "venes-account-panel";
 
 
-              <h2>
-                MY ACCOUNT
-              </h2>
+        accountPanel.innerHTML = `
+
+          <div class="account-box">
+
+            <button
+              class="account-close"
+              aria-label="Close account"
+            >
+              ×
+            </button>
 
 
-              <p>
-                Welcome to Venes Collection.
-              </p>
+            <h2>MY ACCOUNT</h2>
 
 
-              <button class="account-option">
-                MY ORDERS
-              </button>
+            <p>
+              Welcome to Venes Collection.
+            </p>
 
 
-              <button class="account-option">
-                SHOPPING BAG
-              </button>
+            <button
+              class="account-option"
+              type="button"
+              data-account-action="orders"
+            >
+              MY ORDERS
+            </button>
 
 
-              <button class="account-option">
-                CONTACT SUPPORT
-              </button>
+            <button
+              class="account-option"
+              type="button"
+              data-account-action="bag"
+            >
+              SHOPPING BAG
+            </button>
 
-            </div>
+
+            <button
+              class="account-option"
+              type="button"
+              data-account-action="support"
+            >
+              CONTACT SUPPORT
+            </button>
 
           </div>
 
-          `
+        `;
+
+
+        document.body.appendChild(
+          accountPanel
         );
-
-
-        accountPanel =
-          document.querySelector(
-            ".venes-account-panel"
-          );
 
 
         const closeButton =
@@ -1006,10 +996,226 @@ if (accountButton) {
           }
         );
 
+
+        /* =================================================
+        ACCOUNT OPTIONS
+        ================================================= */
+
+
+        const accountOptions =
+          accountPanel.querySelectorAll(
+            ".account-option"
+          );
+
+
+        accountOptions.forEach(
+          function (option) {
+
+            option.addEventListener(
+              "click",
+              function () {
+
+                const action =
+                  option.getAttribute(
+                    "data-account-action"
+                  );
+
+
+                /* MY ORDERS */
+
+                if (
+                  action === "orders"
+                ) {
+
+                  accountPanel.classList.remove(
+                    "active"
+                  );
+
+
+                  let ordersPanel =
+                    document.querySelector(
+                      ".venes-orders-panel"
+                    );
+
+
+                  if (!ordersPanel) {
+
+                    ordersPanel =
+                      document.createElement(
+                        "div"
+                      );
+
+
+                    ordersPanel.className =
+                      "venes-orders-panel";
+
+
+                    ordersPanel.innerHTML = `
+
+                      <div class="orders-box">
+
+                        <button
+                          class="orders-close"
+                          type="button"
+                        >
+                          ×
+                        </button>
+
+
+                        <h2>
+                          MY ORDERS
+                        </h2>
+
+
+                        <p class="orders-empty">
+                          You don't have any orders yet.
+                        </p>
+
+
+                        <button
+                          class="orders-shop-button"
+                          type="button"
+                        >
+                          START SHOPPING
+                        </button>
+
+                      </div>
+
+                    `;
+
+
+                    document.body.appendChild(
+                      ordersPanel
+                    );
+
+
+                    const ordersClose =
+                      ordersPanel.querySelector(
+                        ".orders-close"
+                      );
+
+
+                    ordersClose.addEventListener(
+                      "click",
+                      function () {
+
+                        ordersPanel.classList.remove(
+                          "active"
+                        );
+
+                      }
+                    );
+
+
+                    ordersPanel.addEventListener(
+                      "click",
+                      function (event) {
+
+                        if (
+                          event.target ===
+                          ordersPanel
+                        ) {
+
+                          ordersPanel.classList.remove(
+                            "active"
+                          );
+
+                        }
+
+                      }
+                    );
+
+
+                    const shopButton =
+                      ordersPanel.querySelector(
+                        ".orders-shop-button"
+                      );
+
+
+                    shopButton.addEventListener(
+                      "click",
+                      function () {
+
+                        window.location.href =
+                          "shop.html";
+
+                      }
+                    );
+
+                  }
+
+
+                  ordersPanel.classList.add(
+                    "active"
+                  );
+
+                }
+
+
+                /* SHOPPING BAG */
+
+                if (
+                  action === "bag"
+                ) {
+
+                  accountPanel.classList.remove(
+                    "active"
+                  );
+
+
+                  const panel =
+                    document.querySelector(
+                      ".cart-panel"
+                    );
+
+
+                  const overlay =
+                    document.querySelector(
+                      ".cart-overlay"
+                    );
+
+
+                  if (
+                    panel &&
+                    overlay
+                  ) {
+
+                    panel.classList.add(
+                      "open"
+                    );
+
+                    overlay.classList.add(
+                      "show"
+                    );
+
+                  }
+
+                }
+
+
+                /* CONTACT SUPPORT */
+
+                if (
+                  action === "support"
+                ) {
+
+                  window.location.href =
+                    "contact.html";
+
+                }
+
+              }
+            );
+
+          }
+        );
+
       }
 
 
-      accountPanel.classList.add("active");
+      accountPanel.classList.add(
+        "active"
+      );
 
     }
   );
@@ -1035,6 +1241,7 @@ document.addEventListener(
         ".product-preview-overlay"
       );
 
+
     if (preview) {
       preview.remove();
     }
@@ -1044,6 +1251,7 @@ document.addEventListener(
       document.querySelector(
         ".venes-search-box"
       );
+
 
     if (searchBox) {
 
@@ -1067,9 +1275,25 @@ document.addEventListener(
         ".venes-account-panel"
       );
 
+
     if (accountPanel) {
 
       accountPanel.classList.remove(
+        "active"
+      );
+
+    }
+
+
+    const ordersPanel =
+      document.querySelector(
+        ".venes-orders-panel"
+      );
+
+
+    if (ordersPanel) {
+
+      ordersPanel.classList.remove(
         "active"
       );
 
@@ -1081,16 +1305,25 @@ document.addEventListener(
         ".cart-panel"
       );
 
+
     const cartOverlay =
       document.querySelector(
         ".cart-overlay"
       );
 
 
-    if (cartPanel && cartOverlay) {
+    if (
+      cartPanel &&
+      cartOverlay
+    ) {
 
-      cartPanel.classList.remove("open");
-      cartOverlay.classList.remove("show");
+      cartPanel.classList.remove(
+        "open"
+      );
+
+      cartOverlay.classList.remove(
+        "show"
+      );
 
     }
 
@@ -1098,357 +1331,3 @@ document.addEventListener(
 );
 
 });
-/* =========================================================
-ACCOUNT BUTTON - DIRECT FIX
-========================================================= */
-
-document.addEventListener("click", function (event) {
-
-  const accountButton =
-    event.target.closest(
-      '.header-icons button[aria-label="Account"]'
-    );
-
-  if (!accountButton) {
-    return;
-  }
-
-  let accountPanel =
-    document.querySelector(".venes-account-panel");
-
-
-  if (!accountPanel) {
-
-    accountPanel =
-      document.createElement("div");
-
-    accountPanel.className =
-      "venes-account-panel";
-
-
-    accountPanel.innerHTML = `
-
-      <div class="account-box">
-
-        <button
-          class="account-close"
-          aria-label="Close account"
-        >
-          ×
-        </button>
-
-        <h2>MY ACCOUNT</h2>
-
-        <p>
-          Welcome to Venes Collection.
-        </p>
-
-        <button class="account-option">
-          MY ORDERS
-        </button>
-
-        <button class="account-option">
-          SHOPPING BAG
-        </button>
-
-        <button class="account-option">
-          CONTACT SUPPORT
-        </button>
-
-      </div>
-
-    `;
-
-
-    document.body.appendChild(accountPanel);
-
-
-    const closeButton =
-      accountPanel.querySelector(
-        ".account-close"
-      );
-
-
-    closeButton.addEventListener(
-      "click",
-      function () {
-
-        accountPanel.classList.remove(
-          "active"
-        );
-
-      }
-    );
-
-
-    accountPanel.addEventListener(
-      "click",
-      function (e) {
-
-        if (e.target === accountPanel) {
-
-          accountPanel.classList.remove(
-            "active"
-          );
-
-        }
-
-      }
-    );
-
-  }
-
-
-  accountPanel.classList.add("active");
-
-});
-/* =========================================================
-MY ORDERS
-========================================================= */
-
-document.addEventListener("click", function (event) {
-
-  const ordersButton =
-    event.target.closest(".account-option");
-
-  if (!ordersButton) {
-    return;
-  }
-
-  if (
-    ordersButton.textContent.trim() !== "MY ORDERS"
-  ) {
-    return;
-  }
-
-
-  let ordersPanel =
-    document.querySelector(".venes-orders-panel");
-
-
-  if (!ordersPanel) {
-
-    ordersPanel =
-      document.createElement("div");
-
-    ordersPanel.className =
-      "venes-orders-panel";
-
-
-    ordersPanel.innerHTML = `
-
-      <div class="orders-box">
-
-        <button
-          class="orders-close"
-          aria-label="Close orders"
-        >
-          ×
-        </button>
-
-        <h2>MY ORDERS</h2>
-
-        <p class="orders-empty">
-          You don't have any orders yet.
-        </p>
-
-        <button class="orders-shop-button">
-          START SHOPPING
-        </button>
-
-      </div>
-
-    `;
-
-
-    document.body.appendChild(
-      ordersPanel
-    );
-
-
-    const closeButton =
-      ordersPanel.querySelector(
-        ".orders-close"
-      );
-
-
-    closeButton.addEventListener(
-      "click",
-      function () {
-
-        ordersPanel.classList.remove(
-          "active"
-        );
-
-      }
-    );
-
-
-    ordersPanel.addEventListener(
-      "click",
-      function (e) {
-
-        if (e.target === ordersPanel) {
-
-          ordersPanel.classList.remove(
-            "active"
-          );
-
-        }
-
-      }
-    );
-
-
-    const shopButton =
-      ordersPanel.querySelector(
-        ".orders-shop-button"
-      );
-
-
-    shopButton.addEventListener(
-      "click",
-      function () {
-
-        window.location.href =
-          "shop.html";
-
-      }
-    );
-
-  }
-
-
-  ordersPanel.classList.add("active");
-
-});
-
-/* =========================================================
-MY ORDERS - DIRECT FIX
-========================================================= */
-
-document.addEventListener("click", function (event) {
-
-  if (
-    !event.target.closest(".account-option")
-  ) {
-    return;
-  }
-
-  const clickedButton =
-    event.target.closest(".account-option");
-
-  if (
-    clickedButton.textContent
-      .trim()
-      .toUpperCase() !== "MY ORDERS"
-  ) {
-    return;
-  }
-
-
-  let ordersPanel =
-    document.querySelector(
-      ".venes-orders-panel"
-    );
-
-
-  if (!ordersPanel) {
-
-    ordersPanel =
-      document.createElement("div");
-
-    ordersPanel.className =
-      "venes-orders-panel";
-
-
-    ordersPanel.innerHTML = `
-
-      <div class="orders-box">
-
-        <button
-          class="orders-close"
-          type="button"
-        >
-          ×
-        </button>
-
-        <h2>MY ORDERS</h2>
-
-        <p class="orders-empty">
-          You don't have any orders yet.
-        </p>
-
-        <button
-          class="orders-shop-button"
-          type="button"
-        >
-          START SHOPPING
-        </button>
-
-      </div>
-
-    `;
-
-
-    document.body.appendChild(
-      ordersPanel
-    );
-
-
-    const closeButton =
-      ordersPanel.querySelector(
-        ".orders-close"
-      );
-
-
-    closeButton.onclick =
-      function () {
-
-        ordersPanel.classList.remove(
-          "active"
-        );
-
-      };
-
-
-    ordersPanel.onclick =
-      function (e) {
-
-        if (
-          e.target === ordersPanel
-        ) {
-
-          ordersPanel.classList.remove(
-            "active"
-          );
-
-        }
-
-      };
-
-
-    const shopButton =
-      ordersPanel.querySelector(
-        ".orders-shop-button"
-      );
-
-
-    shopButton.onclick =
-      function () {
-
-        window.location.href =
-          "shop.html";
-
-      };
-
-  }
-
-
-  ordersPanel.classList.add(
-    "active"
-  );
-
-});
-
-
