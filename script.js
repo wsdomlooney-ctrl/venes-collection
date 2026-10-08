@@ -175,8 +175,8 @@ function updateCart() {
 
             ${
               item.size
-                ? `<p>Size: ${item.size}</p>`
-                : ""
+              ? `<p>Size: ${item.size}</p>`
+              : ""
             }
 
             <p>
@@ -312,55 +312,55 @@ function createCart() {
     "beforeend",
 
     `
-    <div class="cart-overlay"></div>
+      <div class="cart-overlay"></div>
 
-    <div class="cart-panel">
+      <div class="cart-panel">
 
-      <div class="cart-header">
+        <div class="cart-header">
 
-        <h2>SHOPPING BAG</h2>
+          <h2>SHOPPING BAG</h2>
 
-        <button
-          class="cart-close"
-          type="button"
-          aria-label="Close shopping bag"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="cart-items">
-
-        <p class="empty-cart">
-          Your shopping bag is empty.
-        </p>
-
-      </div>
-
-
-      <div class="cart-footer">
-
-        <div class="cart-total">
-
-          <span>TOTAL</span>
-
-          <strong>GH₵ 0</strong>
+          <button
+            class="cart-close"
+            type="button"
+            aria-label="Close shopping bag"
+          >
+            ×
+          </button>
 
         </div>
 
 
-        <button
-          class="checkout-button"
-          type="button"
-        >
-          CHECKOUT
-        </button>
+        <div class="cart-items">
+
+          <p class="empty-cart">
+            Your shopping bag is empty.
+          </p>
+
+        </div>
+
+
+        <div class="cart-footer">
+
+          <div class="cart-total">
+
+            <span>TOTAL</span>
+
+            <strong>GH₵ 0</strong>
+
+          </div>
+
+
+          <button
+            class="checkout-button"
+            type="button"
+          >
+            CHECKOUT
+          </button>
+
+        </div>
 
       </div>
-
-    </div>
     `
   );
 
@@ -416,7 +416,6 @@ function createCart() {
           );
 
           return;
-
         }
 
 
@@ -434,6 +433,647 @@ createCart();
 
 
 /* =========================================================
+ADD TO BAG BUTTONS
+========================================================= */
+
+document
+  .querySelectorAll(".add-to-bag")
+  .forEach(function (button) {
+
+    button.addEventListener("click", function (event) {
+
+      event.preventDefault();
+
+      const card =
+        button.closest(".product-card");
+
+      if (!card) return;
+
+      const product =
+        getProduct(card);
+
+      addProductToCart(product);
+
+      const panel =
+        document.querySelector(".cart-panel");
+
+      const overlay =
+        document.querySelector(".cart-overlay");
+
+      if (panel && overlay) {
+        panel.classList.add("open");
+        overlay.classList.add("show");
+      }
+
+    });
+
+  });
+
+
+/* =========================================================
+PRODUCT PREVIEW
+========================================================= */
+
+document
+  .querySelectorAll(".product-image")
+  .forEach(function (imageBox) {
+
+    imageBox.addEventListener("click", function () {
+
+      const card =
+        imageBox.closest(".product-card");
+
+      if (!card) return;
+
+      const product =
+        getProduct(card);
+
+      openProductPreview(product);
+
+    });
+
+  });
+
+
+function openProductPreview(product) {
+
+  const existing =
+    document.querySelector(".product-preview-overlay");
+
+  if (existing) {
+    existing.remove();
+  }
+
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+
+    `
+      <div class="product-preview-overlay active">
+
+        <div class="product-preview">
+
+          <button
+            class="product-preview-close"
+            type="button"
+          >
+            ×
+          </button>
+
+          <div>
+
+            <img
+              class="product-preview-image"
+              src="${product.image}"
+              alt="${product.name}"
+            >
+
+          </div>
+
+          <div class="product-preview-details">
+
+            <h2 class="product-preview-name">
+              ${product.name}
+            </h2>
+
+            <p class="product-preview-price">
+              GH₵ ${product.price}
+            </p>
+
+            <div class="product-size-selector">
+
+              <label for="preview-size">
+                SIZE
+              </label>
+
+              <select id="preview-size">
+
+                <option value="">
+                  Select size
+                </option>
+
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+
+              </select>
+
+            </div>
+
+            <button
+              class="preview-bag-button"
+              type="button"
+            >
+              ADD TO BAG
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    `
+  );
+
+
+  const preview =
+    document.querySelector(
+      ".product-preview-overlay"
+    );
+
+
+  const close =
+    preview.querySelector(
+      ".product-preview-close"
+    );
+
+
+  const addButton =
+    preview.querySelector(
+      ".preview-bag-button"
+    );
+
+
+  const sizeSelect =
+    preview.querySelector(
+      "#preview-size"
+    );
+
+
+  close.addEventListener(
+    "click",
+    function () {
+      preview.remove();
+    }
+  );
+
+
+  preview.addEventListener(
+    "click",
+    function (event) {
+
+      if (event.target === preview) {
+        preview.remove();
+      }
+
+    }
+  );
+
+
+  addButton.addEventListener(
+    "click",
+    function () {
+
+      const selectedSize =
+        sizeSelect.value;
+
+      addProductToCart(
+        product,
+        selectedSize
+      );
+
+
+      preview.remove();
+
+
+      const panel =
+        document.querySelector(".cart-panel");
+
+      const overlay =
+        document.querySelector(".cart-overlay");
+
+
+      if (panel && overlay) {
+
+        panel.classList.add("open");
+        overlay.classList.add("show");
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+SEARCH
+========================================================= */
+
+const searchButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Search"]'
+  );
+
+
+if (searchButton) {
+
+  searchButton.addEventListener(
+    "click",
+    function () {
+
+      const existing =
+        document.querySelector(
+          ".venes-search-box"
+        );
+
+      if (existing) return;
+
+
+      document.body.insertAdjacentHTML(
+        "beforeend",
+
+        `
+          <div class="venes-search-box">
+
+            <div class="search-inner">
+
+              <input
+                id="venes-search-input"
+                type="text"
+                placeholder="Search products..."
+                autocomplete="off"
+              >
+
+              <button
+                id="venes-search-close"
+                type="button"
+              >
+                ×
+              </button>
+
+            </div>
+
+          </div>
+        `
+      );
+
+
+      const searchBox =
+        document.querySelector(
+          ".venes-search-box"
+        );
+
+
+      const input =
+        document.querySelector(
+          "#venes-search-input"
+        );
+
+
+      const close =
+        document.querySelector(
+          "#venes-search-close"
+        );
+
+
+      input.focus();
+
+
+      input.addEventListener(
+        "input",
+        function () {
+
+          const searchTerm =
+            input.value
+              .toLowerCase()
+              .trim();
+
+
+          document
+            .querySelectorAll(".product-card")
+            .forEach(function (card) {
+
+              const productName =
+                card
+                  .querySelector("h3")
+                  ?.textContent
+                  .toLowerCase() || "";
+
+
+              if (
+                !searchTerm ||
+                productName.includes(searchTerm)
+              ) {
+
+                card.style.display = "";
+
+              } else {
+
+                card.style.display = "none";
+
+              }
+
+            });
+
+        }
+      );
+
+
+      close.addEventListener(
+        "click",
+        function () {
+          searchBox.remove();
+        }
+      );
+
+
+      searchBox.addEventListener(
+        "click",
+        function (event) {
+
+          if (event.target === searchBox) {
+            searchBox.remove();
+          }
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+ACCOUNT
+========================================================= */
+
+const accountButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Account"]'
+  );
+
+
+if (accountButton) {
+
+  accountButton.addEventListener(
+    "click",
+    function () {
+
+      const existing =
+        document.querySelector(
+          ".venes-account-panel"
+        );
+
+      if (existing) {
+        existing.remove();
+        return;
+      }
+
+
+      document.body.insertAdjacentHTML(
+        "beforeend",
+
+        `
+          <div class="venes-account-panel active">
+
+            <div class="account-box">
+
+              <button
+                class="account-close"
+                type="button"
+              >
+                ×
+              </button>
+
+              <h2>
+                MY ACCOUNT
+              </h2>
+
+              <p>
+                Manage your Venes Collection orders.
+              </p>
+
+              <button
+                class="account-option"
+                type="button"
+                id="view-orders-button"
+              >
+                MY ORDERS
+              </button>
+
+              <button
+                class="account-option"
+                type="button"
+                id="account-shop-button"
+              >
+                CONTINUE SHOPPING
+              </button>
+
+            </div>
+
+          </div>
+        `
+      );
+
+
+      const panel =
+        document.querySelector(
+          ".venes-account-panel"
+        );
+
+
+      const close =
+        panel.querySelector(
+          ".account-close"
+        );
+
+
+      close.addEventListener(
+        "click",
+        function () {
+          panel.remove();
+        }
+      );
+
+
+      panel.addEventListener(
+        "click",
+        function (event) {
+
+          if (event.target === panel) {
+            panel.remove();
+          }
+
+        }
+      );
+
+
+      const shopButton =
+        panel.querySelector(
+          "#account-shop-button"
+        );
+
+
+      shopButton.addEventListener(
+        "click",
+        function () {
+          panel.remove();
+        }
+      );
+
+
+      const ordersButton =
+        panel.querySelector(
+          "#view-orders-button"
+        );
+
+
+      ordersButton.addEventListener(
+        "click",
+        function () {
+
+          panel.remove();
+
+          openOrders();
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+MY ORDERS
+========================================================= */
+
+function openOrders() {
+
+  const existing =
+    document.querySelector(
+      ".venes-orders-panel"
+    );
+
+  if (existing) {
+    existing.remove();
+  }
+
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+
+    `
+      <div class="venes-orders-panel active">
+
+        <div class="orders-box">
+
+          <button
+            class="orders-close"
+            type="button"
+          >
+            ×
+          </button>
+
+          <h2>
+            MY ORDERS
+          </h2>
+
+          <p class="orders-empty">
+            Your recent orders will appear here.
+          </p>
+
+          <button
+            class="orders-shop-button"
+            type="button"
+          >
+            SHOP NOW
+          </button>
+
+        </div>
+
+      </div>
+    `
+  );
+
+
+  const panel =
+    document.querySelector(
+      ".venes-orders-panel"
+    );
+
+
+  panel
+    .querySelector(".orders-close")
+    .addEventListener(
+      "click",
+      function () {
+        panel.remove();
+      }
+    );
+
+
+  panel
+    .querySelector(".orders-shop-button")
+    .addEventListener(
+      "click",
+      function () {
+        panel.remove();
+      }
+    );
+
+
+  panel.addEventListener(
+    "click",
+    function (event) {
+
+      if (event.target === panel) {
+        panel.remove();
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+HEADER SHOPPING BAG ICON
+========================================================= */
+
+const bagButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Shopping Bag"]'
+  );
+
+
+if (bagButton) {
+
+  bagButton.addEventListener(
+    "click",
+    function () {
+
+      const panel =
+        document.querySelector(
+          ".cart-panel"
+        );
+
+      const overlay =
+        document.querySelector(
+          ".cart-overlay"
+        );
+
+
+      if (panel && overlay) {
+
+        panel.classList.add("open");
+        overlay.classList.add("show");
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
 CHECKOUT
 ========================================================= */
 
@@ -445,7 +1085,7 @@ function openCheckout() {
     );
 
   if (existing) {
-    return;
+    existing.remove();
   }
 
 
@@ -477,8 +1117,8 @@ function openCheckout() {
 
           ${
             item.size
-              ? `<small>Size: ${item.size}</small>`
-              : ""
+            ? `<small>Size: ${item.size}</small>`
+            : ""
           }
 
           <small>
@@ -503,162 +1143,162 @@ function openCheckout() {
 
     `
 
-    <div class="venes-checkout-overlay">
+      <div class="venes-checkout-overlay">
 
-      <div class="venes-checkout">
+        <div class="venes-checkout">
 
-        <button
-          class="checkout-close"
-          type="button"
-          aria-label="Close checkout"
-        >
-          ×
-        </button>
-
-
-        <h2>
-          CHECKOUT
-        </h2>
-
-
-        <p class="checkout-intro">
-          Complete your details to place your order.
-        </p>
-
-
-        <div class="checkout-section">
-
-          <h3>
-            CUSTOMER INFORMATION
-          </h3>
-
-
-          <label for="checkout-name">
-            FULL NAME
-          </label>
-
-          <input
-            id="checkout-name"
-            type="text"
-            placeholder="Enter your full name"
+          <button
+            class="checkout-close"
+            type="button"
+            aria-label="Close checkout"
           >
+            ×
+          </button>
 
 
-          <label for="checkout-phone">
-            PHONE NUMBER
-          </label>
-
-          <input
-            id="checkout-phone"
-            type="tel"
-            placeholder="Enter your phone number"
-          >
+          <h2>
+            CHECKOUT
+          </h2>
 
 
-          <label for="checkout-location">
-            DELIVERY LOCATION
-          </label>
-
-          <input
-            id="checkout-location"
-            type="text"
-            placeholder="Enter your delivery location"
-          >
+          <p class="checkout-intro">
+            Complete your details to place your order.
+          </p>
 
 
-          <label for="checkout-notes">
-            DELIVERY NOTES
-          </label>
+          <div class="checkout-section">
 
-          <textarea
-            id="checkout-notes"
-            placeholder="Optional delivery instructions"
-          ></textarea>
-
-        </div>
+            <h3>
+              CUSTOMER INFORMATION
+            </h3>
 
 
-        <div class="checkout-section">
+            <label for="checkout-name">
+              FULL NAME
+            </label>
 
-          <h3>
-            YOUR ORDER
-          </h3>
+            <input
+              id="checkout-name"
+              type="text"
+              placeholder="Enter your full name"
+            >
 
 
-          <div class="checkout-products">
+            <label for="checkout-phone">
+              PHONE NUMBER
+            </label>
 
-            ${orderItems}
+            <input
+              id="checkout-phone"
+              type="tel"
+              placeholder="Enter your phone number"
+            >
+
+
+            <label for="checkout-location">
+              DELIVERY LOCATION
+            </label>
+
+            <input
+              id="checkout-location"
+              type="text"
+              placeholder="Enter your delivery location"
+            >
+
+
+            <label for="checkout-notes">
+              DELIVERY NOTES
+            </label>
+
+            <textarea
+              id="checkout-notes"
+              placeholder="Optional delivery instructions"
+            ></textarea>
 
           </div>
 
 
-          <div class="checkout-final-total">
+          <div class="checkout-section">
 
-            <span>
-              TOTAL
-            </span>
-
-            <strong>
-              GH₵ ${total}
-            </strong>
-
-          </div>
-
-        </div>
+            <h3>
+              YOUR ORDER
+            </h3>
 
 
-        <div class="checkout-section">
+            <div class="checkout-products">
 
-          <h3>
-            PAYMENT METHOD
-          </h3>
+              ${orderItems}
 
-
-          <div class="momo-payment">
-
-            <strong>
-              MOBILE MONEY — MTN
-            </strong>
+            </div>
 
 
-            <p>
-              You can send payment from any mobile money network.
-              Please send payment to our MTN Mobile Money number.
-            </p>
-
-
-            <div class="momo-number">
+            <div class="checkout-final-total">
 
               <span>
-                SEND PAYMENT TO
+                TOTAL
               </span>
 
               <strong>
-                0559584979
+                GH₵ ${total}
               </strong>
 
             </div>
 
           </div>
 
+
+          <div class="checkout-section">
+
+            <h3>
+              PAYMENT METHOD
+            </h3>
+
+
+            <div class="momo-payment">
+
+              <strong>
+                MOBILE MONEY — MTN
+              </strong>
+
+
+              <p>
+                You can send payment from any mobile money network.
+                Please send payment to our MTN Mobile Money number.
+              </p>
+
+
+              <div class="momo-number">
+
+                <span>
+                  SEND PAYMENT TO
+                </span>
+
+                <strong>
+                  0559584979
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="place-order-button"
+            type="button"
+          >
+            PLACE ORDER
+          </button>
+
+
+          <p class="checkout-note">
+            Your order will be sent to Venes Collection via WhatsApp.
+          </p>
+
         </div>
 
-
-        <button
-          class="place-order-button"
-          type="button"
-        >
-          PLACE ORDER
-        </button>
-
-
-        <p class="checkout-note">
-          Your order will be sent to Venes Collection via WhatsApp.
-        </p>
-
       </div>
-
-    </div>
 
     `
   );
@@ -820,6 +1460,7 @@ function openCheckout() {
           item.name +
           "\n";
 
+
         if (item.size) {
 
           message +=
@@ -829,10 +1470,12 @@ function openCheckout() {
 
         }
 
+
         message +=
           "Quantity: " +
           item.quantity +
           "\n";
+
 
         message +=
           "Price: GH₵ " +
@@ -851,25 +1494,56 @@ function openCheckout() {
       message +=
         "PAYMENT METHOD: MOBILE MONEY — MTN\n";
 
+
       message +=
         "MTN PAYMENT NUMBER: 0559584979\n\n";
-      
-      /* =========================================================
-TEST CHECKOUT
-========================================================= */
 
-const testCheckoutButton =
-  document.querySelector(".checkout-button");
 
-if (testCheckoutButton) {
+      message +=
+        "Please confirm payment after sending the order.";
 
-  testCheckoutButton.addEventListener(
-    "click",
-    function () {
+
+      /* =====================================================
+      WHATSAPP
+      ===================================================== */
+
+      const whatsappNumber =
+        "233559584979";
+
+
+      const whatsappURL =
+        "https://wa.me/" +
+        whatsappNumber +
+        "?text=" +
+        encodeURIComponent(message);
+
+
+      /* =====================================================
+      OPEN WHATSAPP
+      ===================================================== */
+
+      window.open(
+        whatsappURL,
+        "_blank"
+      );
+
+
+      /* =====================================================
+      SUCCESS MESSAGE
+      ===================================================== */
 
       alert(
-        "Venes Collection Checkout is working."
+        "Your order has been prepared. WhatsApp will open so you can send your order to Venes Collection."
       );
+
+
+      checkout.remove();
+
+
+      cart = [];
+
+
+      updateCart();
 
     }
   );
@@ -877,4 +1551,74 @@ if (testCheckoutButton) {
 }
 
 
-     
+/* =========================================================
+ESC KEY
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (event.key !== "Escape") {
+      return;
+    }
+
+
+    const preview =
+      document.querySelector(
+        ".product-preview-overlay"
+      );
+
+
+    if (preview) {
+      preview.remove();
+    }
+
+
+    const search =
+      document.querySelector(
+        ".venes-search-box"
+      );
+
+
+    if (search) {
+      search.remove();
+    }
+
+
+    const checkout =
+      document.querySelector(
+        ".venes-checkout-overlay"
+      );
+
+
+    if (checkout) {
+      checkout.remove();
+    }
+
+
+    const account =
+      document.querySelector(
+        ".venes-account-panel"
+      );
+
+
+    if (account) {
+      account.remove();
+    }
+
+
+    const orders =
+      document.querySelector(
+        ".venes-orders-panel"
+      );
+
+
+    if (orders) {
+      orders.remove();
+    }
+
+  }
+);
+
+});
