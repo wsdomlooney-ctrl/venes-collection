@@ -212,9 +212,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
               <h3>${product.name}</h3>
 
-              <p>
-                GH₵ ${product.price.toLocaleString()}
-              </p>
+<p>
+  Size: ${product.size}
+</p>
+
+<p>
+  GH₵ ${product.price.toLocaleString()}
+</p>
+
 
               <button
                 class="remove-item"
