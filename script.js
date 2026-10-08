@@ -1202,4 +1202,124 @@ document.addEventListener("click", function (event) {
   accountPanel.classList.add("active");
 
 });
+/* =========================================================
+MY ORDERS
+========================================================= */
+
+document.addEventListener("click", function (event) {
+
+  const ordersButton =
+    event.target.closest(".account-option");
+
+  if (!ordersButton) {
+    return;
+  }
+
+  if (
+    ordersButton.textContent.trim() !== "MY ORDERS"
+  ) {
+    return;
+  }
+
+
+  let ordersPanel =
+    document.querySelector(".venes-orders-panel");
+
+
+  if (!ordersPanel) {
+
+    ordersPanel =
+      document.createElement("div");
+
+    ordersPanel.className =
+      "venes-orders-panel";
+
+
+    ordersPanel.innerHTML = `
+
+      <div class="orders-box">
+
+        <button
+          class="orders-close"
+          aria-label="Close orders"
+        >
+          ×
+        </button>
+
+        <h2>MY ORDERS</h2>
+
+        <p class="orders-empty">
+          You don't have any orders yet.
+        </p>
+
+        <button class="orders-shop-button">
+          START SHOPPING
+        </button>
+
+      </div>
+
+    `;
+
+
+    document.body.appendChild(
+      ordersPanel
+    );
+
+
+    const closeButton =
+      ordersPanel.querySelector(
+        ".orders-close"
+      );
+
+
+    closeButton.addEventListener(
+      "click",
+      function () {
+
+        ordersPanel.classList.remove(
+          "active"
+        );
+
+      }
+    );
+
+
+    ordersPanel.addEventListener(
+      "click",
+      function (e) {
+
+        if (e.target === ordersPanel) {
+
+          ordersPanel.classList.remove(
+            "active"
+          );
+
+        }
+
+      }
+    );
+
+
+    const shopButton =
+      ordersPanel.querySelector(
+        ".orders-shop-button"
+      );
+
+
+    shopButton.addEventListener(
+      "click",
+      function () {
+
+        window.location.href =
+          "shop.html";
+
+      }
+    );
+
+  }
+
+
+  ordersPanel.classList.add("active");
+
+});
 
