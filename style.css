@@ -1322,3 +1322,70 @@ SMALL PHONES
   }
 
 }
+/* =========================================================
+VENES SEARCH
+========================================================= */
+
+.venes-search-box {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px;
+}
+
+.search-inner {
+  width: min(650px, 90%);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 8px 10px 8px 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+#venes-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  height: 52px;
+  color: #111111;
+}
+
+#venes-search-input::placeholder {
+  color: #888888;
+}
+
+#venes-search-close {
+  width: 45px;
+  height: 45px;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  color: #111111;
+}
+
+#venes-search-close:hover {
+  opacity: 0.6;
+}
+
+@media (max-width: 650px) {
+
+  .venes-search-box {
+    padding-top: 80px;
+  }
+
+  .search-inner {
+    width: calc(100% - 30px);
+  }
+
+  #venes-search-input {
+    font-size: 15px;
+  }
+
+}
