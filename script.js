@@ -1379,73 +1379,58 @@ catalogFilters.forEach(function (button) {
 });
 
 
-/* COLLECTION PRODUCT CLICK */
+/* =========================================================
+   COLLECTION PAGE - ADD TO BAG
+========================================================= */
 
-catalogCards.forEach(function (card) {
+document.querySelectorAll(".catalog-bag").forEach(function (button) {
 
-  const image = card.querySelector(".catalog-image img");
-  const bagButton = card.querySelector(".catalog-bag");
+  button.addEventListener("click", function (event) {
 
-  if (image) {
+    event.preventDefault();
+    event.stopPropagation();
 
-    image.addEventListener("click", function () {
+    const card = button.closest(".catalog-card");
 
-      const productName =
-        card.querySelector(".catalog-info h2")?.textContent.trim();
+    if (!card) return;
 
-      const productPrice =
-        card.querySelector(".catalog-price")?.textContent.trim();
+    const nameElement = card.querySelector(".catalog-info h2");
+    const priceElement = card.querySelector(".catalog-price");
+    const imageElement = card.querySelector(".catalog-image img");
 
-      if (typeof openProductPreview === "function") {
+    const productName = nameElement
+      ? nameElement.textContent.trim()
+      : "Venes Collection Product";
 
-        openProductPreview({
-          name: productName,
-          price: productPrice,
-          image: image.src
-        });
+    const productPrice = priceElement
+      ? parseFloat(
+          priceElement.textContent.replace(/[^\d.]/g, "")
+        )
+      : 0;
 
-      } else {
+    const productImage = imageElement
+      ? imageElement.getAttribute("src")
+      : "";
 
-        window.location.href = "shop.html";
+    if (typeof addToCart === "function") {
 
-      }
+      addToCart({
+        id: "collection-" + productName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-"),
 
-    });
-
-  }
-
-  if (bagButton) {
-
-    bagButton.addEventListener("click", function (event) {
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      const productName =
-        card.querySelector(".catalog-info h2")?.textContent.trim();
-
-      const productPrice =
-        card.querySelector(".catalog-price")?.textContent.trim();
-
-      const productImage =
-        image ? image.src : "";
-
-      const catalogProduct = {
-        id: "catalog-" + productName.toLowerCase().replace(/\s+/g, "-"),
         name: productName,
-        price: parseFloat(
-          productPrice.replace(/[^\d.]/g, "")
-        ) || 0,
+
+        price: productPrice,
+
         image: productImage,
+
         quantity: 1
-      };
+      });
 
-      if (typeof addToCart === "function") {
-        addToCart(catalogProduct);
-      }
+    }
 
-    });
-
-  }
+  });
 
 });
+
