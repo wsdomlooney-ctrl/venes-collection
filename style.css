@@ -255,7 +255,7 @@ HEADER
 }
 
 /* =========================================================
-PRODUCT GRID
+   PRODUCT GRID
 ========================================================= */
 
 .products {
@@ -290,7 +290,7 @@ PRODUCT GRID
   display: block;
   cursor: pointer;
   pointer-events: auto;
-  transition: transform 0.25s ease;
+  transition: transform 0.35s ease;
 }
 
 .product-card:hover .product-image img {
@@ -299,8 +299,36 @@ PRODUCT GRID
 
 .product-details {
   padding: 14px 3px 0;
-  position: relative;
 }
+
+@media (max-width: 900px) {
+
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 38px 12px;
+    padding: 0 3% 65px;
+  }
+
+  .product-image {
+    height: 360px;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 10px;
+    padding: 0 4% 55px;
+  }
+
+  .product-image {
+    height: 250px;
+  }
+
+}
+
 
 .product-details h3 {
   font-size: 14px;
