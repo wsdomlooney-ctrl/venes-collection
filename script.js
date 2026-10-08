@@ -865,3 +865,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
+/* =========================================================
+HEADER SHOPPING BAG
+========================================================= */
+
+const headerBagButton = document.querySelector(
+  '.header-icons button[aria-label="Shopping Bag"]'
+);
+
+if (headerBagButton) {
+
+  headerBagButton.addEventListener("click", function () {
+
+    openCart();
+
+  });
+
+}
