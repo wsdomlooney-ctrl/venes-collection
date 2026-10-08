@@ -1265,3 +1265,21 @@ SMALL PHONES
   }
 
 }
+@media (min-width: 651px) {
+
+  .product-preview-overlay {
+    pointer-events: auto !important;
+  }
+
+  .product-preview {
+    pointer-events: auto !important;
+  }
+
+  .preview-bag-button {
+    position: relative;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+}
