@@ -14,13 +14,18 @@ const navigation = document.querySelector(".navigation");
 if (menuToggle && navigation) {
 
   menuToggle.addEventListener("click", function () {
+
     navigation.classList.toggle("mobile-open");
+
   });
+
 
   navigation.querySelectorAll("a").forEach(function (link) {
 
     link.addEventListener("click", function () {
+
       navigation.classList.remove("mobile-open");
+
     });
 
   });
@@ -49,8 +54,6 @@ categoryButtons.forEach(function (button) {
       button.getAttribute("data-category");
 
 
-    /* Remove active from every button */
-
     categoryButtons.forEach(function (item) {
 
       item.classList.remove("active");
@@ -58,12 +61,8 @@ categoryButtons.forEach(function (button) {
     });
 
 
-    /* Activate clicked button */
-
     button.classList.add("active");
 
-
-    /* Show / hide products */
 
     productCards.forEach(function (card) {
 
@@ -114,30 +113,26 @@ function getProduct(card) {
     card.querySelector("img");
 
 
-  const name =
-    nameElement
-      ? nameElement.textContent.trim()
-      : "Product";
-
-
-  const price =
-    priceElement
-      ? parseFloat(
-          priceElement.textContent.replace(/[^\d.]/g, "")
-        ) || 0
-      : 0;
-
-
-  const image =
-    imageElement
-      ? imageElement.getAttribute("src")
-      : "";
-
-
   return {
-    name: name,
-    price: price,
-    image: image
+
+    name:
+      nameElement
+        ? nameElement.textContent.trim()
+        : "Product",
+
+    price:
+      priceElement
+        ? parseFloat(
+            priceElement.textContent
+              .replace(/[^\d.]/g, "")
+          ) || 0
+        : 0,
+
+    image:
+      imageElement
+        ? imageElement.getAttribute("src")
+        : ""
+
   };
 
 }
@@ -192,9 +187,7 @@ function createCart() {
 
           <span>TOTAL</span>
 
-          <strong>
-            GH₵ 0
-          </strong>
+          <strong>GH₵ 0</strong>
 
         </div>
 
@@ -286,10 +279,14 @@ CLOSE CART
 function closeCart() {
 
   const overlay =
-    document.querySelector(".cart-overlay");
+    document.querySelector(
+      ".cart-overlay"
+    );
 
   const panel =
-    document.querySelector(".cart-panel");
+    document.querySelector(
+      ".cart-panel"
+    );
 
 
   if (overlay) {
@@ -302,7 +299,8 @@ function closeCart() {
   }
 
 
-  document.body.style.overflow = "";
+  document.body.style.overflow =
+    "";
 
 }
 
@@ -354,7 +352,9 @@ function updateCart() {
 
 
   const cartItems =
-    document.querySelector(".cart-items");
+    document.querySelector(
+      ".cart-items"
+    );
 
   const cartTotal =
     document.querySelector(
@@ -400,11 +400,13 @@ function updateCart() {
         alt="${product.name}"
       >
 
+
       <div class="cart-item-info">
 
         <h3>
           ${product.name}
         </h3>
+
 
         ${
           product.size
@@ -412,9 +414,11 @@ function updateCart() {
             : ""
         }
 
+
         <p>
           GH₵ ${product.price.toLocaleString()}
         </p>
+
 
         <div class="cart-quantity">
 
@@ -425,9 +429,11 @@ function updateCart() {
             −
           </button>
 
+
           <span>
             ${product.quantity}
           </span>
+
 
           <button
             class="quantity-plus"
@@ -437,6 +443,7 @@ function updateCart() {
           </button>
 
         </div>
+
 
         <button
           class="remove-item"
@@ -475,8 +482,6 @@ function updateCart() {
     total.toLocaleString();
 
 
-  /* REMOVE */
-
   document
     .querySelectorAll(".remove-item")
     .forEach(function (button) {
@@ -502,8 +507,6 @@ function updateCart() {
 
     });
 
-
-  /* MINUS */
 
   document
     .querySelectorAll(".quantity-minus")
@@ -538,8 +541,6 @@ function updateCart() {
 
     });
 
-
-  /* PLUS */
 
   document
     .querySelectorAll(".quantity-plus")
@@ -598,11 +599,9 @@ document
         }
 
 
-        const product =
-          getProduct(card);
-
-
-        addProductToCart(product);
+        addProductToCart(
+          getProduct(card)
+        );
 
       }
     );
@@ -638,17 +637,24 @@ if (productImages.length > 0) {
           ×
         </button>
 
+
         <img
           class="product-preview-image"
           src=""
           alt=""
         >
 
+
         <div class="product-preview-details">
 
-          <h2 class="product-preview-name"></h2>
+          <h2
+            class="product-preview-name"
+          ></h2>
 
-          <p class="product-preview-price"></p>
+
+          <p
+            class="product-preview-price"
+          ></p>
 
 
           <div class="product-size-selector">
@@ -656,6 +662,7 @@ if (productImages.length > 0) {
             <label for="product-size">
               SIZE
             </label>
+
 
             <select id="product-size">
 
@@ -675,7 +682,9 @@ if (productImages.length > 0) {
           </div>
 
 
-          <button class="preview-bag-button">
+          <button
+            class="preview-bag-button"
+          >
             ADD TO BAG
           </button>
 
@@ -694,38 +703,42 @@ if (productImages.length > 0) {
       ".product-preview-overlay"
     );
 
+
   const previewImage =
     document.querySelector(
       ".product-preview-image"
     );
+
 
   const previewName =
     document.querySelector(
       ".product-preview-name"
     );
 
+
   const previewPrice =
     document.querySelector(
       ".product-preview-price"
     );
+
 
   const previewClose =
     document.querySelector(
       ".product-preview-close"
     );
 
+
   const previewBagButton =
     document.querySelector(
       ".preview-bag-button"
     );
+
 
   const productSize =
     document.querySelector(
       "#product-size"
     );
 
-
-  /* OPEN */
 
   productImages.forEach(
     function (image) {
@@ -752,11 +765,14 @@ if (productImages.length > 0) {
           previewImage.src =
             product.image;
 
+
           previewImage.alt =
             product.name;
 
+
           previewName.textContent =
             product.name;
+
 
           previewPrice.textContent =
             "GH₵ " +
@@ -789,8 +805,6 @@ if (productImages.length > 0) {
   );
 
 
-  /* CLOSE */
-
   previewClose.addEventListener(
     "click",
     function () {
@@ -821,8 +835,6 @@ if (productImages.length > 0) {
     }
   );
 
-
-  /* ADD FROM PREVIEW */
 
   previewBagButton.addEventListener(
     "click",
@@ -910,7 +922,190 @@ if (headerBagButton) {
 
 
 /* =========================================================
-ESC KEY
+SEARCH
+========================================================= */
+
+const searchButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Search"]'
+  );
+
+
+if (searchButton) {
+
+  searchButton.addEventListener(
+    "click",
+    function () {
+
+      let searchBox =
+        document.querySelector(
+          ".venes-search-box"
+        );
+
+
+      if (searchBox) {
+
+        const input =
+          document.querySelector(
+            "#venes-search-input"
+          );
+
+        if (input) {
+          input.focus();
+        }
+
+        return;
+
+      }
+
+
+      document.body.insertAdjacentHTML(
+        "beforeend",
+
+        `
+
+        <div class="venes-search-box">
+
+          <div class="search-inner">
+
+            <input
+              type="text"
+              id="venes-search-input"
+              placeholder="Search products..."
+              autocomplete="off"
+            >
+
+
+            <button
+              id="venes-search-close"
+              aria-label="Close search"
+            >
+              ×
+            </button>
+
+          </div>
+
+        </div>
+
+        `
+      );
+
+
+      searchBox =
+        document.querySelector(
+          ".venes-search-box"
+        );
+
+
+      const input =
+        document.querySelector(
+          "#venes-search-input"
+        );
+
+
+      const closeButton =
+        document.querySelector(
+          "#venes-search-close"
+        );
+
+
+      input.focus();
+
+
+      input.addEventListener(
+        "input",
+        function () {
+
+          const searchTerm =
+            input.value
+              .toLowerCase()
+              .trim();
+
+
+          document
+            .querySelectorAll(
+              ".product-card"
+            )
+            .forEach(function (card) {
+
+              const name =
+                card.querySelector("h3")
+                  ?.textContent
+                  .toLowerCase() || "";
+
+
+              card.style.display =
+                (
+                  searchTerm === "" ||
+                  name.includes(searchTerm)
+                )
+                  ? ""
+                  : "none";
+
+            });
+
+        }
+      );
+
+
+      closeButton.addEventListener(
+        "click",
+        function () {
+
+          searchBox.remove();
+
+
+          document
+            .querySelectorAll(
+              ".product-card"
+            )
+            .forEach(function (card) {
+
+              card.style.display = "";
+
+            });
+
+        }
+      );
+
+
+      searchBox.addEventListener(
+        "click",
+        function (event) {
+
+          if (
+            event.target === searchBox
+          ) {
+
+            searchBox.remove();
+
+
+            document
+              .querySelectorAll(
+                ".product-card"
+              )
+              .forEach(
+                function (card) {
+
+                  card.style.display =
+                    "";
+
+                }
+              );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+ESCAPE KEY
 ========================================================= */
 
 document.addEventListener(
@@ -936,156 +1131,33 @@ document.addEventListener(
 
       }
 
-    }
 
-  }
-);
-/* =========================================================
-PRODUCT SEARCH
-========================================================= */
-
-const searchButton =
-  document.querySelector(
-    '.header-icons button[aria-label="Search"]'
-  );
-
-if (searchButton) {
-
-  searchButton.addEventListener(
-    "click",
-    function () {
-
-      let searchBox =
+      const search =
         document.querySelector(
           ".venes-search-box"
         );
 
-      if (!searchBox) {
 
-        document.body.insertAdjacentHTML(
-          "beforeend",
+      if (search) {
 
-          `
-          <div class="venes-search-box">
-
-            <div class="search-inner">
-
-              <input
-                type="text"
-                id="venes-search-input"
-                placeholder="Search products..."
-                autocomplete="off"
-              >
-
-              <button
-                id="venes-search-close"
-                aria-label="Close search"
-              >
-                ×
-              </button>
-
-            </div>
-
-          </div>
-          `
-        );
+        search.remove();
 
 
-        searchBox =
-          document.querySelector(
-            ".venes-search-box"
+        document
+          .querySelectorAll(
+            ".product-card"
+          )
+          .forEach(
+            function (card) {
+
+              card.style.display = "";
+
+            }
           );
-
-
-        const input =
-          document.querySelector(
-            "#venes-search-input"
-          );
-
-
-        const closeButton =
-          document.querySelector(
-            "#venes-search-close"
-          );
-
-
-        input.focus();
-
-
-        input.addEventListener(
-          "input",
-          function () {
-
-            const searchTerm =
-              input.value
-                .toLowerCase()
-                .trim();
-
-
-            const products =
-              document.querySelectorAll(
-                ".product-card"
-              );
-
-
-            products.forEach(
-              function (product) {
-
-                const name =
-                  product
-                    .querySelector("h3")
-                    ?.textContent
-                    .toLowerCase() || "";
-
-
-                if (
-                  searchTerm === "" ||
-                  name.includes(searchTerm)
-                ) {
-
-                  product.style.display =
-                    "";
-
-                } else {
-
-                  product.style.display =
-                    "none";
-
-                }
-
-              }
-            );
-
-          }
-        );
-
-
-        closeButton.addEventListener(
-          "click",
-          function () {
-
-            searchBox.remove();
-
-
-            document
-              .querySelectorAll(
-                ".product-card"
-              )
-              .forEach(
-                function (product) {
-
-                  product.style.display =
-                    "";
-
-                }
-              );
-
-          }
-        );
 
       }
 
     }
-  );
 
-}
+  }
+);
