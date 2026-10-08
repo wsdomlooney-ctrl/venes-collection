@@ -1496,3 +1496,20 @@ SMALL PHONES
 .socials a:hover {
   text-decoration: underline !important;
 }
+.header-icons .social-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+}
+
+.header-icons .social-icon {
+  color: #111;
+}
+
+@media (max-width: 650px) {
+  .header-icons .social-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+}
