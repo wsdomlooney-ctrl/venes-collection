@@ -1,8 +1,4 @@
-/* =========================================================
-VENES COLLECTION
-MAIN JAVASCRIPT
-========================================================= */
-
+document.addEventListener("DOMContentLoaded", function () {
 
 /* =========================================================
 MOBILE MENU
@@ -14,27 +10,14 @@ const navigation = document.querySelector(".navigation");
 if (menuToggle && navigation) {
 
   menuToggle.addEventListener("click", function () {
-
     navigation.classList.toggle("mobile-open");
-
-  });
-
-
-  navigation.querySelectorAll("a").forEach(function (link) {
-
-    link.addEventListener("click", function () {
-
-      navigation.classList.remove("mobile-open");
-
-    });
-
   });
 
 }
 
 
 /* =========================================================
-SHOP CATEGORY FILTER
+CATEGORY FILTER
 ========================================================= */
 
 const categoryButtons =
@@ -43,44 +26,31 @@ const categoryButtons =
 const productCards =
   document.querySelectorAll(".product-card");
 
-
 categoryButtons.forEach(function (button) {
 
-  button.addEventListener("click", function (event) {
+  button.addEventListener("click", function () {
 
-    event.preventDefault();
+    categoryButtons.forEach(function (btn) {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
 
     const selectedCategory =
       button.getAttribute("data-category");
 
-
-    categoryButtons.forEach(function (item) {
-
-      item.classList.remove("active");
-
-    });
-
-
-    button.classList.add("active");
-
-
     productCards.forEach(function (card) {
 
-      const productCategory =
+      const cardCategory =
         card.getAttribute("data-category");
-
 
       if (
         selectedCategory === "all" ||
-        productCategory === selectedCategory
+        selectedCategory === cardCategory
       ) {
-
         card.style.display = "";
-
       } else {
-
         card.style.display = "none";
-
       }
 
     });
@@ -91,395 +61,173 @@ categoryButtons.forEach(function (button) {
 
 
 /* =========================================================
-SHOPPING CART
+SHOPPING BAG
 ========================================================= */
 
 let cart = [];
 
 
-/* =========================================================
-GET PRODUCT
-========================================================= */
-
 function getProduct(card) {
 
-  const nameElement =
-    card.querySelector("h3");
+  const name =
+    card.querySelector("h3")?.textContent.trim() || "";
 
-  const priceElement =
-    card.querySelector(".price");
+  const priceText =
+    card.querySelector(".price")?.textContent || "0";
 
-  const imageElement =
-    card.querySelector("img");
+  const price =
+    parseFloat(
+      priceText.replace(/[^0-9.]/g, "")
+    ) || 0;
 
+  const image =
+    card.querySelector("img")?.getAttribute("src") || "";
 
   return {
-
-    name:
-      nameElement
-        ? nameElement.textContent.trim()
-        : "Product",
-
-    price:
-      priceElement
-        ? parseFloat(
-            priceElement.textContent
-              .replace(/[^\d.]/g, "")
-          ) || 0
-        : 0,
-
-    image:
-      imageElement
-        ? imageElement.getAttribute("src")
-        : ""
-
+    name: name,
+    price: price,
+    image: image
   };
 
 }
 
 
-/* =========================================================
-CREATE CART
-========================================================= */
+function addProductToCart(product, size = "") {
 
-function createCart() {
-
-  if (document.querySelector(".cart-overlay")) {
-    return;
-  }
-
-
-  document.body.insertAdjacentHTML(
-    "beforeend",
-
-    `
-
-    <div class="cart-overlay"></div>
-
-    <aside class="cart-panel">
-
-      <div class="cart-header">
-
-        <h2>SHOPPING BAG</h2>
-
-        <button
-          class="cart-close"
-          aria-label="Close shopping bag"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="cart-items">
-
-        <div class="empty-cart">
-          Your shopping bag is empty.
-        </div>
-
-      </div>
-
-
-      <div class="cart-footer">
-
-        <div class="cart-total">
-
-          <span>TOTAL</span>
-
-          <strong>GH₵ 0</strong>
-
-        </div>
-
-
-        <button class="checkout-button">
-          CHECKOUT
-        </button>
-
-      </div>
-
-    </aside>
-
-    `
-  );
-
-
-  document
-    .querySelector(".cart-overlay")
-    .addEventListener(
-      "click",
-      closeCart
-    );
-
-
-  document
-    .querySelector(".cart-close")
-    .addEventListener(
-      "click",
-      closeCart
-    );
-
-
-  document
-    .querySelector(".checkout-button")
-    .addEventListener(
-      "click",
-      function () {
-
-        if (cart.length === 0) {
-
-          alert(
-            "Your shopping bag is empty."
-          );
-
-          return;
-
-        }
-
-
-        alert(
-          "Checkout will be available soon."
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-OPEN CART
-========================================================= */
-
-function openCart() {
-
-  createCart();
-
-
-  document
-    .querySelector(".cart-overlay")
-    .classList.add("show");
-
-
-  document
-    .querySelector(".cart-panel")
-    .classList.add("open");
-
-
-  document.body.style.overflow =
-    "hidden";
-
-}
-
-
-/* =========================================================
-CLOSE CART
-========================================================= */
-
-function closeCart() {
-
-  const overlay =
-    document.querySelector(
-      ".cart-overlay"
-    );
-
-  const panel =
-    document.querySelector(
-      ".cart-panel"
-    );
-
-
-  if (overlay) {
-    overlay.classList.remove("show");
-  }
-
-
-  if (panel) {
-    panel.classList.remove("open");
-  }
-
-
-  document.body.style.overflow =
-    "";
-
-}
-
-
-/* =========================================================
-ADD PRODUCT TO CART
-========================================================= */
-
-function addProductToCart(product) {
-
-  const existingProduct =
+  const existing =
     cart.find(function (item) {
 
       return (
         item.name === product.name &&
-        item.size === product.size
+        item.size === size
       );
 
     });
 
 
-  if (existingProduct) {
+  if (existing) {
 
-    existingProduct.quantity++;
+    existing.quantity += 1;
 
   } else {
 
-    product.quantity = 1;
-
-    cart.push(product);
+    cart.push({
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      size: size,
+      quantity: 1
+    });
 
   }
 
-
   updateCart();
-
-  openCart();
 
 }
 
 
-/* =========================================================
-UPDATE CART
-========================================================= */
-
 function updateCart() {
 
-  createCart();
-
-
   const cartItems =
-    document.querySelector(
-      ".cart-items"
-    );
+    document.querySelector(".cart-items");
 
   const cartTotal =
-    document.querySelector(
-      ".cart-total strong"
-    );
+    document.querySelector(".cart-total strong");
+
+  if (!cartItems) return;
 
 
   if (cart.length === 0) {
 
-    cartItems.innerHTML = `
+    cartItems.innerHTML =
+      `<p class="empty-cart">Your shopping bag is empty.</p>`;
 
-      <div class="empty-cart">
-        Your shopping bag is empty.
-      </div>
-
-    `;
-
-    cartTotal.textContent =
-      "GH₵ 0";
+    if (cartTotal) {
+      cartTotal.textContent = "GH₵ 0";
+    }
 
     return;
 
   }
 
 
-  cartItems.innerHTML = "";
+  let total = 0;
 
 
-  cart.forEach(function (product, index) {
+  cartItems.innerHTML =
+    cart.map(function (item, index) {
 
-    const item =
-      document.createElement("div");
+      const itemTotal =
+        item.price * item.quantity;
 
-
-    item.className =
-      "cart-item";
-
-
-    item.innerHTML = `
-
-      <img
-        src="${product.image}"
-        alt="${product.name}"
-      >
+      total += itemTotal;
 
 
-      <div class="cart-item-info">
+      return `
 
-        <h3>
-          ${product.name}
-        </h3>
+        <div class="cart-item">
 
-
-        ${
-          product.size
-            ? `<p>Size: ${product.size}</p>`
-            : ""
-        }
-
-
-        <p>
-          GH₵ ${product.price.toLocaleString()}
-        </p>
-
-
-        <div class="cart-quantity">
-
-          <button
-            class="quantity-minus"
-            data-index="${index}"
+          <img
+            src="${item.image}"
+            alt="${item.name}"
           >
-            −
-          </button>
 
+          <div class="cart-item-info">
 
-          <span>
-            ${product.quantity}
-          </span>
+            <h3>${item.name}</h3>
 
+            ${
+              item.size
+                ? `<p>Size: ${item.size}</p>`
+                : ""
+            }
 
-          <button
-            class="quantity-plus"
-            data-index="${index}"
-          >
-            +
-          </button>
+            <p>
+              GH₵ ${item.price}
+            </p>
+
+            <div class="cart-quantity">
+
+              <button
+                class="quantity-minus"
+                data-index="${index}"
+              >
+                −
+              </button>
+
+              <span>
+                ${item.quantity}
+              </span>
+
+              <button
+                class="quantity-plus"
+                data-index="${index}"
+              >
+                +
+              </button>
+
+            </div>
+
+            <button
+              class="remove-item"
+              data-index="${index}"
+            >
+              Remove
+            </button>
+
+          </div>
 
         </div>
 
+      `;
 
-        <button
-          class="remove-item"
-          data-index="${index}"
-        >
-          Remove
-        </button>
-
-      </div>
-
-    `;
+    }).join("");
 
 
-    cartItems.appendChild(item);
-
-  });
-
-
-  const total =
-    cart.reduce(
-      function (sum, product) {
-
-        return (
-          sum +
-          product.price *
-          product.quantity
-        );
-
-      },
-      0
-    );
-
-
-  cartTotal.textContent =
-    "GH₵ " +
-    total.toLocaleString();
+  if (cartTotal) {
+    cartTotal.textContent =
+      "GH₵ " + total;
+  }
 
 
   document
@@ -492,11 +240,8 @@ function updateCart() {
 
           const index =
             parseInt(
-              button.getAttribute(
-                "data-index"
-              )
+              button.getAttribute("data-index")
             );
-
 
           cart.splice(index, 1);
 
@@ -518,23 +263,20 @@ function updateCart() {
 
           const index =
             parseInt(
-              button.getAttribute(
-                "data-index"
-              )
+              button.getAttribute("data-index")
             );
 
+          if (cart[index]) {
 
-          if (
-            cart[index] &&
-            cart[index].quantity > 1
-          ) {
+            cart[index].quantity -= 1;
 
-            cart[index].quantity--;
+            if (cart[index].quantity <= 0) {
+              cart.splice(index, 1);
+            }
+
+            updateCart();
 
           }
-
-
-          updateCart();
 
         }
       );
@@ -552,20 +294,16 @@ function updateCart() {
 
           const index =
             parseInt(
-              button.getAttribute(
-                "data-index"
-              )
+              button.getAttribute("data-index")
             );
-
 
           if (cart[index]) {
 
-            cart[index].quantity++;
+            cart[index].quantity += 1;
+
+            updateCart();
 
           }
-
-
-          updateCart();
 
         }
       );
@@ -576,7 +314,125 @@ function updateCart() {
 
 
 /* =========================================================
-PRODUCT CARD BAG BUTTONS
+CREATE SHOPPING BAG
+========================================================= */
+
+function createCart() {
+
+  if (
+    document.querySelector(".cart-panel")
+  ) {
+    return;
+  }
+
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+
+    `
+
+    <div class="cart-overlay"></div>
+
+    <div class="cart-panel">
+
+      <div class="cart-header">
+
+        <h2>SHOPPING BAG</h2>
+
+        <button
+          class="cart-close"
+          aria-label="Close shopping bag"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="cart-items">
+
+        <p class="empty-cart">
+          Your shopping bag is empty.
+        </p>
+
+      </div>
+
+
+      <div class="cart-footer">
+
+        <div class="cart-total">
+
+          <span>TOTAL</span>
+
+          <strong>GH₵ 0</strong>
+
+        </div>
+
+
+        <button class="checkout-button">
+          CHECKOUT
+        </button>
+
+      </div>
+
+    </div>
+
+    `
+  );
+
+
+  const overlay =
+    document.querySelector(".cart-overlay");
+
+  const panel =
+    document.querySelector(".cart-panel");
+
+  const closeButton =
+    document.querySelector(".cart-close");
+
+
+  function closeCart() {
+
+    panel.classList.remove("open");
+    overlay.classList.remove("show");
+
+  }
+
+
+  closeButton.addEventListener(
+    "click",
+    closeCart
+  );
+
+
+  overlay.addEventListener(
+    "click",
+    closeCart
+  );
+
+
+  const checkoutButton =
+    document.querySelector(".checkout-button");
+
+  checkoutButton.addEventListener(
+    "click",
+    function () {
+
+      alert(
+        "Checkout will be available soon."
+      );
+
+    }
+  );
+
+}
+
+
+createCart();
+
+
+/* =========================================================
+PRODUCT CARD ADD TO BAG
 ========================================================= */
 
 document
@@ -585,23 +441,30 @@ document
 
     button.addEventListener(
       "click",
-      function (event) {
-
-        event.stopPropagation();
-
+      function () {
 
         const card =
           button.closest(".product-card");
 
+        if (!card) return;
 
-        if (!card) {
-          return;
+        const product =
+          getProduct(card);
+
+        addProductToCart(product);
+
+        const panel =
+          document.querySelector(".cart-panel");
+
+        const overlay =
+          document.querySelector(".cart-overlay");
+
+        if (panel && overlay) {
+
+          panel.classList.add("open");
+          overlay.classList.add("show");
+
         }
-
-
-        addProductToCart(
-          getProduct(card)
-        );
 
       }
     );
@@ -613,307 +476,245 @@ document
 PRODUCT PREVIEW
 ========================================================= */
 
-const productImages =
-  document.querySelectorAll(
-    ".product-image img"
-  );
+document
+  .querySelectorAll(".product-image img")
+  .forEach(function (image) {
+
+    image.addEventListener(
+      "click",
+      function () {
+
+        const card =
+          image.closest(".product-card");
+
+        if (!card) return;
+
+        const product =
+          getProduct(card);
 
 
-if (productImages.length > 0) {
+        document.body.insertAdjacentHTML(
+          "beforeend",
 
-  document.body.insertAdjacentHTML(
-    "beforeend",
+          `
 
-    `
+          <div class="product-preview-overlay">
 
-    <div class="product-preview-overlay">
+            <div class="product-preview">
 
-      <div class="product-preview">
-
-        <button
-          class="product-preview-close"
-          aria-label="Close"
-        >
-          ×
-        </button>
+              <button
+                class="product-preview-close"
+                aria-label="Close product preview"
+              >
+                ×
+              </button>
 
 
-        <img
-          class="product-preview-image"
-          src=""
-          alt=""
-        >
+              <img
+                class="product-preview-image"
+                src="${product.image}"
+                alt="${product.name}"
+              >
 
 
-        <div class="product-preview-details">
+              <div class="product-preview-details">
 
-          <h2
-            class="product-preview-name"
-          ></h2>
-
-
-          <p
-            class="product-preview-price"
-          ></p>
+                <h2 class="product-preview-name">
+                  ${product.name}
+                </h2>
 
 
-          <div class="product-size-selector">
-
-            <label for="product-size">
-              SIZE
-            </label>
+                <p class="product-preview-price">
+                  GH₵ ${product.price}
+                </p>
 
 
-            <select id="product-size">
+                <div class="product-size-selector">
 
-              <option value="">
-                SELECT SIZE
-              </option>
+                  <label for="product-size">
+                    SELECT SIZE
+                  </label>
 
-              <option value="XS">XS</option>
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-              <option value="XXL">XXL</option>
+                  <select id="product-size">
 
-            </select>
+                    <option value="">
+                      Choose a size
+                    </option>
+
+                    <option value="XS">
+                      XS
+                    </option>
+
+                    <option value="S">
+                      S
+                    </option>
+
+                    <option value="M">
+                      M
+                    </option>
+
+                    <option value="L">
+                      L
+                    </option>
+
+                    <option value="XL">
+                      XL
+                    </option>
+
+                    <option value="XXL">
+                      XXL
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <button class="preview-bag-button">
+                  ADD TO BAG
+                </button>
+
+              </div>
+
+            </div>
 
           </div>
 
-
-          <button
-            class="preview-bag-button"
-          >
-            ADD TO BAG
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    `
-  );
+          `
+        );
 
 
-  const previewOverlay =
-    document.querySelector(
-      ".product-preview-overlay"
-    );
-
-
-  const previewImage =
-    document.querySelector(
-      ".product-preview-image"
-    );
-
-
-  const previewName =
-    document.querySelector(
-      ".product-preview-name"
-    );
-
-
-  const previewPrice =
-    document.querySelector(
-      ".product-preview-price"
-    );
-
-
-  const previewClose =
-    document.querySelector(
-      ".product-preview-close"
-    );
-
-
-  const previewBagButton =
-    document.querySelector(
-      ".preview-bag-button"
-    );
-
-
-  const productSize =
-    document.querySelector(
-      "#product-size"
-    );
-
-
-  productImages.forEach(
-    function (image) {
-
-      image.addEventListener(
-        "click",
-        function () {
-
-          const card =
-            image.closest(
-              ".product-card"
-            );
-
-
-          if (!card) {
-            return;
-          }
-
-
-          const product =
-            getProduct(card);
-
-
-          previewImage.src =
-            product.image;
-
-
-          previewImage.alt =
-            product.name;
-
-
-          previewName.textContent =
-            product.name;
-
-
-          previewPrice.textContent =
-            "GH₵ " +
-            product.price.toLocaleString();
-
-
-          productSize.value = "";
-
-
-          const cards =
-            Array.from(
-              document.querySelectorAll(
-                ".product-card"
-              )
-            );
-
-
-          previewBagButton.dataset.productIndex =
-            cards.indexOf(card);
-
-
-          previewOverlay.classList.add(
-            "active"
+        const preview =
+          document.querySelector(
+            ".product-preview-overlay"
           );
 
-        }
-      );
+        const closeButton =
+          preview.querySelector(
+            ".product-preview-close"
+          );
 
-    }
-  );
+        const addButton =
+          preview.querySelector(
+            ".preview-bag-button"
+          );
 
-
-  previewClose.addEventListener(
-    "click",
-    function () {
-
-      previewOverlay.classList.remove(
-        "active"
-      );
-
-    }
-  );
+        const sizeSelect =
+          preview.querySelector(
+            "#product-size"
+          );
 
 
-  previewOverlay.addEventListener(
-    "click",
-    function (event) {
+        closeButton.addEventListener(
+          "click",
+          function () {
 
-      if (
-        event.target ===
-        previewOverlay
-      ) {
+            preview.remove();
 
-        previewOverlay.classList.remove(
-          "active"
+          }
+        );
+
+
+        preview.addEventListener(
+          "click",
+          function (event) {
+
+            if (
+              event.target === preview
+            ) {
+
+              preview.remove();
+
+            }
+
+          }
+        );
+
+
+        addButton.addEventListener(
+          "click",
+          function () {
+
+            const size =
+              sizeSelect.value;
+
+            if (!size) {
+
+              alert(
+                "Please select a size."
+              );
+
+              return;
+
+            }
+
+
+            addProductToCart(
+              product,
+              size
+            );
+
+
+            preview.remove();
+
+
+            const panel =
+              document.querySelector(
+                ".cart-panel"
+              );
+
+            const overlay =
+              document.querySelector(
+                ".cart-overlay"
+              );
+
+
+            if (panel && overlay) {
+
+              panel.classList.add("open");
+              overlay.classList.add("show");
+
+            }
+
+          }
         );
 
       }
 
-    }
-  );
+    );
 
-
-  previewBagButton.addEventListener(
-    "click",
-    function () {
-
-      const selectedSize =
-        productSize.value;
-
-
-      if (!selectedSize) {
-
-        alert(
-          "Please select a size."
-        );
-
-        return;
-
-      }
-
-
-      const index =
-        parseInt(
-          previewBagButton.dataset.productIndex
-        );
-
-
-      const cards =
-        document.querySelectorAll(
-          ".product-card"
-        );
-
-
-      const card =
-        cards[index];
-
-
-      if (!card) {
-        return;
-      }
-
-
-      const product =
-        getProduct(card);
-
-
-      product.size =
-        selectedSize;
-
-
-      addProductToCart(product);
-
-
-      previewOverlay.classList.remove(
-        "active"
-      );
-
-    }
-  );
-
-}
+  });
 
 
 /* =========================================================
-HEADER SHOPPING BAG
+HEADER SHOPPING BAG BUTTON
 ========================================================= */
 
-const headerBagButton =
+const cartButton =
   document.querySelector(
     '.header-icons button[aria-label="Shopping Bag"]'
   );
 
 
-if (headerBagButton) {
+if (cartButton) {
 
-  headerBagButton.addEventListener(
+  cartButton.addEventListener(
     "click",
     function () {
 
-      openCart();
+      const panel =
+        document.querySelector(".cart-panel");
+
+      const overlay =
+        document.querySelector(".cart-overlay");
+
+
+      if (panel && overlay) {
+
+        panel.classList.add("open");
+        overlay.classList.add("show");
+
+      }
 
     }
   );
@@ -974,7 +775,6 @@ if (searchButton) {
               placeholder="Search products..."
               autocomplete="off"
             >
-
 
             <button
               id="venes-search-close"
@@ -1048,24 +848,26 @@ if (searchButton) {
       );
 
 
+      function closeSearch() {
+
+        searchBox.remove();
+
+        document
+          .querySelectorAll(
+            ".product-card"
+          )
+          .forEach(function (card) {
+
+            card.style.display = "";
+
+          });
+
+      }
+
+
       closeButton.addEventListener(
         "click",
-        function () {
-
-          searchBox.remove();
-
-
-          document
-            .querySelectorAll(
-              ".product-card"
-            )
-            .forEach(function (card) {
-
-              card.style.display = "";
-
-            });
-
-        }
+        closeSearch
       );
 
 
@@ -1077,21 +879,7 @@ if (searchButton) {
             event.target === searchBox
           ) {
 
-            searchBox.remove();
-
-
-            document
-              .querySelectorAll(
-                ".product-card"
-              )
-              .forEach(
-                function (card) {
-
-                  card.style.display =
-                    "";
-
-                }
-              );
+            closeSearch();
 
           }
 
@@ -1104,59 +892,6 @@ if (searchButton) {
 }
 
 
-/* =========================================================
-ESCAPE KEY
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  function (event) {
-
-    if (event.key === "Escape") {
-
-      closeCart();
-
-
-      const preview =
-        document.querySelector(
-          ".product-preview-overlay"
-        );
-
-
-      if (preview) {
-
-        preview.classList.remove(
-          "active"
-        );
-
-      }
-
-
-      const search =
-        document.querySelector(
-          ".venes-search-box"
-        );
-
-
-      if (search) {
-
-        search.remove();
-
-
-        document
-          .querySelectorAll(
-            ".product-card"
-          )
-          .forEach(
-            function (card) {
-
-              card.style.display = "";
-
-
-            }
-          );
-
-      }
 /* =========================================================
 ACCOUNT PANEL
 ========================================================= */
@@ -1179,111 +914,187 @@ if (accountButton) {
         );
 
 
-      if (accountPanel) {
+      if (!accountPanel) {
 
-        accountPanel.classList.add("active");
+        document.body.insertAdjacentHTML(
+          "beforeend",
 
-        return;
+          `
 
-      }
+          <div class="venes-account-panel">
 
+            <div class="account-box">
 
-      document.body.insertAdjacentHTML(
-        "beforeend",
-
-        `
-
-        <div class="venes-account-panel">
-
-          <div class="account-box">
-
-            <button
-              class="account-close"
-              aria-label="Close account"
-            >
-              ×
-            </button>
+              <button
+                class="account-close"
+                aria-label="Close account"
+              >
+                ×
+              </button>
 
 
-            <h2>
-              MY ACCOUNT
-            </h2>
+              <h2>
+                MY ACCOUNT
+              </h2>
 
 
-            <p>
-              Welcome to Venes Collection.
-            </p>
+              <p>
+                Welcome to Venes Collection.
+              </p>
 
 
-            <button class="account-option">
-              MY ORDERS
-            </button>
+              <button class="account-option">
+                MY ORDERS
+              </button>
 
 
-            <button class="account-option">
-              SHOPPING BAG
-            </button>
+              <button class="account-option">
+                SHOPPING BAG
+              </button>
 
 
-            <button class="account-option">
-              CONTACT SUPPORT
-            </button>
+              <button class="account-option">
+                CONTACT SUPPORT
+              </button>
+
+            </div>
 
           </div>
 
-        </div>
-
-        `
-      );
-
-
-      accountPanel =
-        document.querySelector(
-          ".venes-account-panel"
+          `
         );
 
 
-      const closeButton =
-        document.querySelector(
-          ".account-close"
-        );
-
-
-      closeButton.addEventListener(
-        "click",
-        function () {
-
-          accountPanel.classList.remove(
-            "active"
+        accountPanel =
+          document.querySelector(
+            ".venes-account-panel"
           );
 
-        }
-      );
+
+        const closeButton =
+          accountPanel.querySelector(
+            ".account-close"
+          );
 
 
-      accountPanel.addEventListener(
-        "click",
-        function (event) {
-
-          if (
-            event.target === accountPanel
-          ) {
+        closeButton.addEventListener(
+          "click",
+          function () {
 
             accountPanel.classList.remove(
               "active"
             );
 
           }
+        );
 
-        }
-      );
+
+        accountPanel.addEventListener(
+          "click",
+          function (event) {
+
+            if (
+              event.target === accountPanel
+            ) {
+
+              accountPanel.classList.remove(
+                "active"
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+
+      accountPanel.classList.add("active");
 
     }
   );
 
 }
 
+
+/* =========================================================
+ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (event.key !== "Escape") {
+      return;
+    }
+
+
+    const preview =
+      document.querySelector(
+        ".product-preview-overlay"
+      );
+
+    if (preview) {
+      preview.remove();
+    }
+
+
+    const searchBox =
+      document.querySelector(
+        ".venes-search-box"
+      );
+
+    if (searchBox) {
+
+      searchBox.remove();
+
+      document
+        .querySelectorAll(
+          ".product-card"
+        )
+        .forEach(function (card) {
+
+          card.style.display = "";
+
+        });
+
+    }
+
+
+    const accountPanel =
+      document.querySelector(
+        ".venes-account-panel"
+      );
+
+    if (accountPanel) {
+
+      accountPanel.classList.remove(
+        "active"
+      );
+
+    }
+
+
+    const cartPanel =
+      document.querySelector(
+        ".cart-panel"
+      );
+
+    const cartOverlay =
+      document.querySelector(
+        ".cart-overlay"
+      );
+
+
+    if (cartPanel && cartOverlay) {
+
+      cartPanel.classList.remove("open");
+      cartOverlay.classList.remove("show");
+
     }
 
   }
 );
+
+});
