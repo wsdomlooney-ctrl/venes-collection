@@ -853,5 +853,28 @@ function openCheckout() {
 
       message +=
         "MTN PAYMENT NUMBER: 0559584979\n\n";
+      
+      /* =========================================================
+TEST CHECKOUT
+========================================================= */
+
+const testCheckoutButton =
+  document.querySelector(".checkout-button");
+
+if (testCheckoutButton) {
+
+  testCheckoutButton.addEventListener(
+    "click",
+    function () {
+
+      alert(
+        "Venes Collection Checkout is working."
+      );
+
+    }
+  );
+
+}
+
 
      
