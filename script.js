@@ -946,6 +946,24 @@ if (accountButton) {
             <button
               class="account-option"
               type="button"
+              data-account-action="whatsapp"
+            >
+              WHATSAPP
+            </button>
+
+
+            <button
+              class="account-option"
+              type="button"
+              data-account-action="tiktok"
+            >
+              TIKTOK
+            </button>
+
+
+            <button
+              class="account-option"
+              type="button"
               data-account-action="support"
             >
               CONTACT SUPPORT
@@ -1000,7 +1018,6 @@ if (accountButton) {
         /* =================================================
         ACCOUNT OPTIONS
         ================================================= */
-
 
         const accountOptions =
           accountPanel.querySelectorAll(
@@ -1189,6 +1206,34 @@ if (accountButton) {
                     );
 
                   }
+
+                }
+
+
+                /* WHATSAPP */
+
+                if (
+                  action === "whatsapp"
+                ) {
+
+                  window.open(
+                    "https://wa.me/233559584979",
+                    "_blank"
+                  );
+
+                }
+
+
+                /* TIKTOK */
+
+                if (
+                  action === "tiktok"
+                ) {
+
+                  window.open(
+                    "https://www.tiktok.com/@veronica.doeveve",
+                    "_blank"
+                  );
 
                 }
 
