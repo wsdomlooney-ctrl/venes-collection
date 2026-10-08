@@ -1389,3 +1389,90 @@ VENES SEARCH
   }
 
 }
+/* =========================================================
+VENES ACCOUNT PANEL
+========================================================= */
+
+.venes-account-panel {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 10000;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+}
+
+.venes-account-panel.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.account-box {
+  width: 380px;
+  max-width: 90%;
+  height: 100%;
+  background: #ffffff;
+  padding: 40px 30px;
+  position: relative;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.venes-account-panel.active .account-box {
+  transform: translateX(0);
+}
+
+.account-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.account-box h2 {
+  margin: 25px 0 10px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.account-box p {
+  color: #777777;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.account-option {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  color: #111111;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.account-option:hover {
+  background: #111111;
+  color: #ffffff;
+}
+
+@media (max-width: 650px) {
+
+  .account-box {
+    width: 100%;
+    max-width: 100%;
+    padding: 35px 22px;
+  }
+
+}
