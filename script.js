@@ -116,9 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   const cartTotal =
-    cartPanel.querySelector(
-      ".cart-total strong"
-    );
+    cartPanel.querySelector(".cart-total strong");
 
 
   const cartClose =
@@ -211,9 +209,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function addProductToCart(product) {
 
-    product.quantity = 1;
+    const existingProduct =
+      cart.find(function (item) {
 
-    cart.push(product);
+        return (
+          item.name === product.name &&
+          item.size === product.size
+        );
+
+      });
+
+
+    if (existingProduct) {
+
+      existingProduct.quantity++;
+
+    } else {
+
+      product.quantity = 1;
+
+      cart.push(product);
+
+    }
+
 
     updateCart();
 
@@ -242,6 +260,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const product =
           getProduct(card);
 
+
+        /*
+          Product-card buttons currently do not
+          have size selection.
+
+          We keep them working normally.
+        */
 
         addProductToCart(product);
 
@@ -370,9 +395,13 @@ document.addEventListener("DOMContentLoaded", function () {
       cart.reduce(
         function (sum, product) {
 
-          return sum +
-            (product.price *
-             (product.quantity || 1));
+          return (
+            sum +
+            (
+              product.price *
+              (product.quantity || 1)
+            )
+          );
 
         },
         0
@@ -534,14 +563,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       <div class="product-preview-details">
 
-        <h2
-          class="product-preview-name"
-        ></h2>
+        <h2 class="product-preview-name"></h2>
 
 
-        <p
-          class="product-preview-price"
-        ></p>
+        <p class="product-preview-price"></p>
 
 
         <div class="product-size-selector">
@@ -586,9 +611,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 
 
-        <button
-          class="preview-bag-button"
-        >
+        <button class="preview-bag-button">
           ADD TO BAG
         </button>
 
@@ -687,7 +710,7 @@ document.addEventListener("DOMContentLoaded", function () {
           price;
 
 
-        /* Reset size */
+        /* Reset size every time */
 
         productSize.value =
           "";
@@ -733,7 +756,7 @@ document.addEventListener("DOMContentLoaded", function () {
         productSize.value;
 
 
-      /* Size is required */
+      /* Size required */
 
       if (!selectedSize) {
 
@@ -769,14 +792,7 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedSize;
 
 
-      product.quantity =
-        1;
-
-
-      cart.push(product);
-
-
-      updateCart();
+      addProductToCart(product);
 
 
       /* Close preview */
@@ -789,11 +805,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.classList.remove(
         "preview-open"
       );
-
-
-      /* Open shopping bag */
-
-      openCart();
 
     }
   );
