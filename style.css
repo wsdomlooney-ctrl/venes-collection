@@ -205,7 +205,7 @@ HEADER
 
 
 /* =========================================================
-CATEGORIES
+   CATEGORIES
 ========================================================= */
 
 .categories {
@@ -224,6 +224,7 @@ CATEGORIES
   color: #55514e;
   font-size: 11px;
   font-weight: 600;
+  letter-spacing: 1px;
   cursor: pointer;
   padding: 7px 0;
   transition: all 0.25s ease;
@@ -238,16 +239,21 @@ CATEGORIES
   color: #111;
   border-bottom: 1px solid #111;
 }
-@media (max-with: 650px) {
+
+@media (max-width: 650px) {
+
   .categories {
     gap: 20px;
     padding: 0 15px 38px;
   }
+
   .category {
     font-size: 10px;
-    letter-spacing: 0.08px;
+    letter-spacing: 0.8px;
   }
+
 }
+
 /* =========================================================
 PRODUCT GRID
 ========================================================= */
