@@ -3,21 +3,18 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Shop | Venes Collection</title>
+<title>Shop | Venes Collection</title>
 
-  <meta
-    name="description"
-    content="Shop Venes Collection — fashion, bags, shoes and accessories."
-  >
+<meta
+name="description"
+content="Shop Venes Collection — fashion, bags, shoes and accessories."
+>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -25,489 +22,536 @@
 <body>
 
 
-  <!-- =====================================================
-  HEADER
-  ====================================================== -->
+<header class="header">
 
-  <header class="header">
+<button
+class="menu-toggle"
+aria-label="Open menu"
+>
+☰
+</button>
 
-    <button
-      class="menu-toggle"
-      aria-label="Open menu"
-    >
-      ☰
-    </button>
 
+<a href="index.html" class="brand">
 
-    <a href="index.html" class="brand">
+<img
+src="venes-logo.jpg"
+alt="Venes Collection"
+>
 
-      <img
-        src="venes-logo.jpg"
-        alt="Venes Collection"
-      >
+</a>
 
-    </a>
 
+<nav
+class="navigation"
+id="mobile-navigation"
+>
 
-    <nav
-      class="navigation"
-      id="mobile-navigation"
-    >
+<a href="index.html">HOME</a>
 
-      <a href="index.html">HOME</a>
+<a href="shop.html">SHOP</a>
 
-      <a href="shop.html">SHOP</a>
+<a href="collection.html">COLLECTION</a>
 
-      <a href="collection.html">COLLECTION</a>
+<a href="about.html">ABOUT</a>
 
-      <a href="about.html">ABOUT</a>
+<a href="contact.html">CONTACT</a>
 
-      <a href="contact.html">CONTACT</a>
+</nav>
 
-    </nav>
 
+<div class="header-icons">
 
-    <div class="header-icons">
+<button aria-label="Search">
+⌕
+</button>
 
-      <button aria-label="Search">
-        ⌕
-      </button>
+<button aria-label="Account">
+♙
+</button>
 
-      <button aria-label="Account">
-        ♙
-      </button>
+<button aria-label="Shopping Bag">
+♧
+</button>
 
-      <button aria-label="Shopping Bag">
-        ♧
-      </button>
+</div>
 
-    </div>
+</header>
 
-  </header>
 
 
+<main>
 
-  <!-- =====================================================
-  SHOP
-  ====================================================== -->
 
-  <main>
+<section class="shop-intro">
 
+<h1>
+SHOP VENES COLLECTION
+</h1>
 
-    <section class="shop-intro">
+<p>
+Discover our latest fashion, bags, shoes and accessories.
+</p>
 
-      <h1>
-        SHOP VENES COLLECTION
-      </h1>
+</section>
 
-      <p>
-        Discover our latest fashion, bags, shoes and accessories.
-      </p>
 
-    </section>
 
+<div class="categories">
 
+<button
+class="category active"
+data-category="all"
+>
+ALL
+</button>
 
-    <!-- Categories -->
 
-    <div class="categories">
+<button
+class="category"
+data-category="clothing"
+>
+CLOTHING
+</button>
 
-      <button class="category active">
-        ALL
-      </button>
 
-      <button class="category">
-        CLOTHING
-      </button>
+<button
+class="category"
+data-category="shoes"
+>
+SHOES
+</button>
 
-      <button class="category">
-        SHOES
-      </button>
 
-      <button class="category">
-        BAGS
-      </button>
+<button
+class="category"
+data-category="bags"
+>
+BAGS
+</button>
 
-      <button class="category">
-        ACCESSORIES
-      </button>
 
-    </div>
+<button
+class="category"
+data-category="accessories"
+>
+ACCESSORIES
+</button>
 
+</div>
 
 
-    <!-- Products -->
 
-    <section class="products">
+<section class="products">
 
 
-      <!-- PRODUCT 1 -->
+<!-- =====================================================
+PRODUCT 1 — SHOES
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="shoes"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="IMG_0075.jpeg"
-            alt="Venes Blue Sandals"
-          >
+<img
+src="IMG_0075.jpeg"
+alt="Venes Blue Sandals"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Blue Sandals
-          </h3>
+<h3>
+Venes Blue Sandals
+</h3>
 
-          <p class="price">
-            GH₵ 120
-          </p>
+<p class="price">
+GH₵ 120
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
 
-      <!-- PRODUCT 2 -->
+<!-- =====================================================
+PRODUCT 2 — CLOTHING
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="clothing"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="IMG_0077.jpeg"
-            alt="Venes Jeans Trouser"
-          >
+<img
+src="IMG_0077.jpeg"
+alt="Venes Jeans Trouser"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Jeans Trouser
-          </h3>
+<h3>
+Venes Jeans Trouser
+</h3>
 
-          <p class="price">
-            GH₵ 200
-          </p>
+<p class="price">
+GH₵ 200
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
 
-      <!-- PRODUCT 3 -->
+<!-- =====================================================
+PRODUCT 3 — CLOTHING
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="clothing"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="images/products/puffer-jacket.jpg"
-            alt="Venes Puffer Jacket"
-          >
+<img
+src="images/products/puffer-jacket.jpg"
+alt="Venes Puffer Jacket"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Puffer Jacket
-          </h3>
+<h3>
+Venes Puffer Jacket
+</h3>
 
-          <p class="price">
-            GH₵ 350
-          </p>
+<p class="price">
+GH₵ 350
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
 
-      <!-- PRODUCT 4 -->
+<!-- =====================================================
+PRODUCT 4 — CLOTHING
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="clothing"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="images/products/corduroy-jacket.jpg"
-            alt="Venes Corduroy Jacket"
-          >
+<img
+src="images/products/corduroy-jacket.jpg"
+alt="Venes Corduroy Jacket"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Corduroy Jacket
-          </h3>
+<h3>
+Venes Corduroy Jacket
+</h3>
 
-          <p class="price">
-            GH₵ 300
-          </p>
+<p class="price">
+GH₵ 300
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
 
-      <!-- PRODUCT 5 -->
+<!-- =====================================================
+PRODUCT 5 — CLOTHING
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="clothing"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="images/products/flannel-shirt.jpg"
-            alt="Venes Flannel Shirt"
-          >
+<img
+src="images/products/flannel-shirt.jpg"
+alt="Venes Flannel Shirt"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Flannel Shirt
-          </h3>
+<h3>
+Venes Flannel Shirt
+</h3>
 
-          <p class="price">
-            GH₵ 180
-          </p>
+<p class="price">
+GH₵ 180
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
 
-      <!-- PRODUCT 6 -->
+<!-- =====================================================
+PRODUCT 6 — CLOTHING
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="clothing"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="images/products/cargo-pants.jpg"
-            alt="Venes Cargo Pants"
-          >
+<img
+src="images/products/cargo-pants.jpg"
+alt="Venes Cargo Pants"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Cargo Pants
-          </h3>
+<h3>
+Venes Cargo Pants
+</h3>
 
-          <p class="price">
-            GH₵ 220
-          </p>
+<p class="price">
+GH₵ 220
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
 
-      <!-- PRODUCT 7 -->
+<!-- =====================================================
+PRODUCT 7 — CLOTHING
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="clothing"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="images/products/wide-leg-pants.jpg"
-            alt="Venes Wide Leg Pants"
-          >
+<img
+src="images/products/wide-leg-pants.jpg"
+alt="Venes Wide Leg Pants"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Wide Leg Pants
-          </h3>
+<h3>
+Venes Wide Leg Pants
+</h3>
 
-          <p class="price">
-            GH₵ 240
-          </p>
+<p class="price">
+GH₵ 240
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
 
-      <!-- PRODUCT 8 -->
+<!-- =====================================================
+PRODUCT 8 — CLOTHING
+===================================================== -->
 
-      <article class="product-card">
+<article
+class="product-card"
+data-category="clothing"
+>
 
-        <div class="product-image">
+<div class="product-image">
 
-          <img
-            src="images/products/varsity-jacket.jpg"
-            alt="Venes Varsity Jacket"
-          >
+<img
+src="images/products/varsity-jacket.jpg"
+alt="Venes Varsity Jacket"
+>
 
-        </div>
+</div>
 
 
-        <div class="product-details">
+<div class="product-details">
 
-          <h3>
-            Venes Varsity Jacket
-          </h3>
+<h3>
+Venes Varsity Jacket
+</h3>
 
-          <p class="price">
-            GH₵ 320
-          </p>
+<p class="price">
+GH₵ 320
+</p>
 
 
-          <div class="product-bottom">
+<div class="product-bottom">
 
-            <div class="rating">
-              ★★★★★
-              <span>(New)</span>
-            </div>
+<div class="rating">
+★★★★★
+<span>(New)</span>
+</div>
 
 
-            <button class="bag-button">
-              ♧
-            </button>
+<button class="bag-button">
+♧
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
 
-    </section>
+</section>
 
-  </main>
+</main>
 
 
-  <!-- JavaScript -->
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
 
 </body>
 
