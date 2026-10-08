@@ -1708,3 +1708,50 @@ document.addEventListener(
 );
 
 });
+/* =========================================================
+DESKTOP PRODUCT CLICK FIX
+========================================================= */
+
+@media (min-width: 651px) {
+
+  .product-card {
+    position: relative;
+  }
+
+  .product-image {
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .product-image img {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  .product-details {
+    position: relative;
+    z-index: 5;
+  }
+
+  .product-bottom {
+    position: relative;
+    z-index: 10;
+  }
+
+  .bag-button {
+    position: relative;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  .product-card button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+}
+
+
