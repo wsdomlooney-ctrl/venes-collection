@@ -1098,3 +1098,108 @@ document.addEventListener(
 );
 
 });
+/* =========================================================
+ACCOUNT BUTTON - DIRECT FIX
+========================================================= */
+
+document.addEventListener("click", function (event) {
+
+  const accountButton =
+    event.target.closest(
+      '.header-icons button[aria-label="Account"]'
+    );
+
+  if (!accountButton) {
+    return;
+  }
+
+  let accountPanel =
+    document.querySelector(".venes-account-panel");
+
+
+  if (!accountPanel) {
+
+    accountPanel =
+      document.createElement("div");
+
+    accountPanel.className =
+      "venes-account-panel";
+
+
+    accountPanel.innerHTML = `
+
+      <div class="account-box">
+
+        <button
+          class="account-close"
+          aria-label="Close account"
+        >
+          ×
+        </button>
+
+        <h2>MY ACCOUNT</h2>
+
+        <p>
+          Welcome to Venes Collection.
+        </p>
+
+        <button class="account-option">
+          MY ORDERS
+        </button>
+
+        <button class="account-option">
+          SHOPPING BAG
+        </button>
+
+        <button class="account-option">
+          CONTACT SUPPORT
+        </button>
+
+      </div>
+
+    `;
+
+
+    document.body.appendChild(accountPanel);
+
+
+    const closeButton =
+      accountPanel.querySelector(
+        ".account-close"
+      );
+
+
+    closeButton.addEventListener(
+      "click",
+      function () {
+
+        accountPanel.classList.remove(
+          "active"
+        );
+
+      }
+    );
+
+
+    accountPanel.addEventListener(
+      "click",
+      function (e) {
+
+        if (e.target === accountPanel) {
+
+          accountPanel.classList.remove(
+            "active"
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  accountPanel.classList.add("active");
+
+});
+
