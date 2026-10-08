@@ -1,604 +1,512 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-/* =========================================================
-MOBILE MENU
-========================================================= */
+  /* =========================================================
+     VENES COLLECTION — MAIN SCRIPT
+  ========================================================= */
 
-const menuToggle = document.querySelector(".menu-toggle");
-const navigation = document.querySelector(".navigation");
+  /* =========================================================
+     MOBILE MENU
+  ========================================================= */
 
-if (menuToggle && navigation) {
+  const menuToggle = document.querySelector(".menu-toggle");
+  const navigation = document.querySelector(".navigation");
 
-  menuToggle.addEventListener("click", function () {
-    navigation.classList.toggle("mobile-open");
-  });
-
-}
-
-
-/* =========================================================
-CATEGORY FILTER
-========================================================= */
-
-const categoryButtons =
-  document.querySelectorAll(".category");
-
-const productCards =
-  document.querySelectorAll(".product-card");
-
-
-categoryButtons.forEach(function (button) {
-
-  button.addEventListener("click", function () {
-
-    categoryButtons.forEach(function (btn) {
-      btn.classList.remove("active");
+  if (menuToggle && navigation) {
+    menuToggle.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      navigation.classList.toggle("mobile-open");
     });
 
-    button.classList.add("active");
+    navigation.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        navigation.classList.remove("mobile-open");
+      });
+    });
+  }
 
-    const selectedCategory =
-      button.getAttribute("data-category");
 
-    productCards.forEach(function (card) {
+  /* =========================================================
+     CATEGORY FILTER
+  ========================================================= */
 
-      const cardCategory =
-        card.getAttribute("data-category");
+  const categoryButtons = document.querySelectorAll(".category");
+  const productCards = document.querySelectorAll(".product-card");
 
-      if (
-        selectedCategory === "all" ||
-        selectedCategory === cardCategory
-      ) {
+  categoryButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
 
-        card.style.display = "";
+      categoryButtons.forEach(function (btn) {
+        btn.classList.remove("active");
+      });
 
-      } else {
+      button.classList.add("active");
 
-        card.style.display = "none";
+      const selectedCategory =
+        button.getAttribute("data-category");
 
-      }
+      productCards.forEach(function (card) {
+
+        const cardCategory =
+          card.getAttribute("data-category");
+
+        if (
+          selectedCategory === "all" ||
+          selectedCategory === cardCategory
+        ) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+
+      });
 
     });
-
   });
 
-});
+
+  /* =========================================================
+     PRODUCT INFORMATION
+  ========================================================= */
+
+  function getProduct(card) {
+
+    const image =
+      card.querySelector(".product-image img");
+
+    const name =
+      card.querySelector("h3");
+
+    const price =
+      card.querySelector(".price");
+
+    return {
+      name: name ? name.textContent.trim() : "Venes Collection Item",
+      price: price ? price.textContent.trim() : "GH₵ 0",
+      image: image ? image.getAttribute("src") : "",
+      category: card.getAttribute("data-category") || ""
+    };
+
+  }
 
 
-/* =========================================================
-PRODUCT INFORMATION
-========================================================= */
+  /* =========================================================
+     SHOPPING CART
+  ========================================================= */
 
-function getProduct(card) {
+  let cart = [];
 
-  const name =
-    card.querySelector("h3")?.textContent.trim() || "";
+  function addProductToCart(product, size) {
 
-  const priceText =
-    card.querySelector(".price")?.textContent || "0";
-
-  const price =
-    parseFloat(
-      priceText.replace(/[^0-9.]/g, "")
-    ) || 0;
-
-  const image =
-    card.querySelector("img")?.getAttribute("src") || "";
-
-  return {
-    name: name,
-    price: price,
-    image: image
-  };
-
-}
-
-
-/* =========================================================
-SHOPPING BAG
-========================================================= */
-
-let cart = [];
-
-
-/* =========================================================
-ADD PRODUCT TO CART
-========================================================= */
-
-function addProductToCart(product, size = "") {
-
-  const existing =
-    cart.find(function (item) {
+    const existingItem = cart.find(function (item) {
 
       return (
         item.name === product.name &&
-        item.size === size
+        item.size === (size || "")
       );
 
     });
 
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
 
-  if (existing) {
+      cart.push({
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        category: product.category,
+        size: size || "",
+        quantity: 1
+      });
 
-    existing.quantity += 1;
-
-  } else {
-
-    cart.push({
-
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      size: size,
-      quantity: 1
-
-    });
-
-  }
-
-
-  updateCart();
-
-}
-
-
-/* =========================================================
-UPDATE CART
-========================================================= */
-
-function updateCart() {
-
-  const cartItems =
-    document.querySelector(".cart-items");
-
-  const cartTotal =
-    document.querySelector(".cart-total strong");
-
-
-  if (!cartItems) return;
-
-
-  if (cart.length === 0) {
-
-    cartItems.innerHTML =
-      '<p class="empty-cart">Your shopping bag is empty.</p>';
-
-    if (cartTotal) {
-      cartTotal.textContent = "GH₵ 0";
     }
 
-    return;
+    updateCart();
 
   }
 
 
-  let total = 0;
+  function priceToNumber(price) {
 
+    if (!price) return 0;
 
-  cartItems.innerHTML =
-    cart.map(function (item, index) {
+    const cleaned =
+      price.replace(/[^\d.]/g, "");
 
-      const itemTotal =
-        item.price * item.quantity;
-
-      total += itemTotal;
-
-
-      return `
-
-        <div class="cart-item">
-
-          <img
-            src="${item.image}"
-            alt="${item.name}"
-          >
-
-          <div class="cart-item-info">
-
-            <h3>
-              ${item.name}
-            </h3>
-
-            ${
-              item.size
-              ? `<p>Size: ${item.size}</p>`
-              : ""
-            }
-
-            <p>
-              GH₵ ${item.price}
-            </p>
-
-            <div class="cart-quantity">
-
-              <button
-                class="quantity-minus"
-                data-index="${index}"
-                type="button"
-              >
-                −
-              </button>
-
-              <span>
-                ${item.quantity}
-              </span>
-
-              <button
-                class="quantity-plus"
-                data-index="${index}"
-                type="button"
-              >
-                +
-              </button>
-
-            </div>
-
-            <button
-              class="remove-item"
-              data-index="${index}"
-              type="button"
-            >
-              Remove
-            </button>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }).join("");
-
-
-  if (cartTotal) {
-
-    cartTotal.textContent =
-      "GH₵ " + total;
+    return parseFloat(cleaned) || 0;
 
   }
 
 
-  document
-    .querySelectorAll(".remove-item")
-    .forEach(function (button) {
+  function formatPrice(amount) {
 
-      button.addEventListener("click", function () {
+    return (
+      "GH₵ " +
+      amount.toLocaleString("en-GH", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })
+    );
 
-        const index =
-          parseInt(
-            button.getAttribute("data-index")
-          );
-
-        cart.splice(index, 1);
-
-        updateCart();
-
-      });
-
-    });
-
-
-  document
-    .querySelectorAll(".quantity-minus")
-    .forEach(function (button) {
-
-      button.addEventListener("click", function () {
-
-        const index =
-          parseInt(
-            button.getAttribute("data-index")
-          );
-
-        if (!cart[index]) return;
-
-
-        cart[index].quantity -= 1;
-
-
-        if (cart[index].quantity <= 0) {
-
-          cart.splice(index, 1);
-
-        }
-
-
-        updateCart();
-
-      });
-
-    });
-
-
-  document
-    .querySelectorAll(".quantity-plus")
-    .forEach(function (button) {
-
-      button.addEventListener("click", function () {
-
-        const index =
-          parseInt(
-            button.getAttribute("data-index")
-          );
-
-        if (!cart[index]) return;
-
-
-        cart[index].quantity += 1;
-
-        updateCart();
-
-      });
-
-    });
-
-}
-
-
-/* =========================================================
-CREATE SHOPPING BAG
-========================================================= */
-
-function createCart() {
-
-  if (document.querySelector(".cart-panel")) {
-    return;
   }
 
 
-  document.body.insertAdjacentHTML(
-    "beforeend",
+  /* =========================================================
+     CREATE SHOPPING BAG
+  ========================================================= */
 
-    `
+  function createCart() {
 
-    <div class="cart-overlay"></div>
+    if (document.querySelector(".cart-panel")) {
+      return;
+    }
 
+    const overlay =
+      document.createElement("div");
 
-    <div class="cart-panel">
+    overlay.className = "cart-overlay";
 
+    const panel =
+      document.createElement("aside");
+
+    panel.className = "cart-panel";
+
+    panel.innerHTML = `
       <div class="cart-header">
-
-        <h2>
-          SHOPPING BAG
-        </h2>
-
-        <button
-          class="cart-close"
-          type="button"
-          aria-label="Close shopping bag"
-        >
-          ×
-        </button>
-
+        <h2>YOUR SHOPPING BAG</h2>
+        <button class="cart-close" aria-label="Close shopping bag">×</button>
       </div>
 
-
-      <div class="cart-items">
-
-        <p class="empty-cart">
-          Your shopping bag is empty.
-        </p>
-
-      </div>
-
+      <div class="cart-items"></div>
 
       <div class="cart-footer">
-
         <div class="cart-total">
-
-          <span>
-            TOTAL
-          </span>
-
-          <strong>
-            GH₵ 0
-          </strong>
-
+          <span>TOTAL</span>
+          <strong class="cart-total-value">GH₵ 0</strong>
         </div>
 
-
-        <button
-          class="checkout-button"
-          type="button"
-        >
+        <button class="checkout-button">
           CHECKOUT
         </button>
-
       </div>
+    `;
 
-    </div>
+    document.body.appendChild(overlay);
+    document.body.appendChild(panel);
 
-    `
-  );
+    const closeButton =
+      panel.querySelector(".cart-close");
+
+    closeButton.addEventListener("click", function () {
+      closeCart();
+    });
+
+    overlay.addEventListener("click", function () {
+      closeCart();
+    });
+
+    const checkoutButton =
+      panel.querySelector(".checkout-button");
+
+    checkoutButton.addEventListener("click", function () {
+      openCheckout();
+    });
+
+  }
 
 
-  const overlay =
-    document.querySelector(".cart-overlay");
+  function openCart() {
 
-  const panel =
-    document.querySelector(".cart-panel");
+    createCart();
 
-  const closeButton =
-    document.querySelector(".cart-close");
+    const panel =
+      document.querySelector(".cart-panel");
+
+    const overlay =
+      document.querySelector(".cart-overlay");
+
+    if (panel && overlay) {
+
+      panel.classList.add("open");
+      overlay.classList.add("show");
+
+    }
+
+  }
 
 
   function closeCart() {
 
-    panel.classList.remove("open");
+    const panel =
+      document.querySelector(".cart-panel");
 
-    overlay.classList.remove("show");
+    const overlay =
+      document.querySelector(".cart-overlay");
+
+    if (panel) {
+      panel.classList.remove("open");
+    }
+
+    if (overlay) {
+      overlay.classList.remove("show");
+    }
 
   }
 
 
-  closeButton.addEventListener(
-    "click",
-    closeCart
-  );
+  /* =========================================================
+     UPDATE CART
+  ========================================================= */
 
+  function updateCart() {
 
-  overlay.addEventListener(
-    "click",
-    closeCart
-  );
+    createCart();
 
+    const itemsContainer =
+      document.querySelector(".cart-items");
 
-  const checkoutButton =
-    document.querySelector(".checkout-button");
+    const totalElement =
+      document.querySelector(".cart-total-value");
 
-
-  checkoutButton.addEventListener(
-    "click",
-    function () {
-
-      if (cart.length === 0) {
-
-        alert(
-          "Your shopping bag is empty."
-        );
-
-        return;
-
-      }
-
-
-      openCheckout();
-
+    if (!itemsContainer || !totalElement) {
+      return;
     }
-  );
 
-}
+    itemsContainer.innerHTML = "";
+
+    if (cart.length === 0) {
+
+      itemsContainer.innerHTML = `
+        <div class="empty-cart">
+          Your shopping bag is empty.
+        </div>
+      `;
+
+      totalElement.textContent = "GH₵ 0";
+
+      return;
+    }
+
+    let total = 0;
+
+    cart.forEach(function (item, index) {
+
+      const itemPrice =
+        priceToNumber(item.price);
+
+      const itemTotal =
+        itemPrice * item.quantity;
+
+      total += itemTotal;
+
+      const cartItem =
+        document.createElement("div");
+
+      cartItem.className = "cart-item";
+
+      cartItem.innerHTML = `
+        <img
+          src="${item.image}"
+          alt="${item.name}"
+        >
+
+        <div class="cart-item-info">
+
+          <h3>${item.name}</h3>
+
+          <p>${item.price}</p>
+
+          ${
+            item.size
+              ? `<p>Size: ${item.size}</p>`
+              : ""
+          }
+
+          <div class="cart-quantity">
+
+            <button
+              class="quantity-minus"
+              data-index="${index}"
+            >−</button>
+
+            <span>${item.quantity}</span>
+
+            <button
+              class="quantity-plus"
+              data-index="${index}"
+            >+</button>
+
+          </div>
+
+          <button
+            class="remove-item"
+            data-index="${index}"
+          >
+            Remove
+          </button>
+
+        </div>
+      `;
+
+      itemsContainer.appendChild(cartItem);
+
+    });
+
+    totalElement.textContent =
+      formatPrice(total);
 
 
-createCart();
+    /* =========================================================
+       REMOVE ITEMS
+    ========================================================= */
+
+    itemsContainer
+      .querySelectorAll(".remove-item")
+      .forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+          const index =
+            parseInt(
+              button.getAttribute("data-index")
+            );
+
+          cart.splice(index, 1);
+
+          updateCart();
+
+        });
+
+      });
 
 
-/* =========================================================
-YOUR ACTUAL SHOP BUTTONS
-========================================================= */
+    /* =========================================================
+       QUANTITY MINUS
+    ========================================================= */
 
-document
-  .querySelectorAll(".bag-button")
-  .forEach(function (button) {
+    itemsContainer
+      .querySelectorAll(".quantity-minus")
+      .forEach(function (button) {
 
-    button.addEventListener(
-      "click",
-      function (event) {
+        button.addEventListener("click", function () {
+
+          const index =
+            parseInt(
+              button.getAttribute("data-index")
+            );
+
+          if (cart[index]) {
+
+            cart[index].quantity -= 1;
+
+            if (cart[index].quantity <= 0) {
+              cart.splice(index, 1);
+            }
+
+          }
+
+          updateCart();
+
+        });
+
+      });
+
+
+    /* =========================================================
+       QUANTITY PLUS
+    ========================================================= */
+
+    itemsContainer
+      .querySelectorAll(".quantity-plus")
+      .forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+          const index =
+            parseInt(
+              button.getAttribute("data-index")
+            );
+
+          if (cart[index]) {
+            cart[index].quantity += 1;
+          }
+
+          updateCart();
+
+        });
+
+      });
+
+  }
+
+
+  /* =========================================================
+     ADD TO BAG — SHOP PAGE
+  ========================================================= */
+
+  document
+    .querySelectorAll(".bag-button")
+    .forEach(function (button) {
+
+      button.addEventListener("click", function (event) {
 
         event.preventDefault();
-
         event.stopPropagation();
-
 
         const card =
           button.closest(".product-card");
 
-
-        if (!card) return;
-
+        if (!card) {
+          return;
+        }
 
         const product =
           getProduct(card);
-
 
         addProductToCart(product);
 
+        openCart();
 
-        const panel =
-          document.querySelector(".cart-panel");
+      });
 
-        const overlay =
-          document.querySelector(".cart-overlay");
-
-
-        if (panel && overlay) {
-
-          panel.classList.add("open");
-
-          overlay.classList.add("show");
-
-        }
-
-      }
-    );
-
-  });
+    });
 
 
-/* =========================================================
-PRODUCT IMAGE PREVIEW
-========================================================= */
+  /* =========================================================
+     PRODUCT PREVIEW
+  ========================================================= */
 
-document
-  .querySelectorAll(".product-image")
-  .forEach(function (imageBox) {
+  function createProductPreview(product) {
 
-    imageBox.addEventListener(
-      "click",
-      function () {
+    const existing =
+      document.querySelector(".product-preview-overlay");
 
-        const card =
-          imageBox.closest(".product-card");
+    if (existing) {
+      existing.remove();
+    }
 
+    const overlay =
+      document.createElement("div");
 
-        if (!card) return;
+    overlay.className =
+      "product-preview-overlay";
 
-
-        const product =
-          getProduct(card);
-
-
-        openProductPreview(product);
-
-      }
-    );
-
-  });
-
-
-/* =========================================================
-PRODUCT PREVIEW
-========================================================= */
-
-function openProductPreview(product) {
-
-  const existing =
-    document.querySelector(
-      ".product-preview-overlay"
-    );
-
-
-  if (existing) {
-    existing.remove();
-  }
-
-
-  document.body.insertAdjacentHTML(
-    "beforeend",
-
-    `
-
-    <div class="product-preview-overlay active">
-
+    overlay.innerHTML = `
       <div class="product-preview">
 
         <button
           class="product-preview-close"
-          type="button"
+          aria-label="Close product preview"
         >
           ×
         </button>
 
-
-        <div>
-
-          <img
-            class="product-preview-image"
-            src="${product.image}"
-            alt="${product.name}"
-          >
-
-        </div>
-
+        <img
+          class="product-preview-image"
+          src="${product.image}"
+          alt="${product.name}"
+        >
 
         <div class="product-preview-details">
 
@@ -606,905 +514,642 @@ function openProductPreview(product) {
             ${product.name}
           </h2>
 
-
           <p class="product-preview-price">
-            GH₵ ${product.price}
+            ${product.price}
           </p>
-
 
           <div class="product-size-selector">
 
-            <label for="preview-size">
-              SIZE
+            <label for="product-size">
+              SELECT SIZE
             </label>
 
-
-            <select id="preview-size">
-
+            <select id="product-size">
               <option value="">
                 Select size
               </option>
 
-              <option value="XS">
-                XS
-              </option>
-
-              <option value="S">
-                S
-              </option>
-
-              <option value="M">
-                M
-              </option>
-
-              <option value="L">
-                L
-              </option>
-
-              <option value="XL">
-                XL
-              </option>
-
-              <option value="XXL">
-                XXL
-              </option>
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
 
             </select>
 
           </div>
 
-
-          <button
-            class="preview-bag-button"
-            type="button"
-          >
+          <button class="preview-bag-button">
             ADD TO BAG
           </button>
 
         </div>
 
       </div>
+    `;
 
-    </div>
+    document.body.appendChild(overlay);
 
-    `
-  );
-
-
-  const preview =
-    document.querySelector(
-      ".product-preview-overlay"
-    );
+    setTimeout(function () {
+      overlay.classList.add("active");
+    }, 10);
 
 
-  const close =
-    preview.querySelector(
-      ".product-preview-close"
-    );
+    const closeButton =
+      overlay.querySelector(".product-preview-close");
+
+    closeButton.addEventListener("click", function () {
+      overlay.remove();
+    });
 
 
-  const addButton =
-    preview.querySelector(
-      ".preview-bag-button"
-    );
+    overlay.addEventListener("click", function (event) {
 
-
-  const sizeSelect =
-    preview.querySelector(
-      "#preview-size"
-    );
-
-
-  close.addEventListener(
-    "click",
-    function () {
-
-      preview.remove();
-
-    }
-  );
-
-
-  preview.addEventListener(
-    "click",
-    function (event) {
-
-      if (event.target === preview) {
-
-        preview.remove();
-
+      if (event.target === overlay) {
+        overlay.remove();
       }
 
-    }
-  );
+    });
 
 
-  addButton.addEventListener(
-    "click",
-    function () {
+    const previewButton =
+      overlay.querySelector(".preview-bag-button");
+
+    previewButton.addEventListener("click", function (event) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const sizeSelect =
+        overlay.querySelector("#product-size");
 
       const selectedSize =
-        sizeSelect.value;
-
+        sizeSelect ? sizeSelect.value : "";
 
       addProductToCart(
         product,
         selectedSize
       );
 
+      overlay.remove();
 
-      preview.remove();
+      openCart();
 
+    });
 
-      const panel =
-        document.querySelector(".cart-panel");
-
-      const overlay =
-        document.querySelector(".cart-overlay");
+  }
 
 
-      if (panel && overlay) {
+  /* =========================================================
+     PRODUCT IMAGE CLICK
+  ========================================================= */
 
-        panel.classList.add("open");
+  document
+    .querySelectorAll(".product-image img")
+    .forEach(function (image) {
 
-        overlay.classList.add("show");
+      image.addEventListener("click", function (event) {
 
-      }
+        event.preventDefault();
+        event.stopPropagation();
+
+        const card =
+          image.closest(".product-card");
+
+        if (!card) {
+          return;
+        }
+
+        const product =
+          getProduct(card);
+
+        createProductPreview(product);
+
+      });
+
+    });
+
+
+  /* =========================================================
+     HEADER SHOPPING BAG
+  ========================================================= */
+
+  const headerIcons =
+    document.querySelectorAll(".header-icons button");
+
+  headerIcons.forEach(function (button) {
+
+    const label =
+      (
+        button.getAttribute("aria-label") || ""
+      ).toLowerCase();
+
+    if (label.includes("shopping")) {
+
+      button.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        openCart();
+
+      });
 
     }
-  );
 
-}
-
-
-/* =========================================================
-HEADER SHOPPING BAG
-========================================================= */
-
-const bagButton =
-  document.querySelector(
-    '.header-icons button[aria-label="Shopping Bag"]'
-  );
+  });
 
 
-if (bagButton) {
+  /* =========================================================
+     SEARCH
+  ========================================================= */
 
-  bagButton.addEventListener(
-    "click",
-    function () {
+  function openSearch() {
 
-      const panel =
-        document.querySelector(".cart-panel");
-
-      const overlay =
-        document.querySelector(".cart-overlay");
-
-
-      if (panel && overlay) {
-
-        panel.classList.add("open");
-
-        overlay.classList.add("show");
-
-      }
-
+    if (document.querySelector(".venes-search-box")) {
+      return;
     }
-  );
 
-}
+    const searchBox =
+      document.createElement("div");
 
+    searchBox.className =
+      "venes-search-box";
 
-/* =========================================================
-SEARCH
-========================================================= */
+    searchBox.innerHTML = `
+      <div class="search-inner">
 
-const searchButton =
-  document.querySelector(
-    '.header-icons button[aria-label="Search"]'
-  );
-
-
-if (searchButton) {
-
-  searchButton.addEventListener(
-    "click",
-    function () {
-
-      const existing =
-        document.querySelector(
-          ".venes-search-box"
-        );
-
-
-      if (existing) return;
-
-
-      document.body.insertAdjacentHTML(
-        "beforeend",
-
-        `
-
-        <div class="venes-search-box">
-
-          <div class="search-inner">
-
-            <input
-              id="venes-search-input"
-              type="text"
-              placeholder="Search products..."
-            >
-
-
-            <button
-              id="venes-search-close"
-              type="button"
-            >
-              ×
-            </button>
-
-          </div>
-
-        </div>
-
-        `
-      );
-
-
-      const searchBox =
-        document.querySelector(
-          ".venes-search-box"
-        );
-
-
-      const input =
-        document.querySelector(
-          "#venes-search-input"
-        );
-
-
-      const close =
-        document.querySelector(
-          "#venes-search-close"
-        );
-
-
-      input.focus();
-
-
-      input.addEventListener(
-        "input",
-        function () {
-
-          const searchTerm =
-            input.value
-              .toLowerCase()
-              .trim();
-
-
-          document
-            .querySelectorAll(".product-card")
-            .forEach(function (card) {
-
-              const productName =
-                card
-                  .querySelector("h3")
-                  ?.textContent
-                  .toLowerCase() || "";
-
-
-              if (
-                !searchTerm ||
-                productName.includes(searchTerm)
-              ) {
-
-                card.style.display = "";
-
-              } else {
-
-                card.style.display = "none";
-
-              }
-
-            });
-
-        }
-      );
-
-
-      close.addEventListener(
-        "click",
-        function () {
-
-          searchBox.remove();
-
-        }
-      );
-
-
-      searchBox.addEventListener(
-        "click",
-        function (event) {
-
-          if (event.target === searchBox) {
-
-            searchBox.remove();
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-ACCOUNT
-========================================================= */
-
-const accountButton =
-  document.querySelector(
-    '.header-icons button[aria-label="Account"]'
-  );
-
-
-if (accountButton) {
-
-  accountButton.addEventListener(
-    "click",
-    function () {
-
-      const existing =
-        document.querySelector(
-          ".venes-account-panel"
-        );
-
-
-      if (existing) {
-
-        existing.remove();
-
-        return;
-
-      }
-
-
-      document.body.insertAdjacentHTML(
-        "beforeend",
-
-        `
-
-        <div class="venes-account-panel active">
-
-          <div class="account-box">
-
-            <button
-              class="account-close"
-              type="button"
-            >
-              ×
-            </button>
-
-
-            <h2>
-              MY ACCOUNT
-            </h2>
-
-
-            <p>
-              Manage your Venes Collection orders.
-            </p>
-
-
-            <button
-              class="account-option"
-              type="button"
-              id="view-orders-button"
-            >
-              MY ORDERS
-            </button>
-
-
-            <button
-              class="account-option"
-              type="button"
-              id="account-shop-button"
-            >
-              CONTINUE SHOPPING
-            </button>
-
-          </div>
-
-        </div>
-
-        `
-      );
-
-
-      const panel =
-        document.querySelector(
-          ".venes-account-panel"
-        );
-
-
-      panel
-        .querySelector(".account-close")
-        .addEventListener(
-          "click",
-          function () {
-
-            panel.remove();
-
-          }
-        );
-
-
-      panel.addEventListener(
-        "click",
-        function (event) {
-
-          if (event.target === panel) {
-
-            panel.remove();
-
-          }
-
-        }
-      );
-
-
-      panel
-        .querySelector("#account-shop-button")
-        .addEventListener(
-          "click",
-          function () {
-
-            panel.remove();
-
-          }
-        );
-
-
-      panel
-        .querySelector("#view-orders-button")
-        .addEventListener(
-          "click",
-          function () {
-
-            panel.remove();
-
-            openOrders();
-
-          }
-        );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-MY ORDERS
-========================================================= */
-
-function openOrders() {
-
-  document.body.insertAdjacentHTML(
-    "beforeend",
-
-    `
-
-    <div class="venes-orders-panel active">
-
-      <div class="orders-box">
+        <input
+          id="venes-search-input"
+          type="search"
+          placeholder="Search Venes Collection..."
+          autocomplete="off"
+        >
 
         <button
-          class="orders-close"
-          type="button"
+          id="venes-search-close"
+          aria-label="Close search"
         >
           ×
         </button>
 
+      </div>
+    `;
 
-        <h2>
-          MY ORDERS
-        </h2>
+    document.body.appendChild(searchBox);
+
+    const input =
+      searchBox.querySelector("#venes-search-input");
+
+    const close =
+      searchBox.querySelector("#venes-search-close");
+
+    input.focus();
+
+    close.addEventListener("click", function () {
+      searchBox.remove();
+    });
+
+    searchBox.addEventListener("click", function (event) {
+
+      if (event.target === searchBox) {
+        searchBox.remove();
+      }
+
+    });
+
+    input.addEventListener("input", function () {
+
+      const searchTerm =
+        input.value.toLowerCase().trim();
+
+      document
+        .querySelectorAll(".product-card")
+        .forEach(function (card) {
+
+          const product =
+            getProduct(card);
+
+          const searchableText =
+            (
+              product.name +
+              " " +
+              product.category
+            ).toLowerCase();
+
+          if (
+            !searchTerm ||
+            searchableText.includes(searchTerm)
+          ) {
+            card.style.display = "";
+          } else {
+            card.style.display = "none";
+          }
+
+        });
+
+    });
+
+  }
 
 
-        <p class="orders-empty">
-          Your recent orders will appear here.
+  headerIcons.forEach(function (button) {
+
+    const label =
+      (
+        button.getAttribute("aria-label") || ""
+      ).toLowerCase();
+
+    if (label.includes("search")) {
+
+      button.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        openSearch();
+
+      });
+
+    }
+
+  });
+
+
+  /* =========================================================
+     ACCOUNT
+  ========================================================= */
+
+  function openAccount() {
+
+    if (document.querySelector(".venes-account-panel")) {
+      return;
+    }
+
+    const panel =
+      document.createElement("div");
+
+    panel.className =
+      "venes-account-panel";
+
+    panel.innerHTML = `
+      <div class="account-box">
+
+        <button
+          class="account-close"
+          aria-label="Close account"
+        >
+          ×
+        </button>
+
+        <h2>MY ACCOUNT</h2>
+
+        <p>
+          Manage your Venes Collection shopping experience.
         </p>
 
+        <button class="account-option" id="view-orders">
+          MY ORDERS
+        </button>
+
+        <button class="account-option" id="account-shop">
+          CONTINUE SHOPPING
+        </button>
+
+      </div>
+    `;
+
+    document.body.appendChild(panel);
+
+    setTimeout(function () {
+      panel.classList.add("active");
+    }, 10);
+
+    panel
+      .querySelector(".account-close")
+      .addEventListener("click", function () {
+        panel.remove();
+      });
+
+    panel
+      .querySelector("#account-shop")
+      .addEventListener("click", function () {
+        panel.remove();
+
+        window.location.href = "shop.html";
+      });
+
+    panel
+      .querySelector("#view-orders")
+      .addEventListener("click", function () {
+
+        panel.remove();
+
+        openOrders();
+
+      });
+
+  }
+
+
+  headerIcons.forEach(function (button) {
+
+    const label =
+      (
+        button.getAttribute("aria-label") || ""
+      ).toLowerCase();
+
+    if (label.includes("account")) {
+
+      button.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        openAccount();
+
+      });
+
+    }
+
+  });
+
+
+  /* =========================================================
+     MY ORDERS
+  ========================================================= */
+
+  function openOrders() {
+
+    const panel =
+      document.createElement("div");
+
+    panel.className =
+      "venes-orders-panel";
+
+    panel.innerHTML = `
+      <div class="orders-box">
+
+        <button
+          class="orders-close"
+          aria-label="Close orders"
+        >
+          ×
+        </button>
+
+        <h2>MY ORDERS</h2>
+
+        <p class="orders-empty">
+          Your orders will appear here after checkout.
+        </p>
 
         <button
           class="orders-shop-button"
-          type="button"
         >
           SHOP NOW
         </button>
 
       </div>
+    `;
 
-    </div>
+    document.body.appendChild(panel);
 
-    `
-  );
+    setTimeout(function () {
+      panel.classList.add("active");
+    }, 10);
 
+    panel
+      .querySelector(".orders-close")
+      .addEventListener("click", function () {
+        panel.remove();
+      });
 
-  const panel =
-    document.querySelector(
-      ".venes-orders-panel"
-    );
-
-
-  panel
-    .querySelector(".orders-close")
-    .addEventListener(
-      "click",
-      function () {
+    panel
+      .querySelector(".orders-shop-button")
+      .addEventListener("click", function () {
 
         panel.remove();
 
-      }
-    );
+        window.location.href =
+          "shop.html";
 
+      });
 
-  panel
-    .querySelector(".orders-shop-button")
-    .addEventListener(
-      "click",
-      function () {
-
-        panel.remove();
-
-      }
-    );
-
-
-  panel.addEventListener(
-    "click",
-    function (event) {
-
-      if (event.target === panel) {
-
-        panel.remove();
-
-      }
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-CHECKOUT
-========================================================= */
-
-function openCheckout() {
-
-  const existing =
-    document.querySelector(
-      ".venes-checkout-overlay"
-    );
-
-
-  if (existing) {
-    existing.remove();
   }
 
 
-  let total = 0;
+  /* =========================================================
+     CHECKOUT
+  ========================================================= */
 
+  function openCheckout() {
 
-  cart.forEach(function (item) {
+    if (cart.length === 0) {
 
-    total +=
-      item.price * item.quantity;
+      alert(
+        "Your shopping bag is empty."
+      );
 
-  });
+      return;
+    }
 
+    let total = 0;
 
-  let orderItems = "";
+    let orderSummary = "";
 
+    cart.forEach(function (item) {
 
-  cart.forEach(function (item) {
+      const itemPrice =
+        priceToNumber(item.price);
 
-    orderItems += `
+      total +=
+        itemPrice * item.quantity;
 
-      <div class="checkout-product">
+      orderSummary += `
+        <div class="checkout-order-item">
 
-        <div>
+          <span>
+            ${item.name}
+            ${
+              item.size
+                ? " — Size " + item.size
+                : ""
+            }
+            × ${item.quantity}
+          </span>
 
           <strong>
-            ${item.name}
+            ${formatPrice(
+              itemPrice * item.quantity
+            )}
           </strong>
 
-          ${
-            item.size
-            ? `<small>Size: ${item.size}</small>`
-            : ""
-          }
-
-          <small>
-            Quantity: ${item.quantity}
-          </small>
-
         </div>
+      `;
+
+    });
 
 
-        <strong>
-          GH₵ ${item.price * item.quantity}
-        </strong>
+    const checkout =
+      document.createElement("div");
 
-      </div>
+    checkout.className =
+      "checkout-overlay";
 
-    `;
-
-  });
-
-
-  document.body.insertAdjacentHTML(
-    "beforeend",
-
-    `
-
-    <div class="venes-checkout-overlay">
-
-      <div class="venes-checkout">
+    checkout.innerHTML = `
+      <div class="checkout-box">
 
         <button
           class="checkout-close"
-          type="button"
+          aria-label="Close checkout"
         >
           ×
         </button>
 
+        <h2>CHECKOUT</h2>
 
-        <h2>
-          CHECKOUT
-        </h2>
-
-
-        <p class="checkout-intro">
+        <p class="checkout-subtitle">
           Complete your details to place your order.
         </p>
 
+        <div class="checkout-order-summary">
 
-        <div class="checkout-section">
+          <h3>ORDER SUMMARY</h3>
 
-          <h3>
-            CUSTOMER INFORMATION
-          </h3>
+          ${orderSummary}
 
+          <div class="checkout-grand-total">
+
+            <span>TOTAL</span>
+
+            <strong>
+              ${formatPrice(total)}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="checkout-form">
 
           <label>
             FULL NAME
           </label>
 
           <input
-            id="checkout-name"
             type="text"
-            placeholder="Enter your full name"
+            id="checkout-name"
+            placeholder="Your full name"
           >
-
 
           <label>
             PHONE NUMBER
           </label>
 
           <input
-            id="checkout-phone"
             type="tel"
-            placeholder="Enter your phone number"
+            id="checkout-phone"
+            placeholder="Your phone number"
           >
-
 
           <label>
             DELIVERY LOCATION
           </label>
 
           <input
-            id="checkout-location"
             type="text"
-            placeholder="Enter your delivery location"
+            id="checkout-location"
+            placeholder="Where should we deliver?"
           >
 
-
           <label>
-            DELIVERY NOTES
+            ADDITIONAL NOTES
           </label>
 
           <textarea
             id="checkout-notes"
-            placeholder="Optional delivery instructions"
+            placeholder="Optional"
           ></textarea>
 
-        </div>
+          <div class="payment-box">
 
-
-        <div class="checkout-section">
-
-          <h3>
-            YOUR ORDER
-          </h3>
-
-
-          <div class="checkout-products">
-
-            ${orderItems}
-
-          </div>
-
-
-          <div class="checkout-final-total">
-
-            <span>
-              TOTAL
-            </span>
-
-            <strong>
-              GH₵ ${total}
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <div class="checkout-section">
-
-          <h3>
-            PAYMENT METHOD
-          </h3>
-
-
-          <div class="momo-payment">
-
-            <strong>
-              MOBILE MONEY — MTN
-            </strong>
-
+            <h3>PAYMENT</h3>
 
             <p>
-              You can send payment from any mobile money network.
-              Please send payment to our MTN Mobile Money number.
+              Mobile Money — MTN
             </p>
 
+            <strong>
+              0559584979
+            </strong>
 
-            <div class="momo-number">
-
-              <span>
-                SEND PAYMENT TO
-              </span>
-
-
-              <strong>
-                0559584979
-              </strong>
-
-            </div>
+            <small>
+              Payment can also be sent from other networks to this MTN number.
+            </small>
 
           </div>
 
+          <button
+            class="place-order-button"
+          >
+            PLACE ORDER ON WHATSAPP
+          </button>
+
         </div>
 
-
-        <button
-          class="place-order-button"
-          type="button"
-        >
-          PLACE ORDER
-        </button>
-
-
-        <p class="checkout-note">
-          Your order will be sent to Venes Collection via WhatsApp.
-        </p>
-
       </div>
+    `;
 
-    </div>
-
-    `
-  );
+    document.body.appendChild(checkout);
 
 
-  const checkout =
-    document.querySelector(
-      ".venes-checkout-overlay"
-    );
+    /* =========================================================
+       CLOSE CHECKOUT
+    ========================================================= */
 
-
-  checkout
-    .querySelector(".checkout-close")
-    .addEventListener(
-      "click",
-      function () {
+    checkout
+      .querySelector(".checkout-close")
+      .addEventListener("click", function () {
 
         checkout.remove();
 
-      }
-    );
+      });
 
 
-  checkout.addEventListener(
-    "click",
-    function (event) {
+    /* =========================================================
+       PLACE ORDER
+    ========================================================= */
 
-      if (event.target === checkout) {
-
-        checkout.remove();
-
-      }
-
-    }
-  );
-
-
-  checkout
-    .querySelector(".place-order-button")
-    .addEventListener(
-      "click",
-      function () {
+    checkout
+      .querySelector(".place-order-button")
+      .addEventListener("click", function () {
 
         const name =
-          checkout
+          document
             .querySelector("#checkout-name")
-            .value
-            .trim();
-
+            .value.trim();
 
         const phone =
-          checkout
+          document
             .querySelector("#checkout-phone")
-            .value
-            .trim();
-
+            .value.trim();
 
         const location =
-          checkout
+          document
             .querySelector("#checkout-location")
-            .value
-            .trim();
-
+            .value.trim();
 
         const notes =
-          checkout
+          document
             .querySelector("#checkout-notes")
-            .value
-            .trim();
+            .value.trim();
 
 
-        if (!name) {
-
-          alert(
-            "Please enter your full name."
-          );
-
-          return;
-
-        }
-
-
-        if (!phone) {
+        if (!name || !phone || !location) {
 
           alert(
-            "Please enter your phone number."
-          );
-
-          return;
-
-        }
-
-
-        if (!location) {
-
-          alert(
-            "Please enter your delivery location."
+            "Please enter your full name, phone number and delivery location."
           );
 
           return;
@@ -1513,103 +1158,98 @@ function openCheckout() {
 
 
         let message =
-          "VENES COLLECTION ORDER\n\n";
+          "Hello Venes Collection!%0A%0A";
 
+        message =
+          "Hello Venes Collection!%0A%0A";
 
         message +=
-          "CUSTOMER DETAILS\n";
+          "I would like to place an order.%0A%0A";
 
+        message +=
+          "CUSTOMER DETAILS%0A";
 
         message +=
           "Name: " +
           name +
-          "\n";
-
+          "%0A";
 
         message +=
           "Phone: " +
           phone +
-          "\n";
-
+          "%0A";
 
         message +=
           "Delivery Location: " +
           location +
-          "\n";
+          "%0A";
 
 
         if (notes) {
 
           message +=
-            "Delivery Notes: " +
+            "Notes: " +
             notes +
-            "\n";
+            "%0A";
 
         }
 
 
         message +=
-          "\nORDER DETAILS\n";
+          "%0AORDER%0A";
 
 
         cart.forEach(function (item) {
 
           message +=
-            item.name +
-            "\n";
-
+            "- " +
+            item.name;
 
           if (item.size) {
 
             message +=
-              "Size: " +
+              " (Size " +
               item.size +
-              "\n";
+              ")";
 
           }
 
-
           message +=
-            "Quantity: " +
+            " × " +
             item.quantity +
-            "\n";
-
-
-          message +=
-            "Price: GH₵ " +
-            (item.price * item.quantity) +
-            "\n\n";
+            " — " +
+            item.price +
+            "%0A";
 
         });
 
 
         message +=
-          "TOTAL: GH₵ " +
-          total +
-          "\n\n";
+          "%0ATOTAL: " +
+          formatPrice(total) +
+          "%0A";
 
 
         message +=
-          "PAYMENT METHOD: MOBILE MONEY — MTN\n";
-
-
-        message +=
-          "MTN PAYMENT NUMBER: 0559584979\n\n";
-
+          "%0APayment: Mobile Money — MTN%0A";
 
         message +=
-          "Please confirm payment after sending.";
+          "Payment Number: 0559584979%0A";
+
+        message +=
+          "Payment can also be sent from other networks to the MTN number.";
 
 
         const whatsappNumber =
           "233559584979";
 
-
         const whatsappURL =
           "https://wa.me/" +
           whatsappNumber +
           "?text=" +
-          encodeURIComponent(message);
+          encodeURIComponent(
+            decodeURIComponent(message)
+          );
 
 
         window.open(
@@ -1618,139 +1258,78 @@ function openCheckout() {
         );
 
 
-        alert(
-          "Your order has been prepared. WhatsApp will open so you can send your order to Venes Collection."
-        );
-
-
-        checkout.remove();
-
-
         cart = [];
-
 
         updateCart();
 
+        checkout.remove();
+
+        closeCart();
+
+      });
+
+  }
+
+
+  /* =========================================================
+     ESC KEY
+  ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (event.key === "Escape") {
+
+        const preview =
+          document.querySelector(
+            ".product-preview-overlay"
+          );
+
+        if (preview) {
+          preview.remove();
+        }
+
+        const search =
+          document.querySelector(
+            ".venes-search-box"
+          );
+
+        if (search) {
+          search.remove();
+        }
+
+        const account =
+          document.querySelector(
+            ".venes-account-panel"
+          );
+
+        if (account) {
+          account.remove();
+        }
+
+        const orders =
+          document.querySelector(
+            ".venes-orders-panel"
+          );
+
+        if (orders) {
+          orders.remove();
+        }
+
+        closeCart();
+
       }
-    );
 
-}
-
-
-/* =========================================================
-ESC KEY
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  function (event) {
-
-    if (event.key !== "Escape") {
-      return;
     }
+  );
 
 
-    const preview =
-      document.querySelector(
-        ".product-preview-overlay"
-      );
+  /* =========================================================
+     INITIALIZE
+  ========================================================= */
 
+  createCart();
+  updateCart();
 
-    if (preview) {
-      preview.remove();
-    }
-
-
-    const search =
-      document.querySelector(
-        ".venes-search-box"
-      );
-
-
-    if (search) {
-      search.remove();
-    }
-
-
-    const checkout =
-      document.querySelector(
-        ".venes-checkout-overlay"
-      );
-
-
-    if (checkout) {
-      checkout.remove();
-    }
-
-
-    const account =
-      document.querySelector(
-        ".venes-account-panel"
-      );
-
-
-    if (account) {
-      account.remove();
-    }
-
-
-    const orders =
-      document.querySelector(
-        ".venes-orders-panel"
-      );
-
-
-    if (orders) {
-      orders.remove();
-    }
-
-  }
-);
-
-/* =========================================================
-DESKTOP PRODUCT CLICK FIX
-========================================================= */
-
-@media (min-width: 651px) {
-
-  .product-card {
-    position: relative;
-  }
-
-  .product-image {
-    position: relative;
-    z-index: 1;
-    cursor: pointer;
-  }
-
-  .product-image img {
-    position: relative;
-    z-index: 2;
-    pointer-events: auto;
-  }
-
-  .product-details {
-    position: relative;
-    z-index: 5;
-  }
-
-  .product-bottom {
-    position: relative;
-    z-index: 10;
-  }
-
-  .bag-button {
-    position: relative;
-    z-index: 20 !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
-  }
-
-  .product-card button {
-    pointer-events: auto !important;
-    cursor: pointer !important;
-  }
-
-}
-
-
+});
