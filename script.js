@@ -1322,6 +1322,7 @@ document.addEventListener("click", function (event) {
   ordersPanel.classList.add("active");
 
 });
+
 /* =========================================================
 MY ORDERS - DIRECT FIX
 ========================================================= */
