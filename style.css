@@ -2018,4 +2018,41 @@ SMALL PHONES
   }
 
 }
+/* =========================================================
+   CATALOG IMAGE SIZE FIX
+========================================================= */
+
+.catalog-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 3%;
+  padding-right: 3%;
+  gap: 45px 18px;
+}
+
+.catalog-image {
+  height: 330px;
+}
+
+@media (max-width: 900px) {
+
+  .catalog-image {
+    height: 300px;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .catalog-grid {
+    padding-left: 5%;
+    padding-right: 5%;
+    gap: 30px 10px;
+  }
+
+  .catalog-image {
+    height: 210px;
+  }
+
+}
 
