@@ -8,11 +8,9 @@ const menuToggle = document.querySelector(".menu-toggle");
 const navigation = document.querySelector(".navigation");
 
 if (menuToggle && navigation) {
-
   menuToggle.addEventListener("click", function () {
     navigation.classList.toggle("mobile-open");
   });
-
 }
 
 
@@ -20,11 +18,8 @@ if (menuToggle && navigation) {
 CATEGORY FILTER
 ========================================================= */
 
-const categoryButtons =
-  document.querySelectorAll(".category");
-
-const productCards =
-  document.querySelectorAll(".product-card");
+const categoryButtons = document.querySelectorAll(".category");
+const productCards = document.querySelectorAll(".product-card");
 
 categoryButtons.forEach(function (button) {
 
@@ -308,9 +303,7 @@ CREATE SHOPPING BAG
 
 function createCart() {
 
-  if (
-    document.querySelector(".cart-panel")
-  ) {
+  if (document.querySelector(".cart-panel")) {
     return;
   }
 
@@ -400,6 +393,10 @@ function createCart() {
   );
 
 
+  /* =====================================================
+  CHECKOUT
+  ===================================================== */
+
   const checkoutButton =
     document.querySelector(".checkout-button");
 
@@ -408,9 +405,18 @@ function createCart() {
     "click",
     function () {
 
-      alert(
-        "Checkout will be available soon."
-      );
+      if (cart.length === 0) {
+
+        alert(
+          "Your shopping bag is empty."
+        );
+
+        return;
+
+      }
+
+
+      openCheckout();
 
     }
   );
@@ -419,6 +425,436 @@ function createCart() {
 
 
 createCart();
+
+
+/* =========================================================
+CHECKOUT FUNCTION
+========================================================= */
+
+function openCheckout() {
+
+  const existingCheckout =
+    document.querySelector(".venes-checkout-overlay");
+
+  if (existingCheckout) {
+    return;
+  }
+
+
+  let total = 0;
+
+  cart.forEach(function (item) {
+
+    total +=
+      item.price * item.quantity;
+
+  });
+
+
+  let orderItems = "";
+
+
+  cart.forEach(function (item) {
+
+    orderItems += `
+
+      <div class="checkout-product">
+
+        <div>
+
+          <strong>
+            ${item.name}
+          </strong>
+
+          ${
+            item.size
+              ? `<small>Size: ${item.size}</small>`
+              : ""
+          }
+
+          <small>
+            Quantity: ${item.quantity}
+          </small>
+
+        </div>
+
+        <strong>
+          GH₵ ${item.price * item.quantity}
+        </strong>
+
+      </div>
+
+    `;
+
+  });
+
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+
+    `
+
+    <div class="venes-checkout-overlay">
+
+      <div class="venes-checkout">
+
+        <button
+          class="checkout-close"
+          type="button"
+          aria-label="Close checkout"
+        >
+          ×
+        </button>
+
+
+        <h2>
+          CHECKOUT
+        </h2>
+
+        <p class="checkout-intro">
+          Complete your details to place your order.
+        </p>
+
+
+        <div class="checkout-section">
+
+          <h3>
+            CUSTOMER INFORMATION
+          </h3>
+
+
+          <label>
+            FULL NAME
+          </label>
+
+          <input
+            type="text"
+            id="checkout-name"
+            placeholder="Enter your full name"
+          >
+
+
+          <label>
+            PHONE NUMBER
+          </label>
+
+          <input
+            type="tel"
+            id="checkout-phone"
+            placeholder="Enter your phone number"
+          >
+
+
+          <label>
+            DELIVERY LOCATION
+          </label>
+
+          <input
+            type="text"
+            id="checkout-location"
+            placeholder="Where should we deliver your order?"
+          >
+
+
+          <label>
+            DELIVERY NOTES
+          </label>
+
+          <textarea
+            id="checkout-notes"
+            placeholder="Optional delivery instructions"
+          ></textarea>
+
+        </div>
+
+
+        <div class="checkout-section">
+
+          <h3>
+            YOUR ORDER
+          </h3>
+
+          <div class="checkout-products">
+
+            ${orderItems}
+
+          </div>
+
+
+          <div class="checkout-final-total">
+
+            <span>
+              TOTAL
+            </span>
+
+            <strong>
+              GH₵ ${total}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="checkout-section">
+
+          <h3>
+            PAYMENT METHOD
+          </h3>
+
+
+          <div class="momo-payment">
+
+            <strong>
+              MOBILE MONEY — MTN
+            </strong>
+
+            <p>
+              You can send payment from any mobile money network.
+              Please send payment to our MTN Mobile Money number.
+            </p>
+
+
+            <div class="momo-number">
+
+              <span>
+                SEND PAYMENT TO
+              </span>
+
+              <strong>
+                0559584979
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="place-order-button"
+          type="button"
+        >
+          PLACE ORDER
+        </button>
+
+
+        <p class="checkout-note">
+          Your order will be sent to Venes Collection via WhatsApp.
+        </p>
+
+      </div>
+
+    </div>
+
+    `
+  );
+
+
+  const checkout =
+    document.querySelector(
+      ".venes-checkout-overlay"
+    );
+
+
+  const closeButton =
+    checkout.querySelector(
+      ".checkout-close"
+    );
+
+
+  closeButton.addEventListener(
+    "click",
+    function () {
+
+      checkout.remove();
+
+    }
+  );
+
+
+  checkout.addEventListener(
+    "click",
+    function (event) {
+
+      if (
+        event.target === checkout
+      ) {
+
+        checkout.remove();
+
+      }
+
+    }
+  );
+
+
+  const placeOrderButton =
+    checkout.querySelector(
+      ".place-order-button"
+    );
+
+
+  placeOrderButton.addEventListener(
+    "click",
+    function () {
+
+      const name =
+        checkout
+          .querySelector("#checkout-name")
+          .value
+          .trim();
+
+
+      const phone =
+        checkout
+          .querySelector("#checkout-phone")
+          .value
+          .trim();
+
+
+      const location =
+        checkout
+          .querySelector("#checkout-location")
+          .value
+          .trim();
+
+
+      const notes =
+        checkout
+          .querySelector("#checkout-notes")
+          .value
+          .trim();
+
+
+      if (!name) {
+
+        alert(
+          "Please enter your full name."
+        );
+
+        return;
+
+      }
+
+
+      if (!phone) {
+
+        alert(
+          "Please enter your phone number."
+        );
+
+        return;
+
+      }
+
+
+      if (!location) {
+
+        alert(
+          "Please enter your delivery location."
+        );
+
+        return;
+
+      }
+
+
+      let message =
+        "VENES COLLECTION ORDER%0A%0A";
+
+
+      message +=
+        "CUSTOMER DETAILS%0A";
+
+      message +=
+        "Name: " +
+        encodeURIComponent(name) +
+        "%0A";
+
+      message +=
+        "Phone: " +
+        encodeURIComponent(phone) +
+        "%0A";
+
+      message +=
+        "Delivery Location: " +
+        encodeURIComponent(location) +
+        "%0A";
+
+
+      if (notes) {
+
+        message +=
+          "Delivery Notes: " +
+          encodeURIComponent(notes) +
+          "%0A";
+
+      }
+
+
+      message +=
+        "%0AORDER DETAILS%0A";
+
+
+      cart.forEach(function (item) {
+
+        message +=
+          encodeURIComponent(
+            item.name
+          ) +
+          "%0A";
+
+        if (item.size) {
+
+          message +=
+            "Size: " +
+            encodeURIComponent(
+              item.size
+            ) +
+            "%0A";
+
+        }
+
+        message +=
+          "Quantity: " +
+          item.quantity +
+          "%0A";
+
+        message +=
+          "Price: GH₵ " +
+          item.price *
+          item.quantity +
+          "%0A%0A";
+
+      });
+
+
+      message +=
+        "TOTAL: GH₵ " +
+        total +
+        "%0A%0A";
+
+
+      message +=
+        "PAYMENT METHOD: MOBILE MONEY — MTN%0A";
+
+      message +=
+        "MTN PAYMENT NUMBER: 0559584979%0A%0A";
+
+      message +=
+        "Customer can send payment from any mobile money network.";
+
+
+      window.location.href =
+        "https://wa.me/233559584979?text=" +
+        message;
+
+    }
+  );
+
+}
 
 
 /* =========================================================
@@ -1013,10 +1449,6 @@ if (accountButton) {
         );
 
 
-        /* =================================================
-        ACCOUNT OPTIONS
-        ================================================= */
-
         const accountOptions =
           accountPanel.querySelectorAll(
             ".account-option"
@@ -1336,6 +1768,17 @@ document.addEventListener(
         "active"
       );
 
+    }
+
+
+    const checkout =
+      document.querySelector(
+        ".venes-checkout-overlay"
+      );
+
+
+    if (checkout) {
+      checkout.remove();
     }
 
 
