@@ -1322,4 +1322,132 @@ document.addEventListener("click", function (event) {
   ordersPanel.classList.add("active");
 
 });
+/* =========================================================
+MY ORDERS - DIRECT FIX
+========================================================= */
+
+document.addEventListener("click", function (event) {
+
+  if (
+    !event.target.closest(".account-option")
+  ) {
+    return;
+  }
+
+  const clickedButton =
+    event.target.closest(".account-option");
+
+  if (
+    clickedButton.textContent
+      .trim()
+      .toUpperCase() !== "MY ORDERS"
+  ) {
+    return;
+  }
+
+
+  let ordersPanel =
+    document.querySelector(
+      ".venes-orders-panel"
+    );
+
+
+  if (!ordersPanel) {
+
+    ordersPanel =
+      document.createElement("div");
+
+    ordersPanel.className =
+      "venes-orders-panel";
+
+
+    ordersPanel.innerHTML = `
+
+      <div class="orders-box">
+
+        <button
+          class="orders-close"
+          type="button"
+        >
+          ×
+        </button>
+
+        <h2>MY ORDERS</h2>
+
+        <p class="orders-empty">
+          You don't have any orders yet.
+        </p>
+
+        <button
+          class="orders-shop-button"
+          type="button"
+        >
+          START SHOPPING
+        </button>
+
+      </div>
+
+    `;
+
+
+    document.body.appendChild(
+      ordersPanel
+    );
+
+
+    const closeButton =
+      ordersPanel.querySelector(
+        ".orders-close"
+      );
+
+
+    closeButton.onclick =
+      function () {
+
+        ordersPanel.classList.remove(
+          "active"
+        );
+
+      };
+
+
+    ordersPanel.onclick =
+      function (e) {
+
+        if (
+          e.target === ordersPanel
+        ) {
+
+          ordersPanel.classList.remove(
+            "active"
+          );
+
+        }
+
+      };
+
+
+    const shopButton =
+      ordersPanel.querySelector(
+        ".orders-shop-button"
+      );
+
+
+    shopButton.onclick =
+      function () {
+
+        window.location.href =
+          "shop.html";
+
+      };
+
+  }
+
+
+  ordersPanel.classList.add(
+    "active"
+  );
+
+});
+
 
