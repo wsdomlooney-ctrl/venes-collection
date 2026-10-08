@@ -1,4 +1,8 @@
-document.addEventListener("DOMContentLoaded", function () {
+/* =========================================================
+VENES COLLECTION
+MAIN JAVASCRIPT
+========================================================= */
+
 
 /* =========================================================
 MOBILE MENU
@@ -28,138 +32,171 @@ if (menuToggle && navigation) {
 
   });
 
+}
+
+
+/* =========================================================
+CART
+========================================================= */
+
+let cart = [];
+
+
+/* =========================================================
+GET PRODUCT INFORMATION
+========================================================= */
+
+function getProduct(card) {
+
+  const nameElement = card.querySelector("h3");
+  const priceElement = card.querySelector(".price");
+  const imageElement = card.querySelector("img");
+
+  const name =
+    nameElement
+      ? nameElement.textContent.trim()
+      : "Product";
+
+  const priceText =
+    priceElement
+      ? priceElement.textContent
+      : "0";
+
+  const price =
+    parseFloat(
+      priceText
+        .replace(/[^\d.]/g, "")
+    ) || 0;
+
+  const image =
+    imageElement
+      ? imageElement.getAttribute("src")
+      : "";
+
+  return {
+    name: name,
+    price: price,
+    image: image
+  };
+
+}
+
+
+/* =========================================================
+ADD PRODUCT TO CART
+========================================================= */
+
+function addProductToCart(product) {
+
+  const existingProduct =
+    cart.find(function (item) {
+
+      return (
+        item.name === product.name &&
+        item.size === product.size
+      );
+
+    });
+
+
+  if (existingProduct) {
+
+    existingProduct.quantity++;
+
+  } else {
+
+    product.quantity = 1;
+
+    cart.push(product);
+
   }
 
 
-  /* =========================================================
-     SHOPPING BAG
-  ========================================================= */
+  updateCart();
 
-  let cart = [];
+  openCart();
 
-
-  const bagButtons =
-    document.querySelectorAll(".bag-button");
+}
 
 
-  const headerBag =
-    document.querySelector(
-      '.header-icons button[aria-label="Shopping Bag"]'
-    );
+/* =========================================================
+CREATE CART
+========================================================= */
+
+function createCart() {
+
+  if (document.querySelector(".cart-overlay")) {
+    return;
+  }
 
 
-  /* =========================================================
-     CART PANEL
-  ========================================================= */
+  const cartHTML = `
 
-  const cartOverlay =
-    document.createElement("div");
+    <div class="cart-overlay"></div>
 
-  cartOverlay.className =
-    "cart-overlay";
+    <aside class="cart-panel">
 
+      <div class="cart-header">
 
-  const cartPanel =
-    document.createElement("div");
+        <h2>SHOPPING BAG</h2>
 
-  cartPanel.className =
-    "cart-panel";
-
-
-  cartPanel.innerHTML = `
-
-    <div class="cart-header">
-
-      <h2>
-        Your Shopping Bag
-      </h2>
-
-      <button class="cart-close">
-        ×
-      </button>
-
-    </div>
-
-
-    <div class="cart-items">
-
-      <p class="empty-cart">
-        Your bag is empty.
-      </p>
-
-    </div>
-
-
-    <div class="cart-footer">
-
-      <div class="cart-total">
-
-        <span>
-          Total
-        </span>
-
-        <strong>
-          GH₵ 0
-        </strong>
+        <button
+          class="cart-close"
+          aria-label="Close shopping bag"
+        >
+          ×
+        </button>
 
       </div>
 
 
-      <button class="checkout-button">
-        CHECKOUT
-      </button>
+      <div class="cart-items">
 
-    </div>
+        <div class="empty-cart">
+          Your shopping bag is empty.
+        </div>
+
+      </div>
+
+
+      <div class="cart-footer">
+
+        <div class="cart-total">
+
+          <span>TOTAL</span>
+
+          <strong>
+            GH₵ 0
+          </strong>
+
+        </div>
+
+
+        <button class="checkout-button">
+          CHECKOUT
+        </button>
+
+      </div>
+
+    </aside>
 
   `;
 
 
-  document.body.appendChild(cartOverlay);
-  document.body.appendChild(cartPanel);
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    cartHTML
+  );
 
 
-  const cartItems =
-    cartPanel.querySelector(".cart-items");
+  const cartOverlay =
+    document.querySelector(".cart-overlay");
 
-
-  const cartTotal =
-    cartPanel.querySelector(".cart-total strong");
-
+  const cartPanel =
+    document.querySelector(".cart-panel");
 
   const cartClose =
-    cartPanel.querySelector(".cart-close");
-
-
-  const checkoutButton =
-    cartPanel.querySelector(".checkout-button");
-
-
-  /* =========================================================
-     OPEN / CLOSE CART
-  ========================================================= */
-
-  function openCart() {
-
-    cartPanel.classList.add("open");
-
-    cartOverlay.classList.add("show");
-
-  }
-
-
-  function closeCart() {
-
-    cartPanel.classList.remove("open");
-
-    cartOverlay.classList.remove("show");
-
-  }
-
-
-  cartClose.addEventListener(
-    "click",
-    closeCart
-  );
+    document.querySelector(".cart-close");
 
 
   cartOverlay.addEventListener(
@@ -168,351 +205,15 @@ if (menuToggle && navigation) {
   );
 
 
-  /* =========================================================
-     GET PRODUCT INFORMATION
-  ========================================================= */
+  cartClose.addEventListener(
+    "click",
+    closeCart
+  );
 
-  function getProduct(card) {
 
-    const name =
-      card.querySelector("h3")
-        .textContent
-        .trim();
+  const checkoutButton =
+    document.querySelector(".checkout-button");
 
-
-    const priceText =
-      card.querySelector(".price")
-        .textContent
-        .replace("GH₵", "")
-        .replace(",", "")
-        .trim();
-
-
-    const price =
-      Number(priceText);
-
-
-    const image =
-      card.querySelector("img")
-        .getAttribute("src");
-
-
-    return {
-
-      name: name,
-
-      price: price,
-
-      image: image
-
-    };
-
-  }
-
-
-  /* =========================================================
-     ADD PRODUCT TO CART
-  ========================================================= */
-
-  function addProductToCart(product) {
-
-    const existingProduct =
-      cart.find(function (item) {
-
-        return (
-          item.name === product.name &&
-          item.size === product.size
-        );
-
-      });
-
-
-    if (existingProduct) {
-
-      existingProduct.quantity++;
-
-    } else {
-
-      product.quantity = 1;
-
-      cart.push(product);
-
-    }
-
-
-    updateCart();
-
-    openCart();
-
-  }
-
-
-  /* =========================================================
-     PRODUCT CARD — ADD TO BAG
-  ========================================================= */
-
-  bagButtons.forEach(function (button) {
-
-    button.addEventListener(
-      "click",
-      function () {
-
-        const card =
-          button.closest(".product-card");
-
-
-        if (!card) return;
-
-
-        const product =
-          getProduct(card);
-
-
-        /*
-          Product-card buttons currently do not
-          have size selection.
-
-          We keep them working normally.
-        */
-
-        addProductToCart(product);
-
-      }
-    );
-
-  });
-
-
-  /* =========================================================
-     HEADER SHOPPING BAG
-  ========================================================= */
-
-  if (headerBag) {
-
-    headerBag.addEventListener(
-      "click",
-      openCart
-    );
-
-  }
-
-
-  /* =========================================================
-     UPDATE SHOPPING BAG
-  ========================================================= */
-
-  function updateCart() {
-
-    if (cart.length === 0) {
-
-      cartItems.innerHTML = `
-
-        <p class="empty-cart">
-          Your bag is empty.
-        </p>
-
-      `;
-
-    } else {
-
-      cartItems.innerHTML =
-        cart.map(function (product, index) {
-
-          return `
-
-            <div class="cart-item">
-
-              <img
-                src="${product.image}"
-                alt="${product.name}"
-              >
-
-
-              <div class="cart-item-info">
-
-                <h3>
-                  ${product.name}
-                </h3>
-
-
-                ${
-                  product.size
-                    ? `
-                      <p>
-                        Size: ${product.size}
-                      </p>
-                    `
-                    : ""
-                }
-
-
-                <p>
-                  GH₵ ${product.price.toLocaleString()}
-                </p>
-
-
-                <div class="cart-quantity">
-
-                  <button
-                    class="quantity-minus"
-                    data-index="${index}"
-                  >
-                    −
-                  </button>
-
-
-                  <span>
-                    ${product.quantity || 1}
-                  </span>
-
-
-                  <button
-                    class="quantity-plus"
-                    data-index="${index}"
-                  >
-                    +
-                  </button>
-
-                </div>
-
-
-                <button
-                  class="remove-item"
-                  data-index="${index}"
-                >
-                  Remove
-                </button>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }).join("");
-
-    }
-
-
-    /* =========================================================
-       CALCULATE TOTAL
-    ========================================================= */
-
-    const total =
-      cart.reduce(
-        function (sum, product) {
-
-          return (
-            sum +
-            (
-              product.price *
-              (product.quantity || 1)
-            )
-          );
-
-        },
-        0
-      );
-
-
-    cartTotal.textContent =
-      `GH₵ ${total.toLocaleString()}`;
-
-
-    /* =========================================================
-       MINUS BUTTON
-    ========================================================= */
-
-    document
-      .querySelectorAll(".quantity-minus")
-      .forEach(function (button) {
-
-        button.addEventListener(
-          "click",
-          function () {
-
-            const index =
-              Number(button.dataset.index);
-
-
-            if (
-              cart[index] &&
-              cart[index].quantity > 1
-            ) {
-
-              cart[index].quantity--;
-
-              updateCart();
-
-            }
-
-          }
-        );
-
-      });
-
-
-    /* =========================================================
-       PLUS BUTTON
-    ========================================================= */
-
-    document
-      .querySelectorAll(".quantity-plus")
-      .forEach(function (button) {
-
-        button.addEventListener(
-          "click",
-          function () {
-
-            const index =
-              Number(button.dataset.index);
-
-
-            if (cart[index]) {
-
-              cart[index].quantity++;
-
-              updateCart();
-
-            }
-
-          }
-        );
-
-      });
-
-
-    /* =========================================================
-       REMOVE BUTTON
-    ========================================================= */
-
-    document
-      .querySelectorAll(".remove-item")
-      .forEach(function (button) {
-
-        button.addEventListener(
-          "click",
-          function () {
-
-            const index =
-              Number(button.dataset.index);
-
-
-            cart.splice(index, 1);
-
-            updateCart();
-
-          }
-        );
-
-      });
-
-  }
-
-
-  /* =========================================================
-     CHECKOUT
-  ========================================================= */
 
   checkoutButton.addEventListener(
     "click",
@@ -530,97 +231,450 @@ if (menuToggle && navigation) {
 
 
       alert(
-        "Your order is ready for checkout."
+        "Checkout will be available soon."
       );
 
     }
   );
 
-
-  /* =========================================================
-     PRODUCT PREVIEW
-  ========================================================= */
-
-  const productCards =
-    document.querySelectorAll(".product-card");
+}
 
 
-  const previewOverlay =
-    document.createElement("div");
+/* =========================================================
+OPEN CART
+========================================================= */
 
-  previewOverlay.className =
-    "product-preview-overlay";
+function openCart() {
+
+  createCart();
 
 
-  previewOverlay.innerHTML = `
+  const cartOverlay =
+    document.querySelector(".cart-overlay");
 
-    <div class="product-preview">
+  const cartPanel =
+    document.querySelector(".cart-panel");
 
-      <button class="product-preview-close">
-        ×
-      </button>
 
+  cartOverlay.classList.add("show");
+
+  cartPanel.classList.add("open");
+
+  document.body.style.overflow = "hidden";
+
+}
+
+
+/* =========================================================
+CLOSE CART
+========================================================= */
+
+function closeCart() {
+
+  const cartOverlay =
+    document.querySelector(".cart-overlay");
+
+  const cartPanel =
+    document.querySelector(".cart-panel");
+
+
+  if (cartOverlay) {
+
+    cartOverlay.classList.remove("show");
+
+  }
+
+
+  if (cartPanel) {
+
+    cartPanel.classList.remove("open");
+
+  }
+
+
+  document.body.style.overflow = "";
+
+}
+
+
+/* =========================================================
+UPDATE CART
+========================================================= */
+
+function updateCart() {
+
+  createCart();
+
+
+  const cartItems =
+    document.querySelector(".cart-items");
+
+  const cartTotal =
+    document.querySelector(".cart-total strong");
+
+
+  if (!cartItems || !cartTotal) {
+    return;
+  }
+
+
+  if (cart.length === 0) {
+
+    cartItems.innerHTML = `
+
+      <div class="empty-cart">
+        Your shopping bag is empty.
+      </div>
+
+    `;
+
+    cartTotal.textContent =
+      "GH₵ 0";
+
+    return;
+
+  }
+
+
+  cartItems.innerHTML = "";
+
+
+  cart.forEach(function (product, index) {
+
+    const item = document.createElement("div");
+
+    item.className = "cart-item";
+
+
+    item.innerHTML = `
 
       <img
-        class="product-preview-image"
-        src=""
-        alt=""
+        src="${product.image}"
+        alt="${product.name}"
       >
 
 
-      <div class="product-preview-details">
+      <div class="cart-item-info">
 
-        <h2 class="product-preview-name"></h2>
-
-
-        <p class="product-preview-price"></p>
-
-
-        <div class="product-size-selector">
-
-          <label for="product-size">
-            SIZE
-          </label>
+        <h3>
+          ${product.name}
+        </h3>
 
 
-          <select id="product-size">
+        ${
+          product.size
+            ? `<p>Size: ${product.size}</p>`
+            : ""
+        }
 
-            <option value="">
-              SELECT SIZE
-            </option>
 
-            <option value="XS">
-              XS
-            </option>
+        <p>
+          GH₵ ${product.price.toLocaleString()}
+        </p>
 
-            <option value="S">
-              S
-            </option>
 
-            <option value="M">
-              M
-            </option>
+        <div class="cart-quantity">
 
-            <option value="L">
-              L
-            </option>
+          <button
+            class="quantity-minus"
+            data-index="${index}"
+          >
+            −
+          </button>
 
-            <option value="XL">
-              XL
-            </option>
 
-            <option value="XXL">
-              XXL
-            </option>
+          <span>
+            ${product.quantity || 1}
+          </span>
 
-          </select>
+
+          <button
+            class="quantity-plus"
+            data-index="${index}"
+          >
+            +
+          </button>
 
         </div>
 
 
-        <button class="preview-bag-button">
-          ADD TO BAG
+        <button
+          class="remove-item"
+          data-index="${index}"
+        >
+          Remove
         </button>
+
+      </div>
+
+    `;
+
+
+    cartItems.appendChild(item);
+
+  });
+
+
+  const total =
+    cart.reduce(
+      function (sum, product) {
+
+        return (
+          sum +
+          (
+            product.price *
+            (product.quantity || 1)
+          )
+        );
+
+      },
+      0
+    );
+
+
+  cartTotal.textContent =
+    "GH₵ " +
+    total.toLocaleString();
+
+
+  /* =====================================================
+  REMOVE ITEM
+  ===================================================== */
+
+  const removeButtons =
+    document.querySelectorAll(".remove-item");
+
+
+  removeButtons.forEach(function (button) {
+
+    button.addEventListener(
+      "click",
+      function () {
+
+        const index =
+          parseInt(
+            button.dataset.index
+          );
+
+
+        cart.splice(index, 1);
+
+        updateCart();
+
+      }
+    );
+
+  });
+
+
+  /* =====================================================
+  DECREASE QUANTITY
+  ===================================================== */
+
+  const minusButtons =
+    document.querySelectorAll(
+      ".quantity-minus"
+    );
+
+
+  minusButtons.forEach(function (button) {
+
+    button.addEventListener(
+      "click",
+      function () {
+
+        const index =
+          parseInt(
+            button.dataset.index
+          );
+
+
+        if (
+          cart[index] &&
+          cart[index].quantity > 1
+        ) {
+
+          cart[index].quantity--;
+
+        }
+
+
+        updateCart();
+
+      }
+    );
+
+  });
+
+
+  /* =====================================================
+  INCREASE QUANTITY
+  ===================================================== */
+
+  const plusButtons =
+    document.querySelectorAll(
+      ".quantity-plus"
+    );
+
+
+  plusButtons.forEach(function (button) {
+
+    button.addEventListener(
+      "click",
+      function () {
+
+        const index =
+          parseInt(
+            button.dataset.index
+          );
+
+
+        if (cart[index]) {
+
+          cart[index].quantity++;
+
+        }
+
+
+        updateCart();
+
+      }
+    );
+
+  });
+
+}
+
+
+/* =========================================================
+SHOPPING BAG BUTTONS ON PRODUCT CARDS
+========================================================= */
+
+const bagButtons =
+  document.querySelectorAll(".bag-button");
+
+
+bagButtons.forEach(function (button) {
+
+  button.addEventListener(
+    "click",
+    function (event) {
+
+      event.stopPropagation();
+
+
+      const card =
+        button.closest(".product-card");
+
+
+      if (!card) {
+        return;
+      }
+
+
+      const product =
+        getProduct(card);
+
+
+      addProductToCart(product);
+
+    }
+  );
+
+});
+
+
+/* =========================================================
+PRODUCT PREVIEW
+========================================================= */
+
+const productImages =
+  document.querySelectorAll(
+    ".product-image img"
+  );
+
+
+if (productImages.length > 0) {
+
+  const previewHTML = `
+
+    <div class="product-preview-overlay">
+
+      <div class="product-preview">
+
+        <button
+          class="product-preview-close"
+          aria-label="Close product preview"
+        >
+          ×
+        </button>
+
+
+        <div class="product-preview-image-container">
+
+          <img
+            class="product-preview-image"
+            src=""
+            alt=""
+          >
+
+        </div>
+
+
+        <div class="product-preview-details">
+
+          <h2 class="product-preview-name"></h2>
+
+          <p class="product-preview-price"></p>
+
+
+          <div class="product-size-selector">
+
+            <label for="product-size">
+              SIZE
+            </label>
+
+
+            <select id="product-size">
+
+              <option value="">
+                SELECT SIZE
+              </option>
+
+              <option value="XS">
+                XS
+              </option>
+
+              <option value="S">
+                S
+              </option>
+
+              <option value="M">
+                M
+              </option>
+
+              <option value="L">
+                L
+              </option>
+
+              <option value="XL">
+                XL
+              </option>
+
+              <option value="XXL">
+                XXL
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <button class="preview-bag-button">
+            ADD TO BAG
+          </button>
+
+        </div>
 
       </div>
 
@@ -629,105 +683,111 @@ if (menuToggle && navigation) {
   `;
 
 
-  document.body.appendChild(
-    previewOverlay
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    previewHTML
   );
 
 
+  const previewOverlay =
+    document.querySelector(
+      ".product-preview-overlay"
+    );
+
+
   const previewImage =
-    previewOverlay.querySelector(
+    document.querySelector(
       ".product-preview-image"
     );
 
 
   const previewName =
-    previewOverlay.querySelector(
+    document.querySelector(
       ".product-preview-name"
     );
 
 
   const previewPrice =
-    previewOverlay.querySelector(
+    document.querySelector(
       ".product-preview-price"
     );
 
 
   const previewClose =
-    previewOverlay.querySelector(
+    document.querySelector(
       ".product-preview-close"
     );
 
 
   const previewBagButton =
-    previewOverlay.querySelector(
+    document.querySelector(
       ".preview-bag-button"
     );
 
 
   const productSize =
-    previewOverlay.querySelector(
+    document.querySelector(
       "#product-size"
     );
 
 
-  /* =========================================================
-     OPEN PRODUCT PREVIEW
-  ========================================================= */
+  /* =====================================================
+  OPEN PRODUCT PREVIEW
+  ===================================================== */
 
-  productCards.forEach(function (card) {
-
-    const image =
-      card.querySelector(
-        ".product-image img"
-      );
-
-
-    if (!image) return;
-
+  productImages.forEach(function (image) {
 
     image.addEventListener(
       "click",
       function () {
 
-        const name =
-          card.querySelector("h3")
-            .textContent
-            .trim();
+        const card =
+          image.closest(".product-card");
 
 
-        const price =
-          card.querySelector(".price")
-            .textContent
-            .trim();
+        if (!card) {
+          return;
+        }
+
+
+        const product =
+          getProduct(card);
 
 
         previewImage.src =
-          image.src;
+          product.image;
 
 
         previewImage.alt =
-          name;
+          product.name;
 
 
         previewName.textContent =
-          name;
+          product.name;
 
 
         previewPrice.textContent =
-          price;
+          "GH₵ " +
+          product.price.toLocaleString();
 
 
-        /* Reset size every time */
-
-        productSize.value =
-          "";
+        productSize.value = "";
 
 
-        /* Remember product */
+        const cards =
+          Array.from(
+            document.querySelectorAll(
+              ".product-card"
+            )
+          );
+
+
+        const productIndex =
+          cards.indexOf(card);
+
 
         previewBagButton.dataset.productIndex =
-          Array.from(productCards)
-            .indexOf(card);
+          productIndex;
 
 
         previewOverlay.classList.add(
@@ -745,64 +805,13 @@ if (menuToggle && navigation) {
   });
 
 
-  /* =========================================================
-     ADD TO BAG FROM PRODUCT PREVIEW
-  ========================================================= */
+  /* =====================================================
+  CLOSE PRODUCT PREVIEW
+  ===================================================== */
 
-  previewBagButton.addEventListener(
+  previewClose.addEventListener(
     "click",
     function () {
-
-      const productIndex =
-        Number(
-          previewBagButton.dataset.productIndex
-        );
-
-
-      const selectedSize =
-        productSize.value;
-
-
-      /* Size required */
-
-      if (!selectedSize) {
-
-        alert(
-          "Please select a size."
-        );
-
-        return;
-
-      }
-
-
-      const card =
-        productCards[productIndex];
-
-
-      if (!card) {
-
-        alert(
-          "Product could not be added."
-        );
-
-        return;
-
-      }
-
-
-      const product =
-        getProduct(card);
-
-
-      product.size =
-        selectedSize;
-
-
-      addProductToCart(product);
-
-
-      /* Close preview */
 
       previewOverlay.classList.remove(
         "active"
@@ -817,29 +826,6 @@ if (menuToggle && navigation) {
   );
 
 
-  /* =========================================================
-     CLOSE PRODUCT PREVIEW
-  ========================================================= */
-
-  function closePreview() {
-
-    previewOverlay.classList.remove(
-      "active"
-    );
-
-    document.body.classList.remove(
-      "preview-open"
-    );
-
-  }
-
-
-  previewClose.addEventListener(
-    "click",
-    closePreview
-  );
-
-
   previewOverlay.addEventListener(
     "click",
     function (event) {
@@ -849,7 +835,14 @@ if (menuToggle && navigation) {
         previewOverlay
       ) {
 
-        closePreview();
+        previewOverlay.classList.remove(
+          "active"
+        );
+
+
+        document.body.classList.remove(
+          "preview-open"
+        );
 
       }
 
@@ -857,107 +850,223 @@ if (menuToggle && navigation) {
   );
 
 
-  document.addEventListener(
-    "keydown",
-    function (event) {
+  /* =====================================================
+  ADD TO BAG FROM PRODUCT PREVIEW
+  ===================================================== */
 
-      if (event.key === "Escape") {
+  previewBagButton.addEventListener(
+    "click",
+    function () {
 
-        closePreview();
+      const selectedSize =
+        productSize.value;
+
+
+      if (!selectedSize) {
+
+        alert(
+          "Please select a size."
+        );
+
+        return;
 
       }
+
+
+      const productIndex =
+        parseInt(
+          previewBagButton.dataset.productIndex
+        );
+
+
+      const cards =
+        document.querySelectorAll(
+          ".product-card"
+        );
+
+
+      const card =
+        cards[productIndex];
+
+
+      if (!card) {
+        return;
+      }
+
+
+      const product =
+        getProduct(card);
+
+
+      product.size =
+        selectedSize;
+
+
+      addProductToCart(product);
+
+
+      previewOverlay.classList.remove(
+        "active"
+      );
+
+
+      document.body.classList.remove(
+        "preview-open"
+      );
 
     }
   );
 
+}
 
-});
+
 /* =========================================================
 HEADER SHOPPING BAG
 ========================================================= */
 
-const headerBagButton = document.querySelector(
-  '.header-icons button[aria-label="Shopping Bag"]'
-);
+const headerBagButton =
+  document.querySelector(
+    '.header-icons button[aria-label="Shopping Bag"]'
+  );
+
 
 if (headerBagButton) {
 
-  headerBagButton.addEventListener("click", function () {
+  headerBagButton.addEventListener(
+    "click",
+    function () {
 
-    openCart();
+      openCart();
 
-  });
+    }
+  );
 
 }
+
+
 /* =========================================================
 SHOP CATEGORY FILTER
 ========================================================= */
 
-const categoryButtons = document.querySelectorAll(".category");
-const productCards = document.querySelectorAll(".product-card");
+const categoryButtons =
+  document.querySelectorAll(
+    ".category"
+  );
 
-if (categoryButtons.length && productCards.length) {
 
-  categoryButtons.forEach(function (button) {
+const productCards =
+  document.querySelectorAll(
+    ".product-card"
+  );
 
-    button.addEventListener("click", function () {
 
-      /* Remove active from all buttons */
-      categoryButtons.forEach(function (btn) {
-        btn.classList.remove("active");
-      });
+if (
+  categoryButtons.length > 0 &&
+  productCards.length > 0
+) {
 
-      /* Make clicked button active */
-      button.classList.add("active");
+  categoryButtons.forEach(
+    function (button) {
 
-      const category = button.textContent.trim().toLowerCase();
+      button.addEventListener(
+        "click",
+        function () {
 
-      productCards.forEach(function (card) {
+          const selectedCategory =
+            button.dataset.category;
 
-        const productName =
-          card.querySelector("h3")?.textContent.toLowerCase() || "";
 
-        let showProduct = false;
+          /* Remove active from all */
 
-        if (category === "all") {
-          showProduct = true;
+          categoryButtons.forEach(
+            function (btn) {
+
+              btn.classList.remove(
+                "active"
+              );
+
+            }
+          );
+
+
+          /* Add active to clicked button */
+
+          button.classList.add(
+            "active"
+          );
+
+
+          /* Filter products */
+
+          productCards.forEach(
+            function (card) {
+
+              const productCategory =
+                card.dataset.category;
+
+
+              if (
+                selectedCategory === "all" ||
+                productCategory ===
+                  selectedCategory
+              ) {
+
+                card.style.display =
+                  "";
+
+              } else {
+
+                card.style.display =
+                  "none";
+
+              }
+
+            }
+          );
+
         }
+      );
 
-        else if (category === "clothing") {
-          showProduct =
-            productName.includes("jacket") ||
-            productName.includes("shirt") ||
-            productName.includes("jeans") ||
-            productName.includes("pants");
-        }
-
-        else if (category === "shoes") {
-          showProduct =
-            productName.includes("shoe") ||
-            productName.includes("sandal") ||
-            productName.includes("slipper");
-        }
-
-        else if (category === "bags") {
-          showProduct =
-            productName.includes("bag");
-        }
-
-        else if (category === "accessories") {
-          showProduct =
-            productName.includes("watch") ||
-            productName.includes("accessory") ||
-            productName.includes("belt") ||
-            productName.includes("cap") ||
-            productName.includes("hat");
-        }
-
-        card.style.display = showProduct ? "" : "none";
-
-      });
-
-    });
-
-  });
+    }
+  );
 
 }
+
+
+/* =========================================================
+ESC KEY
+CLOSE CART / PREVIEW
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (event.key === "Escape") {
+
+      closeCart();
+
+
+      const previewOverlay =
+        document.querySelector(
+          ".product-preview-overlay"
+        );
+
+
+      if (previewOverlay) {
+
+        previewOverlay.classList.remove(
+          "active"
+        );
+
+      }
+
+
+      document.body.classList.remove(
+        "preview-open"
+      );
+
+    }
+
+  }
+);
