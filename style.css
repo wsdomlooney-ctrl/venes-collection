@@ -1009,3 +1009,35 @@ SMALL PHONES
   }
 
 }
+=========================================================
+   DESKTOP PRODUCT IMAGE CLICK FIX
+========================================================= */
+
+@media (min-width: 651px) {
+
+  .product-card {
+    position: relative;
+  }
+
+  .product-image {
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .product-image img {
+    position: relative;
+    z-index: 3;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .product-preview-overlay {
+    pointer-events: auto;
+  }
+
+  .product-preview {
+    pointer-events: auto;
+  }
+
+}
