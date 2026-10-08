@@ -1336,3 +1336,116 @@ categoryButtons.forEach(function (button) {
   updateCart();
 
 });
+/* =========================================================
+   COLLECTION CATALOG FUNCTIONALITY
+========================================================= */
+
+const catalogFilters = document.querySelectorAll(".catalog-filter");
+const catalogCards = document.querySelectorAll(".catalog-card");
+
+/* CATALOG FILTERS */
+
+catalogFilters.forEach(function (button) {
+
+  button.addEventListener("click", function () {
+
+    catalogFilters.forEach(function (btn) {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    const selectedFilter =
+      button.getAttribute("data-filter");
+
+    catalogCards.forEach(function (card) {
+
+      const category =
+        card.getAttribute("data-category");
+
+      if (
+        selectedFilter === "all" ||
+        selectedFilter === category
+      ) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
+
+    });
+
+  });
+
+});
+
+
+/* COLLECTION PRODUCT CLICK */
+
+catalogCards.forEach(function (card) {
+
+  const image = card.querySelector(".catalog-image img");
+  const bagButton = card.querySelector(".catalog-bag");
+
+  if (image) {
+
+    image.addEventListener("click", function () {
+
+      const productName =
+        card.querySelector(".catalog-info h2")?.textContent.trim();
+
+      const productPrice =
+        card.querySelector(".catalog-price")?.textContent.trim();
+
+      if (typeof openProductPreview === "function") {
+
+        openProductPreview({
+          name: productName,
+          price: productPrice,
+          image: image.src
+        });
+
+      } else {
+
+        window.location.href = "shop.html";
+
+      }
+
+    });
+
+  }
+
+  if (bagButton) {
+
+    bagButton.addEventListener("click", function (event) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const productName =
+        card.querySelector(".catalog-info h2")?.textContent.trim();
+
+      const productPrice =
+        card.querySelector(".catalog-price")?.textContent.trim();
+
+      const productImage =
+        image ? image.src : "";
+
+      const catalogProduct = {
+        id: "catalog-" + productName.toLowerCase().replace(/\s+/g, "-"),
+        name: productName,
+        price: parseFloat(
+          productPrice.replace(/[^\d.]/g, "")
+        ) || 0,
+        image: productImage,
+        quantity: 1
+      };
+
+      if (typeof addToCart === "function") {
+        addToCart(catalogProduct);
+      }
+
+    });
+
+  }
+
+});
