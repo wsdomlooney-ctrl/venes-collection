@@ -531,7 +531,7 @@ HEADER
 
 
 /* =========================================================
-ABOUT
+   ABOUT
 ========================================================= */
 
 .about {
@@ -550,6 +550,7 @@ ABOUT
   font-size: 11px;
   letter-spacing: 3px;
   margin-bottom: 22px;
+  font-weight: 600;
 }
 
 .about h2 {
@@ -557,6 +558,7 @@ ABOUT
   line-height: 0.95;
   letter-spacing: -4px;
   margin-bottom: 28px;
+  font-weight: 700;
 }
 
 .about-content > p:not(.small-title) {
@@ -573,7 +575,32 @@ ABOUT
   padding: 15px 28px;
   font-size: 11px;
   letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
+
+.about-button:hover {
+  background: #333;
+}
+
+@media (max-width: 650px) {
+
+  .about {
+    padding: 75px 20px;
+  }
+
+  .about h2 {
+    font-size: 44px;
+    letter-spacing: -2px;
+  }
+
+  .about-content > p:not(.small-title) {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+}
+
 
 
 /* =========================================================
