@@ -1196,3 +1196,43 @@ SMALL PHONES
   }
 
 }
+/* =========================================================
+   FORCE SHOPPING BAG THUMBNAILS TO STAY SMALL
+========================================================= */
+
+.cart-panel .cart-items .cart-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 15px !important;
+  width: 100% !important;
+}
+
+.cart-panel .cart-items .cart-item img {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  object-fit: cover !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+.cart-panel .cart-item-info {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+@media (max-width: 650px) {
+
+  .cart-panel .cart-items .cart-item img {
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    height: 88px !important;
+    min-height: 88px !important;
+    max-height: 88px !important;
+  }
+
+}
