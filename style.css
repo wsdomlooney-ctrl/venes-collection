@@ -413,7 +413,7 @@ HEADER
 
 
 /* =========================================================
-CAMPAIGN
+   CAMPAIGN
 ========================================================= */
 
 .campaign {
@@ -448,6 +448,7 @@ CAMPAIGN
   letter-spacing: -15px;
   color: rgba(255, 255, 255, 0.10);
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .campaign-content {
@@ -486,12 +487,47 @@ CAMPAIGN
   letter-spacing: 1.5px;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: white;
+  text-decoration: none;
 }
 
 .campaign-button:hover {
   background: white;
   color: black;
 }
+
+@media (max-width: 650px) {
+
+  .campaign {
+    min-height: 430px;
+  }
+
+  .campaign-content {
+    padding: 35px 18px;
+  }
+
+  .campaign-content p {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  .campaign-content h2 {
+    font-size: 64px;
+    letter-spacing: -3px;
+  }
+
+  .campaign-content span {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .campaign-button {
+    padding: 12px 24px;
+    font-size: 10px;
+  }
+
+}
+
 
 
 /* =========================================================
