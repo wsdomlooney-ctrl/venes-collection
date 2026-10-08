@@ -157,10 +157,8 @@ function updateCart() {
   cartItems.innerHTML =
     cart.map(function (item, index) {
 
-      const itemTotal =
+      total +=
         item.price * item.quantity;
-
-      total += itemTotal;
 
 
       return `
@@ -1216,10 +1214,8 @@ if (accountButton) {
                   action === "whatsapp"
                 ) {
 
-                  window.open(
-                    "https://wa.me/233559584979",
-                    "_blank"
-                  );
+                  window.location.href =
+                    "https://wa.me/233559584979";
 
                 }
 
@@ -1230,10 +1226,8 @@ if (accountButton) {
                   action === "tiktok"
                 ) {
 
-                  window.open(
-                    "https://www.tiktok.com/@veronica.doeveve",
-                    "_blank"
-                  );
+                  window.location.href =
+                    "https://www.tiktok.com/@veronica.doeveve";
 
                 }
 
